@@ -1,0 +1,710 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+    <html>
+    <head>
+        <title></title>
+        <style type="text/css">
+.dp-highlighter
+{
+	font-family: "Consolas", "Courier New", Courier, mono, serif;
+	font-size: 12px;
+	background-color: #E7E5DC;
+	width: 99%;
+	overflow: auto;
+	margin: 18px 0 18px 0 !important;
+	padding-top: 1px; /* adds a little border on top when controls are hidden */
+}
+
+.dp-highlighter .bar
+{
+	padding-left: 45px;
+}
+
+.dp-highlighter .tools
+{
+	padding: 3px 8px 3px 10px;
+	font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: silver;
+	background-color: #f8f8f8;
+	padding-bottom: 10px;
+	border-left: 3px solid #6CE26C;
+}
+
+.dp-highlighter .tools a
+{
+	font-size: 9px;
+	color: #a0a0a0;
+	background-color: inherit;
+	text-decoration: none;
+	margin-right: 10px;
+}
+
+.article a:link          { color:#5a5194;  text-decoration:none;}
+
+.dp-highlighter a,
+.dp-highlighter a:hover
+{
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+a:link          { color:#333;     text-decoration:none;}
+
+.dp-highlighter ol
+{
+	list-style: decimal; /* for ie */
+	background-color: #fff;
+	margin: 0px 0px 1px 45px !important; /* 1px bottom margin seems to fix occasional Firefox scrolling */
+	padding: 0px;
+	color: #5C5C5C;
+}
+
+.dp-highlighter ol,
+.dp-highlighter ol li,
+.dp-highlighter ol li span 
+{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.dp-highlighter ol li.alt
+{
+	background-color: #FFF;
+	color: inherit;
+}
+
+.dp-highlighter ol li,
+.dp-highlighter .columns div
+{
+	list-style: decimal-leading-zero; /* better look for others, override cascade from OL */
+	list-style-position: outside !important;
+	border-left: 3px solid #6CE26C;
+	background-color: #F8F8F8;
+	color: #5C5C5C;
+	padding: 0 3px 0 10px !important;
+	margin: 0 !important;
+	line-height: 14px;
+}
+
+.dp-highlighter ol li span
+{
+	color: black;
+	background-color: inherit;
+}
+
+.dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
+.dp-highlighter .string { color: blue; background-color: inherit; }
+    .imageblock             { border:1px solid #ddd;  padding:5px;  margin:5px 0;}
+        </style>
+    </head>
+    <body>
+        <p>
+            WCF Exchange Server 메일 전송</p>
+        <p>
+            &nbsp;</p>
+        <p>
+            <span style="color: darkgray">업데이트: 2007년 11월</span></p>
+        <div class="introduction">
+            <p>
+                Microsoft Exchange Server의 WCF(Windows Communication Foundation) 메일 전송은 전자 메일 주소를 기반으로 하는 WCF 끝점을 사용하여 큐에 대기 중인 서비스를 제공합니다. 이 솔루션을 사용하면 전자 메일 서버에 연결할 수 있는 한 .NET Compact Framework 및 .NET Framework 응용 프로그램을 통해 모든 컴퓨터에서 웹 서비스를 호스팅하고 사용할 수 있습니다.</p>
+            <div class="alert">
+                <table width="100%">
+                    <tr>
+                        <th align="left">
+                            <img class="style1" src="http://i.msdn.microsoft.com/Bb397812.alert_note(ko-kr,VS.90).gif" title="참고" /><b>참고:</b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                WCF는 .NET Compact Framework 버전 3.5 이상에서 지원됩니다.</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <p>
+                이 기능을 사용하면 다음을 비롯한 다양한 응용 프로그램 시나리오를 적용할 수 있습니다.
+            </p>
+            <ul>
+                <li>
+                    <p>
+                        필드와 중앙 서버 간에 보안 통신을 주고 받는 응용 프로그램</p>
+                </li>
+                <li>
+                    <p>
+                        엔터프라이즈 서버에서 필드 장치로 데이터를 푸시하는 응용 프로그램</p>
+                </li>
+                <li>
+                    <p>
+                        둘 이상의 장치가 서로 직접 통신할 수 있는 피어-투-피어 응용 프로그램</p>
+                    <p>
+                        이러한 시나리오에서는 여러 관련자가 전자 메일 서버를 중개자로 사용하여 상태 정보를 주고 받습니다. 예를 들어, 일반적인 게임 시나리오에서는 전자 메일 주소나 그룹 별칭을 사용하여 응용 프로그램을 제공하는 방식으로 한 플레이어가 다른 플레이어를 게임에 초대합니다.</p>
+                </li>
+                <li>
+                    <p>
+                        손실된 장치를 찾는 응용 프로그램</p>
+                </li>
+                <li>
+                    <p>
+                        장치에 데이터를 푸시하여 다른 응용 프로그램에 대한 구성 정보를 업데이트하는 응용 프로그램</p>
+                </li>
+            </ul>
+            <p>
+                WCF Exchange Server 메일 전송은 필드 장치에서 주소 지정 기능 및 장치가 오프라인일 때 데이터를 큐에 대기시킬 수 있는 기능과 관련된 두 가지 기본 제한 사항을 해결합니다. 채널 이름과 전자 메일 주소는 WCF 끝점 주소를 구성합니다. 이것은 소켓 기반 응용 프로그램의 IP 주소 및 포트 번호와 비슷합니다. 장치의 주소 지정 기능은 전자 메일 주소를 통해 처리되고 응용 프로그램 인스턴스의 주소 지정 기능은 입력 채널 이름을 통해 처리됩니다. WS-Addressing 프로토콜은 이 사용자 지정 주소 지정 체계를 구현하는 데 사용됩니다.</p>
+            <p>
+                큐는 Windows Mobile 탑재 장치의 로컬 데이터 저장소를 통해 지원됩니다. WCF 큐에 대한 자세한 내용은 <span sdata="link"><a href="http://msdn.microsoft.com/ko-kr/library/ms733789.aspx">큐 개요</a></span>를 참조하십시오.
+            </p>
+            <p>
+                WCF Exchange Server 메일 전송을 기반으로 빌드된 응용 프로그램에서는 기본 WCF 기능을 활용할 수 있습니다. WCF는 다양한 기본 프로토콜 및 전송을 위한 통합 프로그래밍 모델을 제공하고 응용 프로그램 논리를 WCF 끝점에서 분리합니다. 이 프로그래밍 모델은 GPRS(General Packet Radio Service), Wi-Fi 및 전자 메일 서버에 액세스할 수 있는 기타 네트워크와 같은 다양한 네트워크에 대한 지원을 포함하여 여러 가지 이점을 제공합니다. WCF Exchange Server 메일 전송을 사용하여 응용 프로그램을 개발하는 것은 HTTP 채널과 같은 WCF 채널을 사용하여 응용 프로그램을 개발하는 것과 비슷합니다.</p>
+        </div>
+        <div class="LW_CollapsibleArea_Container" xmlns="">
+            <div class="LW_CollapsibleArea_TitleDiv">
+                <span class="LW_CollapsibleArea_Title">요구 사항</span>
+                <div class="LW_CollapsibleArea_HrDiv">
+                    <hr class="LW_CollapsibleArea_Hr" />
+                </div>
+            </div>
+            <a name="sectionToggle0" xmlns="http://www.w3.org/1999/xhtml"></a>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                Exchange Server 2007은 WCF 메일 전송을 기반으로 하는 응용 프로그램의 전자 메일 서버입니다. Exchange Server 2007 서비스 팩 1은 서비스 트래픽을 WCF 전자 메일을 저장하기 위한 별도의 폴더에 리디렉션할 수 있는 관리 작업을 제공합니다.</p>
+            <div class="alert" xmlns="http://www.w3.org/1999/xhtml">
+                <table width="100%">
+                    <tr>
+                        <th align="left">
+                            <img class="style1" src="http://i.msdn.microsoft.com/Bb397812.alert_note(ko-kr,VS.90).gif" title="참고" /><b>참고:</b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                서비스 트래픽은 리디렉션될 경우 <span class="ui">받은 편지함</span>을 사용합니다.</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                메일 전송은 장치와 데스크톱 컴퓨터에서 모두 지원됩니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                CEMAPI(CE Messaging API)는 큐를 지원하는 장치에 필요합니다. CEMAPI는 Windows Mobile 탑재 장치에는 제공되지만 Windows Embedded CE 탑재 장치에는 제공되지 않습니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                Windows Mobile 버전 5.0 이상에서는 WCF Exchange Server 메일 전송을 지원합니다. 버전 5.0(빌드 14847.2.0) 이전의 Windows Mobile 버전에서는 Exchange 전자 메일 서버와 강제로 동기화하는 데 SMS(Systems Management Server)가 직접 밀어넣기 대신 사용됩니다.</p>
+            <div class="alert" xmlns="http://www.w3.org/1999/xhtml">
+                <table width="100%">
+                    <tr>
+                        <th align="left">
+                            <img class="style1" src="http://i.msdn.microsoft.com/Bb397812.alert_note(ko-kr,VS.90).gif" title="참고" /><b>참고:</b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                메일 전송은 Pocket PC용 Windows Mobile 2003 및 Pocket PC용 Windows Mobile 2003 Second Edition에서도 지원됩니다. 그러나 5.0 이전의 Windows Mobile 버전을 실행하는 장치의 경우 들어오는 메시지에 대한 ActiveSync 동기화 기간이 예정된 시간에 발생하지 않을 수 있습니다. 이러한 장치의 경우 <span sdata="cer" target="M:System.ServiceModel.Channels.IInputChannel.Receive"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.iinputchannel.receive.aspx">Receive</a></span> 메서드를 호출할 때 제한 시간을 지정하지 않거나 제한 시간을 충분히 지정하는 것이 좋습니다. Smartphone용 Windows Mobile 2003은 지원되지 않습니다.</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>
+                    <p>
+                        데스크톱 컴퓨터에서는 전자 메일 서버와의 통신이 Exchange Server 2007 웹 서비스를 통해 직접 수행되며, 큐가 지원되지 않습니다. 따라서 데스크톱 컴퓨터는 항상 온라인 상태여야 합니다.</p>
+                </li>
+                <li>
+                    <p>
+                        데스크톱의 응용 프로그램은 WCF의 데스크톱 구현을 사용합니다.</p>
+                </li>
+            </ul>
+        </div>
+        <div class="LW_CollapsibleArea_Container" xmlns="">
+            <div class="LW_CollapsibleArea_TitleDiv">
+                <span class="LW_CollapsibleArea_Title">아키텍처</span>
+                <div class="LW_CollapsibleArea_HrDiv">
+                    <hr class="LW_CollapsibleArea_Hr" />
+                </div>
+            </div>
+            <a name="sectionToggle1" xmlns="http://www.w3.org/1999/xhtml"></a>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                메시징 레이어는 표준 데스크톱 WCF 아키텍처를 기반으로 합니다. 서비스 런타임 레이어는 제공되지 않습니다. 다음 그림에서는 채널 스택, 지원되는 프로토콜 및 바인딩 요소를 보여 줍니다.</p>
+            <span class="media" xmlns="http://www.w3.org/1999/xhtml">
+                <div class="caption">
+                    WCF Exchange Server 메일 전송의 메시징 레이어</div>
+                <br />
+                <img alt="Exchange Server 메일 전송을 위한 메시징 계층" src="http://i.msdn.microsoft.com/Bb397812.NETCF_WCF(ko-kr,VS.90).png" /></span>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                WS-Security 사양 버전 1.0 사양에 대한 지원에는 X.509 인증서를 사용하는 SOAP 메시지 보안이 포함됩니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                <span sdata="cer" target="T:System.ServiceModel.Channels.Message"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.message.aspx">Message</a></span> 클래스는 WS-Addressing 표준을 기반으로 빌드됩니다. 모든 메시지는 비동기 상태이기 때문에 전자 메일 서버를 통해 리턴 트립 없이 장치 간에 이동할 수 있습니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                메시지의 serialization 및 deserialization은 .NET Compact Framework 또는 .NET Framework 런타임 내에서 처리됩니다. 장치측에서는 응용 프로그램에 사용자 지정 serializer를 사용해야 하지만 데스크톱에서는 전체 .NET Framework에서 <span sdata="cer" target="T:System.Runtime.Serialization.DataContractSerializer"><a href="http://msdn.microsoft.com/ko-kr/library/system.runtime.serialization.datacontractserializer.aspx">DataContractSerializer</a></span> 클래스를 지원하므로 이렇게 하지 않아도 됩니다. 그러나 응용 프로그램이 장치와 데스크톱 간의 통신을 지원하는 경우에는 장치에 사용한 것과 동일한 serializer를 데스크톱에서도 사용해야 합니다.</p>
+        </div>
+        <div class="LW_CollapsibleArea_Container" xmlns="">
+            <div class="LW_CollapsibleArea_TitleDiv">
+                <span class="LW_CollapsibleArea_Title">디자인</span>
+                <div class="LW_CollapsibleArea_HrDiv">
+                    <hr class="LW_CollapsibleArea_Hr" />
+                </div>
+            </div>
+            <a name="sectionToggle2" xmlns="http://www.w3.org/1999/xhtml"></a>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                WCF Exchange Server 메일 전송의 경우 WCF 바인딩과 끝점 주소의 조합으로 WCF 끝점을 나타냅니다. 바인딩은 통신에 사용되는 매개 변수를 지정하며, 전송 바인딩 요소, 인코딩 바인딩 요소 및 보안 바인딩 요소가 포함된 바인딩 요소 컬렉션을 나타냅니다. 메일 전송을 사용하는 응용 프로그램의 경우 이러한 요소가 다음과 같이 정의됩니다.</p>
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>
+                    <p>
+                        전송 바인딩 요소는 <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.MailTransportBindingElementBase"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailtransportbindingelementbase.aspx">MailTransportBindingElementBase</a></span> 개체에서 파생된 클래스 중 하나여야 하는 전자 메일 전송입니다.</p>
+                </li>
+                <li>
+                    <p>
+                        인코딩 바인딩 요소는 사용자 지정 인코더가 지원되더라도 <span sdata="cer" target="T:System.ServiceModel.Channels.TextMessageEncodingBindingElement"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.textmessageencodingbindingelement.aspx">TextMessageEncodingBindingElement</a></span> 개체로 표시되는 텍스트 인코딩입니다.</p>
+                </li>
+                <li>
+                    <p>
+                        보안 바인딩 요소는 WS-Addressing을 기반으로 하며 <span sdata="cer" target="T:System.ServiceModel.Channels.AsymmetricSecurityBindingElement"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.asymmetricsecuritybindingelement.aspx">AsymmetricSecurityBindingElement</a></span> 개체여야 합니다.</p>
+                </li>
+            </ul>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                <span sdata="cer" target="T:System.ServiceModel.Channels.CustomBinding"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.custombinding.aspx">CustomBinding</a></span> 개체 내에 바인딩 요소 집합을 인스턴스화하는 대신 응용 프로그램이 <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.MailBindingBase"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailbindingbase.aspx">MailBindingBase</a></span> 개체에서 파생된 클래스를 사용하여 미리 정의된 바인딩 요소 컬렉션을 만들 수 있습니다. 전자 메일 전송 바인딩 요소 외에도 이 클래스에는 텍스트 인코딩 바인딩 요소와 선택적 메시지 보안이 포함됩니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                메시지는 전자 메일 메시지의 본문에 포함되거나 첨부 파일로 전송됩니다. 메시지의 <span class="ui">제목</span> 줄에는 채널 이름이 포함됩니다. 메시지는 Exchange Server에서 사용하는 메시지 클래스가 제공하는 사용자 지정 WCF 전자 메일 채널 스탬프를 통해 식별됩니다.</p>
+            <h3 class="subHeading" xmlns="http://www.w3.org/1999/xhtml">
+                메시지 보내기</h3>
+            <div class="subsection" xmlns="http://www.w3.org/1999/xhtml">
+                <p>
+                    응용 프로그램은 메시지를 보낼 때 현재 출력 채널에 대해 <span sdata="cer" target="M:System.ServiceModel.Channels.IOutputChannel.Send(System.ServiceModel.Channels.Message)"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.ioutputchannel.send.aspx">Send</a></span> 메서드를 호출합니다. 이때 현재 출력 채널은 열려 있어야 합니다. 출력 채널은 메시지를 문자열로 serialize하고 <span class="ui">임시 보관함</span> 폴더에 메시지를 만든 다음 전자 메일 필드에 적절한 값을 설정합니다. 생성된 메시지는 <span class="ui">보낼 편지함</span>으로 이동합니다. 이것은 장치에서는 CEMAPI를 통해 수행되고 데스크톱에서는 Exchange 웹 서비스를 통해 수행됩니다. 장치에서는 <span class="ui">보낼 편지함</span>에 있는 메시지가 ActiveSync에 정의된 대로 다른 보내는 메시지와 동기화됩니다.</p>
+            </div>
+            <h3 class="subHeading" xmlns="http://www.w3.org/1999/xhtml">
+                메시지 받기</h3>
+            <div class="subsection" xmlns="http://www.w3.org/1999/xhtml">
+                <p>
+                    WCF Exchange Server 메일 전송을 기반으로 하는 응용 프로그램이 메시지를 받을 때 다음과 같은 프로세스가 발생합니다.</p>
+                <ol>
+                    <li>
+                        <p>
+                            응용 프로그램이 입력 채널을 엽니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            입력 채널이 <span sdata="cer" target="M:System.ServiceModel.Channels.IInputChannel.Receive"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.iinputchannel.receive.aspx">Receive</a></span> 메서드를 호출하여 메시지 수신 대기를 시작합니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            Exchange 전자 메일 서버에서 WCF 전자 메일 채널 스탬프가 있는 메시지를 받으면 자동으로 메시지를 <span class="ui">받은 편지함</span>과 같은 수준에 있는 <span class="ui">Service E-mail</span> 폴더로 라우트합니다.</p>
+                        <div class="alert">
+                            <table width="100%">
+                                <tr>
+                                    <th align="left">
+                                        <img class="style1" src="http://i.msdn.microsoft.com/Bb397812.alert_note(ko-kr,VS.90).gif" title="참고" /><b>참고:</b>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p>
+                                            Exchange 전자 메일 서버는 WCF Exchange Server 서비스 메일을 <span class="ui">Service E-mail</span> 폴더로 라우트하도록 구성되지 않은 경우 <span class="ui">받은 편지함</span>을 대신 사용합니다.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </li>
+                    <li>
+                        <p>
+                            새 메일 이벤트를 수신 대기하고 있는 입력 채널이 <span class="ui">Service E-mail</span> 또는 <span class="ui">받은 편지함</span> 폴더에 도착한 각 메시지를 검사합니다.</p>
+                        <p>
+                            입력 채널은 메시지를 수신 대기하는 동안 코드를 차단합니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            입력 채널 이름이 메시지에 있는 특정 채널 이름과 일치하면 입력 채널이 메시지를 검색하고 코드를 차단합니다.</p>
+                    </li>
+                </ol>
+                <p>
+                    같은 전송을 기반으로 빌드된 여러 입력 채널에 대해서는 <span sdata="cer" target="M:System.ServiceModel.Channels.IInputChannel.Receive"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.iinputchannel.receive.aspx">Receive</a></span> 메서드를 호출할 수 있습니다. 차단은 같은 스레드에 있는 동일한 입력 채널에 대해 <span sdata="cer" target="M:System.ServiceModel.Channels.IInputChannel.Receive"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.iinputchannel.receive.aspx">Receive</a></span>가 두 번째로 호출될 때만 발생합니다.</p>
+                <div class="alert">
+                    <table width="100%">
+                        <tr>
+                            <th align="left">
+                                <img class="style1" src="http://i.msdn.microsoft.com/Bb397812.alert_note(ko-kr,VS.90).gif" title="참고" /><b>참고:</b>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>
+                                    각 채널 수신기에는 하나의 입력 채널만 연결할 수 있습니다. 채널 수신기에 있는 <span sdata="cer" target="M:System.ServiceModel.Channels.IChannelListener`1.AcceptChannel"><a href="http://msdn.microsoft.com/ko-kr/library/ms195572.aspx">AcceptChannel</a></span> 메서드에 대한 두 번째 호출은 첫 번째 입력 채널이 닫힐 때까지 값을 반환하지 않습니다.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p>
+                    유연성을 높이기 위해 전자 메일 전송은 다양한 크기의 메시지를 다양한 방법으로 처리하도록 구성할 수 있습니다. 예를 들어, 메시지를 크기에 따라 첨부 파일로 보내거나 메시지 본문에 포함할 수 있습니다. 큰 메시지는 초기 동기화 중에 완전히 다운로드되지 않을 수도 있습니다. 장치에서는 <span class="ui">Service E-mail</span> 또는 <span class="ui">받은 편지함</span> 폴더에 있는 메시지가 Microsoft ActiveSync에 정의된 대로 다른 들어오는 메시지와 동기화됩니다.</p>
+                <div class="alert">
+                    <table width="100%">
+                        <tr>
+                            <th align="left">
+                                <img class="style1" src="http://i.msdn.microsoft.com/Bb397812.alert_note(ko-kr,VS.90).gif" title="참고" /><b>참고:</b>
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>
+                                    장치에서는 ActiveSync 전자 메일 동기화 설정에 따라 초기에 장치로 다운로드되는 각 메시지의 최대 크기가 제어됩니다. 메시지가 이 크기를 초과하면 메시지 본문 중 일부만 초기에 다운로드됩니다. 메시지의 일부가 다운로드되고 채널 수신기가 메시지를 기다리는 경우 메일 전송에서 메시지를 표시하여 완전히 다운로드해야 함을 나타냅니다. 전체 메시지는 다음 번 동기화 세션에서 다운로드됩니다.</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p>
+                    메시지를 받을 때 <span sdata="cer" target="T:System.ServiceModel.Channels.Message"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.message.aspx">Message</a></span> 클래스에서 <span sdata="langKeyword" value="FromEmailAddress"><span class="keyword">FromEmailAddress</span></span> 사용자 지정 속성을 사용하여 보낸 사람의 전자 메일 주소를 가져올 수 있습니다. 다음 예제에서는 이 속성을 사용하는 방법을 보여 줍니다.</p>
+                <div class="LW_CodeSnippetContainer" xmlns="">
+                    <a name="CodeSpippet0"></a>
+                    <div class="LW_CodeSnippetContainerCodeCollection">
+                        <div class="LW_CodeSnippetToolBar">
+                            <div class="LW_CodeSnippetToolBarText" style="valign: top">
+                                <a href="javascript:CodeSnippet_CopyCode('CodeSnippetContainerCode0');" title="클립보드로 복사">복사</a></div>
+                        </div>
+                        <div id="CodeSnippetContainerCode0" class="LW_CodeSnippetContainerCode">
+                            <div style="color: black">
+                                <pre>System.ServiceModel.Channels.Message m;
+String senderAddress;
+m = input.Receive();
+senderAddress = m.Properties.ContainsKey(&quot;FromEmailAddress&quot;)
+</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="subHeading" xmlns="http://www.w3.org/1999/xhtml">
+                메시지 삭제</h3>
+            <div class="subsection" xmlns="http://www.w3.org/1999/xhtml">
+                <p>
+                    메일 전송은 응용 프로그램에서 메시지를 요청하거나 수신하는 즉시 해당 메시지를 삭제합니다. 들어오는 메시지를 처리한 후 삭제하는 프로세스는 플랫폼에 따라 다릅니다.</p>
+                <p>
+                    Windows Mobile 탑재 장치에서 들어오는 메시지를 삭제하는 프로세스는 다음 단계로 구성됩니다.</p>
+                <ol>
+                    <li>
+                        <p>
+                            입력 채널이 <span sdata="cer" target="M:System.ServiceModel.Channels.IInputChannel.Receive"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.iinputchannel.receive.aspx">Receive</a></span> 메서드를 호출한 후 메시지를 검색합니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            메일 전송이 호출을 수행하여 Windows Mobile 탑재 장치의 메시지 저장소에서 메시지를 삭제합니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            전자 메일 동기화를 한 번 더 수행하면 서버에서 메시지가 삭제됩니다.</p>
+                    </li>
+                </ol>
+                <p>
+                    데스크톱에서 들어오는 메시지를 삭제하는 프로세스는 다음 단계로 구성됩니다.</p>
+                <ol>
+                    <li>
+                        <p>
+                            입력 채널이 <span sdata="cer" target="M:System.ServiceModel.Channels.IInputChannel.Receive"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.iinputchannel.receive.aspx">Receive</a></span> 메서드를 호출한 후 메시지를 검색합니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            메일 전송을 통해 자체 내부 캐시인 삭제된 메시지 캐시에 메시지가 저장됩니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            다음 쿼리 간격에서 메일 전송을 통해 삭제된 메시지 캐시가 확인됩니다.</p>
+                        <p>
+                            쿼리 간격은 <span sdata="cer" target="P:Microsoft.ServiceModel.Channels.Mail.ExchangeWebService.ExchangeWebServiceMailTransport.ServerQueryInterval"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.exchangewebservice.exchangewebservicemailtransport.serverqueryinterval.aspx">ServerQueryInterval</a></span> 속성에 의해 결정됩니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            삭제된 메시지 캐시에 메시지가 들어 있으면 메일 전송을 통해 이 캐시에서 메시지를 삭제하는 명령이 포함된 쿼리가 서버에 발행됩니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            쿼리하는 동안 메일 전송에서 서버 이벤트를 확인하고 관련 메시지를 다운로드합니다.</p>
+                    </li>
+                    <li>
+                        <p>
+                            메일 전송에서 다운로드된 메시지를 응용 프로그램에서 처리할 수 있도록 해당 처리 캐시에 게시합니다.</p>
+                    </li>
+                </ol>
+                <p>
+                    데스크톱에서는 다음과 같은 경우에 메일 전송을 통해 마찬가지로 삭제된 메시지 캐시에서 메시지를 삭제하는 명령이 서버에 발행됩니다.</p>
+                <ul>
+                    <li>
+                        <p>
+                            메일 전송과 연결된 마지막 남은 열려 있는 입력 채널에 대해 <span sdata="cer" target="M:System.ServiceModel.ICommunicationObject.Close"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.icommunicationobject.close.aspx">Close</a></span> 메서드를 호출한 경우</p>
+                    </li>
+                    <li>
+                        <p>
+                            메일 전송에 대해 <span sdata="cer" target="M:Microsoft.ServiceModel.Channels.Mail.MailTransport.Dispose"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailtransport.dispose.aspx">Dispose</a></span> 메서드를 호출한 경우</p>
+                    </li>
+                </ul>
+                <p>
+                    이러한 작업은 동기 상태에서 수행되므로 <span sdata="cer" target="M:System.ServiceModel.ICommunicationObject.Close"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.icommunicationobject.close.aspx">Close</a></span> 및 <span sdata="cer" target="M:Microsoft.ServiceModel.Channels.Mail.MailTransport.Dispose"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailtransport.dispose.aspx">Dispose</a></span>는 서버에서 메시지가 삭제될 때까지 코드를 차단합니다. 메시지를 삭제하는 데 필요한 시간은 삭제할 메시지의 수에 따라 다를 수 있습니다. 이 과정에서 오류가 발생하면 메일 전송에서는 메시지를 삭제하려고 여러 번 시도합니다.</p>
+                <p>
+                    Windows Mobile 탑재 장치에서는 메시지 저장소가 이 기능을 수행합니다.</p>
+                <p>
+                    메시지는 유효하지 않거나 형식이 잘못된 경우에도 삭제됩니다. 손상된 SOAP 봉투가 있는 메시지는 유효하지 않은 메시지로 간주되어 영구적으로 삭제됩니다. 메시지의 제목 줄에서 WCF 전자 메일 채널 스탬프 뒤에 잘못된 정보(예: 채널 이름의 지원되지 않는 문자)가 있으면 형식이 잘못된 메시지로 간주됩니다. 형식이 잘못된 메시지는 <span class="ui">지운 편지함</span> 폴더로 이동합니다.</p>
+            </div>
+        </div>
+        <div class="LW_CollapsibleArea_Container" xmlns="">
+            <div class="LW_CollapsibleArea_TitleDiv">
+                <span class="LW_CollapsibleArea_Title">기본 설정</span>
+                <div class="LW_CollapsibleArea_HrDiv">
+                    <hr class="LW_CollapsibleArea_Hr" />
+                </div>
+            </div>
+            <a name="sectionToggle3" xmlns="http://www.w3.org/1999/xhtml"></a>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.MailBindingBase"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailbindingbase.aspx">MailBindingBase</a></span> 클래스와 이 클래스에서 파생된 클래스는 미리 정의된 바인딩 요소의 컬렉션을 나타냅니다. 이러한 클래스는 입력 및 출력 채널을 보다 쉽게 만들 수 있도록 설계되었습니다. 경우에 따라서는 이러한 미리 정의된 컬렉션의 기본값을 변경해야 할 수도 있습니다. 변경해야 할 속성이 사용 중인 <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.MailBindingBase"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailbindingbase.aspx">MailBindingBase</a></span> 또는 파생 클래스에 없을 경우 <span sdata="cer" target="T:System.ServiceModel.Channels.CustomBinding"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.custombinding.aspx">CustomBinding</a></span> 개체에 바인딩 요소를 별도로 만들 수 있습니다. 또는 <span sdata="cer" target="M:Microsoft.ServiceModel.Channels.Mail.MailBindingBase.CreateBindingElements"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailbindingbase.createbindingelements.aspx">CreateBindingElements</a></span> 메서드를 호출하여 <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.MailBindingBase"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailbindingbase.aspx">MailBindingBase</a></span>에 모든 바인딩 요소를 반환할 수 있습니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                예를 들어, <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.ExchangeWebService.ExchangeWebServiceMailBinding"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.exchangewebservice.exchangewebservicemailbinding.aspx">ExchangeWebServiceMailBinding</a></span> 클래스에서 받을 수 있는 최대 메시지 기본 크기는 65,536바이트입니다. 다음 코드를 사용하여 <span sdata="cer" target="P:System.ServiceModel.Channels.TransportBindingElement.MaxReceivedMessageSize"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.transportbindingelement.maxreceivedmessagesize.aspx">MaxReceivedMessageSize</a></span> 속성을 설정하면 최대 크기를 100,000바이트로 늘릴 수 있습니다.</p>
+            <div class="LW_CodeSnippetContainer" xmlns="">
+                <a name="CodeSpippet1"></a>
+                <div class="LW_CodeSnippetContainerCodeCollection">
+                    <div class="LW_CodeSnippetToolBar">
+                        <div class="LW_CodeSnippetToolBarText" style="valign: top">
+                            <a href="javascript:CodeSnippet_CopyCode('CodeSnippetContainerCode1');" title="클립보드로 복사">복사</a></div>
+                    </div>
+                    <div id="CodeSnippetContainerCode1" class="LW_CodeSnippetContainerCode">
+                        <div style="color: black">
+                            <pre>binding = new ExchangeWebServiceMailBinding(Server, Credential, MailSecurityMode.Message);
+bindingElems = binding.CreateBindingElements();
+bindingElems.Find&lt;ExchangeWebServiceMailTransportBindingElement&gt;().MaxReceivedMessageSize = 100000;
+binding = new CustomBinding(bindingElems);
+</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="LW_CollapsibleArea_Container" xmlns="">
+            <div class="LW_CollapsibleArea_TitleDiv">
+                <span class="LW_CollapsibleArea_Title">보안</span>
+                <div class="LW_CollapsibleArea_HrDiv">
+                    <hr class="LW_CollapsibleArea_Hr" />
+                </div>
+            </div>
+            <a name="sectionToggle4" xmlns="http://www.w3.org/1999/xhtml"></a>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                WCF Exchange Server 메일 전송을 기반으로 하는 응용 프로그램은 <span sdata="cer" target="T:System.ServiceModel.Channels.HttpTransportBindingElement"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.httptransportbindingelement.aspx">HttpTransportBindingElement</a></span> 클래스에 대해 지원되는 데스크톱 보안 기능과 비슷한 WS-Security 프로토콜을 기반으로 하는 SOAP 메시지 보안을 지원합니다. 이 보안 기능은 X.509 인증서를 사용합니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.MailBindingBase"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailbindingbase.aspx">MailBindingBase</a></span> 개체의 서브클래스에서 미리 정의된 바인딩 요소 집합을 사용하는 경우 메시지 보안을 사용할 수 있습니다. 그러나 메시지 보안은 기본적으로 사용하지 않도록 설정되어 있습니다. 메시지 보안을 사용하도록 설정하려면 <span sdata="cer" target="P:Microsoft.ServiceModel.Channels.Mail.MailSecurity.Mode"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailsecurity.mode.aspx">Mode</a></span> 속성을 사용합니다. <span sdata="cer" target="P:Microsoft.ServiceModel.Channels.Mail.MailMessageSecurity.AlgorithmSuite"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.mailmessagesecurity.algorithmsuite.aspx">AlgorithmSuite</a></span> 속성을 사용하여 기본 암호화 알고리즘을 변경할 수 있습니다. 메시지 보안을 사용할 수 있는 경우 기본값은 <span sdata="cer" target="P:System.ServiceModel.Security.SecurityAlgorithmSuite.Basic256Rsa15"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.security.securityalgorithmsuite.basic256rsa15.aspx">Basic256Rsa15</a></span>입니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                WCF Exchange Server 메일 전송을 사용하는 응용 프로그램에서 지원되는 보안 바인딩 요소는 <span sdata="cer" target="T:System.ServiceModel.Channels.SecurityBindingElement"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.securitybindingelement.aspx">SecurityBindingElement</a></span> 및 <span sdata="cer" target="T:System.ServiceModel.Channels.AsymmetricSecurityBindingElement"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.asymmetricsecuritybindingelement.aspx">AsymmetricSecurityBindingElement</a></span>입니다.</p>
+            <div class="alert" xmlns="http://www.w3.org/1999/xhtml">
+                <table width="100%">
+                    <tr>
+                        <th align="left">
+                            <img class="style1" src="http://i.msdn.microsoft.com/Bb397812.alert_note(ko-kr,VS.90).gif" title="참고" /><b>참고:</b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>
+                                메시지 보안을 사용하면 각 메시지의 크기가 증가합니다. <span sdata="cer" target="T:Microsoft.ServiceModel.Channels.Mail.ExchangeWebService.ExchangeWebServiceMailBinding"><a href="http://msdn.microsoft.com/ko-kr/library/microsoft.servicemodel.channels.mail.exchangewebservice.exchangewebservicemailbinding.aspx">ExchangeWebServiceMailBinding</a></span> 클래스를 사용하고 있고 메시지가 45,000바이트보다 클 경우 <span sdata="cer" target="P:System.ServiceModel.Channels.TransportBindingElement.MaxReceivedMessageSize"><a href="http://msdn.microsoft.com/ko-kr/library/system.servicemodel.channels.transportbindingelement.maxreceivedmessagesize.aspx">MaxReceivedMessageSize</a></span> 속성의 값을 늘려야 할 수 있습니다. 이전 단원의 코드 예제에서는 최대 메시지 크기를 늘리는 방법을 보여 줍니다.</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="LW_CollapsibleArea_Container" xmlns="">
+            <div class="LW_CollapsibleArea_TitleDiv">
+                <span class="LW_CollapsibleArea_Title">배포</span>
+                <div class="LW_CollapsibleArea_HrDiv">
+                    <hr class="LW_CollapsibleArea_Hr" />
+                </div>
+            </div>
+            <a name="sectionToggle5" xmlns="http://www.w3.org/1999/xhtml"></a>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                장치 배포의 경우 WCF Exchange Server 메일 전송 DLL이 Windows Mobile 탑재 장치의 .NET Compact Framework CAB 파일에 전달됩니다. 관리되는 어셈블리는 전역 어셈블리 캐시에 설치됩니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                장치의 메일 전송 DLL은 다음과 같습니다.</p>
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>
+                    <p>
+                        Microsoft.ServiceModel.Channels.Mail.dll</p>
+                </li>
+                <li>
+                    <p>
+                        Microsoft.ServiceModel.Channels.Mail.WindowsMobile.dll</p>
+                </li>
+                <li>
+                    <p>
+                        CEMAPI 네이티브 래퍼인 Netcfmail3_5.dll</p>
+                </li>
+            </ul>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                .NET Compact Framework WCF DLL도 장치에 있어야 합니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                데스크톱 배포는 .NET Compact Framework .msi 설치 파일을 통해 처리됩니다. WCF Exchange Server 메일 전송 기능은 기본적으로 설치됩니다. 메일 전송 어셈블리는 데스크톱의 전역 어셈블리 캐시에 설치됩니다.</p>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                장치의 WCF Exchange Server 메일 전송 DLL은 다음과 같습니다.</p>
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>
+                    <p>
+                        Microsoft.ServiceModel.Channels.Mail.dll</p>
+                </li>
+                <li>
+                    <p>
+                        Microsoft.ServiceModel.Channels.Mail.ExchangeWebService.dll</p>
+                </li>
+            </ul>
+            <p xmlns="http://www.w3.org/1999/xhtml">
+                표준 데스크톱 WCF DLL도 데스크톱에 있어야 합니다.</p>
+        </div>
+        <p>
+            &nbsp;</p>
+    </body>
+    </html>
+</head>
+<body>
+    <div class="post-body entry-content">
+        <span style="font-family: arial">We have a web application that requires a robust and reliable document upload mechanism for very large files, and are currently using Microsoft </span><a href="http://msdn2.microsoft.com/en-us/library/aa362827.aspx" style="font-family: arial">BITS</a><span style="font-family: arial"> technology to achieve With the introduction of WCF in the solution, I set out to implement an upload service prototype using WCF and a HTTP binding.<br />
+            <br />
+            You have two main options for uploading files in WCF: streamed or buffered/chunked. The latter option is the one that provides reliable data transfer as you can use <span style="font-family: courier new">wsHttpBinding</span> with WS-ReliableMessaging turned on. Reliable messaging cannot be used with streaming as the WS-RM mechanism requires processing the data as a unity to apply checksums, etc. Processing a large file this way would require a huge buffer and thus a lot of available memory on both client and server; denial-of-service comes to mind. The workaround for this is chunking: splitting the file into e.g. 64KB fragments and using reliable, ordered messaging to transfer the data.<br />
+            <br />
+            If you do not need the robustness of reliable messaging, streaming lets you transfer large amount of data using small message buffers without the overhead of implementing chuncking. Streaming over HTTP requires you to use <span style="font-family: courier new">basicHttpBinding</span>; thus you will need SSL to encrypt the transferred data. Buffered transfer, on the other hand, can use <span style="font-family: courier new">wsHttpBinding</span>, which by default provides integrity and confidentiality for your messages; thus there is no need for SSL then.<br />
+            <br />
+            Read more about &#39;<a href="http://msdn2.microsoft.com/en-us/library/ms733742.aspx">Large Data and Streaming</a>&#39; at MSDN.<br />
+            <br />
+            So I implemented my upload prototype following the &#39;<a href="http://msdn2.microsoft.com/en-us/library/ms789010.aspx">How to: Enable Streaming</a>&#39; guidelines, using a VS2005 web application (Cassini) as the service host. I made my operation a <span style="font-family: courier new">OneWay=true</span> void operation with some SOAP headers to provide meta-data:<br />
+            <br />
+            <span style="font-family: courier new; font-size: 85%">[OperationContract(Action = &quot;UploadFile&quot;, IsOneWay = true)]</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">void UploadFile(ServiceContracts.FileUploadMessage request);</span><span style="font-size: 85%"><br />
+                <br />
+                <br />
+            </span><span style="font-family: courier new; font-size: 85%">[MessageContract]</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">public class FileUploadMessage</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">{</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">[MessageHeader(MustUnderstand = true)]</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">public DataContracts.DnvsDnvxSession DnvxSession</span><span style="font-size: 85%"><br />
+                <br />
+            </span><span style="font-family: courier new; font-size: 85%">[MessageHeader(MustUnderstand = true)]</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">public DataContracts.EApprovalContext Context</span><span style="font-size: 85%"><br />
+                <br />
+            </span><span style="font-family: courier new; font-size: 85%">[MessageHeader(MustUnderstand = true)]</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">public DataContracts.FileMetaData FileMetaData</span><span style="font-size: 85%"><br />
+                <br />
+            </span><span style="font-family: courier new; font-size: 85%">[MessageBodyMember(Order = 1)]</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">public System.IO.Stream FileByteStream</span><span style="font-size: 85%"><br />
+            </span><span style="font-family: courier new; font-size: 85%">}</span><span style="font-size: 85%"><br />
+            </span>
+            <br />
+            The reason for using message headers for meta-data is that WCF requires that the stream object is the only item in the message body for a streamed operation. Headers are the recommended way for sending meta-data when streaming. Note that headers are always sent before the body, thus you can depend on receving the header data before processing the streamed data.<br />
+            <br />
+            Note that you should provide a separate endpoint (address, binding, contract) for your streamed services. The main reason for this is that configuration such as <span style="font-family: courier new">transferMode = &quot;Streamed&quot;</span> applies to all operations in the endpoint. The same goes for <span style="font-family: courier new">transferMode, maxBufferSize, maxReceivedMessageSize, receiveTimeout</span>, etc.<br />
+            <br />
+            I use MTOM as the encoding format for the streamed data and set the max file size to 64MB. I also set the buffer size to 64KB even if I read the input stream in 4KB chucks, this to avoid receive buffer underruns. My binding config looks like this:<br />
+            <br />
+            <span style="font-size: 85%"><span style="font-family: courier new">&lt;basicHttpBinding&gt;</span><br />
+                <span style="font-family: courier new">&lt;!-- buffer: 64KB; max size: 64MB --&gt;</span><br />
+                <span style="font-family: courier new">&lt;binding name=&quot;FileTransferServicesBinding&quot;</span><br />
+                <span style="font-family: courier new">closeTimeout=&quot;00:01:00&quot; openTimeout=&quot;00:01:00&quot; receiveTimeout=&quot;00:10:00&quot; sendTimeout=&quot;00:01:00&quot;</span><br />
+                <span style="font-family: courier new">transferMode=&quot;Streamed&quot; messageEncoding=&quot;Mtom&quot;</span><br />
+                <span style="font-family: courier new">maxBufferSize=&quot;65536&quot; maxReceivedMessageSize=&quot;67108864&quot;&gt;</span><br />
+                <span style="font-family: courier new">&lt;security mode=&quot;None&quot;&gt;</span><br />
+                <span style="font-family: courier new">&lt;transport clientCredentialType=&quot;None&quot;/&gt;</span><br />
+                <span style="font-family: courier new">&lt;/security&gt;</span><br />
+                <span style="font-family: courier new">&lt;/binding&gt;</span><br />
+                <span style="font-family: courier new">&lt;/basicHttpBinding&gt;</span></span><br />
+            <br />
+            I have set the transport security to none as I am testing the prototype without using SSL. I have not modified the service behavior; the default authentication (credentials) and authorization behaviors of the binding is used.<br />
+            <br />
+            Note that the setting for <span style="font-family: courier new">transferMode </span>does not propagate to clients when using a HTTP binding. You must manually edit the client config file to set <span style="font-family: courier new">transferMode = &quot;Streamed&quot;</span> after using &#39;Add service reference&#39; or running <span style="font-family: courier new">SVCUTIL.EXE</span>. If you forget to do this, the transfer mode will be <span style="font-family: courier new">&quot;Buffered&quot;</span> and you will get an error like this:<br />
+            <span style="font-size: 85%">
+                <br />
+                <span style="font-family: courier new">System.ServiceModel.CommunicationException: An error occurred while receiving the HTTP response to http://localhost:1508/Host/FileTransferService.svc. This could be due to the service endpoint binding not using the HTTP protocol. This could also be due to an HTTP request context being aborted by the server (possibly due to the service shutting down). See server logs for more details.</span><br />
+                <br />
+            </span>After ensuring that the client <span style="font-family: courier new">basicHttpBinding</span> config was correct, I ran the unit test once more. Now I got this error from VS2005 Cassini:<br />
+            <br />
+            <span style="font-family: courier new"><span style="font-size: 85%">System.ServiceModel.ProtocolException: The remote server returned an unexpected response: (400) Bad Request.<br />
+                System.Net.WebException: The remote server returned an error: (400) Bad Request.</span><br />
+            </span>
+            <br />
+            I have inspected the HTTP traffic using Fiddler and can see nothing wrong with the MTOM encoded request. Googling lead me to a lot of frustrated &quot;streamed&quot; entries at the <a href="http://forums.microsoft.com/MSDN/ShowForum.aspx?ForumID=118">forums.microsoft.com &quot;Indigo&quot; group</a>, but no solution to my problem. So I made a <span style="font-weight: bold">self-hosted service</span> using a console application, using the code provided in the WCF samples (see below), <span style="font-weight: bold">and it worked like a charm</span>. I expect that it is just VS2005 Cassini that does not support streamed transfers/MTOM encoding.<br />
+            <br />
+            I then installed IIS to check whether HTTP streaming works better with IIS. The first error I ran into when uploading my 1KB test file was this:<br />
+            <br />
+            <span style="font-size: 85%"><span style="font-family: courier new">System.ServiceModel.CommunicationException: The underlying connection was closed: The connection was closed unexpectedly.</span><br />
+                <span style="font-family: courier new">System.Net.WebException: The underlying connection was closed: The connection was closed unexpectedly.</span><br />
+            </span>
+            <br />
+            Inspecting the traffic with Fiddler, I found the HTTP request to be fine, but no HTTP response. Knowing that this is a sure sign of a server-side exception, I debugged the service operation. <strong>The error was caused by the IIS application pool identity (ASPNET worker process) lacking NTFS rights to store the uploaded file on disk</strong>. Note that WCF by default will not impersonate the caller, thus the identity used to run your service will need to have sufficient permissions on all resources that your service needs to access. This includes the temp folder, which is used to provide the WSDL file for HTTP GET.<br />
+            <br />
+            As the <span style="font-family: courier new">UploadFile</span> operation has <span style="font-family: courier new">[OperationContract(IsOneWay = true)]</span>, it cannot have a response and neither a fault contract. Thus, there will be no HTTP response when a server-side exception occurs, just the famous &quot;</span><span style="font-family: arial; font-size: 100%"><span style="font-family: courier new">The underlying connection was closed</span></span><span style="font-family: arial">&quot; message.<br />
+                <br />
+                I assigned the correct NTFS rights to my upload folder and re-ran the unit test: <span style="font-weight: bold">streamed upload to a WCF service hosted by IIS worked</span>. The next unit test used a 43MB file to check if uploading data larger than the WCF buffer size works. The test gave me this error:<br />
+            </span>
+        <br />
+        <span style="font-size: 85%"><span style="font-family: courier new">System.ServiceModel.CommunicationException: The socket connection was aborted. This could be caused by an error processing your message or a receive timeout being exceeded by the remote host, or an underlying network resource issue. Local socket timeout was &#39;00:00:59.8590000&#39;.<br />
+            <br />
+            System.IO.IOException: Unable to write data to the transport connection: An existing connection was forcibly closed by the remote host.</span><br />
+            <span style="font-family: courier new">System.Net.Sockets.SocketException: An existing connection was forcibly closed by the remote host</span><br />
+        </span>
+        <br />
+        <span style="font-family: arial">I was a bit puzzled as the file was less than the WCF <span style="font-family: courier new">maxReceivedMessageSize</span> limit set to 64MB, and the stream read buffer was only 4KB as compared to the WCF <span style="font-family: courier new">maxBufferSize</span> being 64KB. Knowing that IIS/ASP.NET has a system enforced limit on the size of a HTTP request to prevent denial-of-service attacks, which seems to be unrelated to WCF as I do not use the <a href="http://msdn2.microsoft.com/en-us/library/aa702682.aspx" style="font-family: arial">AspNetCompatibilityRequirements</a> service setting, I decided to set the <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/gngrfhttpruntimesection.asp" style="font-family: arial">maxRequestLength</a> limit to 64MB also (default: 4096KB). This time the &quot;stream large file upload&quot; test passed!<br />
+            <br />
+            So <span style="font-weight: bold">for WCF streaming to IIS to work properly</span>, you need this <span style="font-family: courier new">&lt;system.web&gt;</span> config in addition to the <span style="font-family: courier new">&lt;system.serviceModel&gt;</span> config in the IIS <span style="font-family: courier new">web.config</span> file:<br />
+            <span style="font-size: 85%">
+                <br />
+                <span style="font-family: courier new">&lt;!-- maxRequestLength (in KB) max size: 2048MB --&gt;</span><br />
+                <span style="font-family: courier new">&lt;httpRuntime </span>
+                <br />
+                <span style="font-family: courier new">maxRequestLength=&quot;65536&quot;</span><br />
+                <span style="font-family: courier new">/&gt;</span></span><br />
+            <br />
+            Make the maximum HTTP request size equal to the WCF maximum request size.<br />
+            <br />
+            I have to recommend the &#39;Service Trace Viewer&#39; (<span style="font-family: courier new">SvcTraceViewer.EXE</span>) and the &#39;Service Configuration Editor&#39; (<span style="font-family: courier new">SvcConfigEditor.EXE</span>) provided in the <a href="http://msdn2.microsoft.com/en-us/library/ms732015.aspx">WCF toolbox</a> (<a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=c2b1e300-f358-4523-b479-f53d234cdccf&amp;displaylang=en">download .NET3 SDK</a>). These tools make it really simple to add tracing and logging to your service for debugging and diagnosing errors. Start the WCF config editor, open your WCF config file, select the &#39;Diagnostics&#39; node and just click &quot;Enable tracing&quot; in the &quot;Tracing&quot; section to turn on tracing. The figure shows some typical settings (click to enlarge):<br />
+            <br />
+            <br />
+            <p>
+                <a href="http://2.bp.blogspot.com/_VhGcD5-4xdY/RcnfGT4RCwI/AAAAAAAAAAw/5reNYKsMjso/s1600-h/SvcConfigEditor_diagnostics.JPG" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}">
+                    <img id="BLOGGER_PHOTO_ID_5028795758444350210" alt="" border="0" src="http://2.bp.blogspot.com/_VhGcD5-4xdY/RcnfGT4RCwI/AAAAAAAAAAw/5reNYKsMjso/s320/SvcConfigEditor_diagnostics.JPG" /></a><br />
+                Save the config file and run the unit test to invoke the service. This will generate the <span style="font-family: courier new">web_tracelog.svclog </span>file to use as input for the trace viewer. Open the trace file in the trace viewer and look for the errors (red text). Click an error to see the exception details. The figure shows some of the details available for the &quot;Maximum request length exceeded&quot; error (click to enlarge):<br />
+                <br />
+                <a href="http://2.bp.blogspot.com/_VhGcD5-4xdY/RcnhuT4RCxI/AAAAAAAAAA4/l5NvHgjojv0/s1600-h/svctraceviewer.JPG" onblur="try {parent.deselectBloggerImageGracefully();} catch(e) {}">
+                    <img id="BLOGGER_PHOTO_ID_5028798644662373138" alt="" border="0" src="http://2.bp.blogspot.com/_VhGcD5-4xdY/RcnhuT4RCxI/AAAAAAAAAA4/l5NvHgjojv0/s320/svctraceviewer.JPG" /></a><br />
+                The WCF tools installed by the SDK is located here:<br />
+                <span style="font-family: courier new">C:\Program Files\Microsoft SDKs\Windows\v6.0\Bin\</span><br />
+                <br />
+                The code to process the incoming stream is rather simple, storing the uploaded files to a single folder on disk and overwriting any existing files:<br />
+                <br />
+                <span style="font-size: 85%"><span style="font-family: courier new">public void UploadFile(FileUploadMessage request)</span><br />
+                    <span style="font-family: courier new">{</span><br />
+                    <span style="font-family: courier new">FileStream targetStream = null;</span><br />
+                    <span style="font-family: courier new">Stream sourceStream = request.FileByteStream;</span><br />
+                    <br />
+                    <span style="font-family: courier new">string uploadFolder = @&quot;C:\work\temp\&quot;;</span><br />
+                    <span style="font-family: courier new">string filename = request.FileMetaData.Filename;</span><br />
+                    <span style="font-family: courier new">string filePath = Path.Combine(uploadFolder, filename);</span><br />
+                    <br />
+                    <span style="font-family: courier new">using (targetStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))</span><br />
+                    <span style="font-family: courier new">{</span><br />
+                    <span style="font-family: courier new">//read from the input stream in 4K chunks</span><br />
+                    <span style="font-family: courier new">//and save to output stream</span><br />
+                    <span style="font-family: courier new">const int bufferLen = 4096;</span><br />
+                    <span style="font-family: courier new">byte[] buffer = new byte[bufferLen];</span><br />
+                    <span style="font-family: courier new">int count = 0;</span><br />
+                    <span style="font-family: courier new">while ((count = sourceStream.Read(buffer, 0, bufferLen)) &gt; 0)</span><br />
+                    <span style="font-family: courier new">{</span><br />
+                    <span style="font-family: courier new">targetStream.Write(buffer, 0, count);</span><br />
+                    <span style="font-family: courier new">}</span><br />
+                    <span style="font-family: courier new">targetStream.Close();</span><br />
+                    <span style="font-family: courier new">sourceStream.Close();</span><br />
+                    <span style="font-family: courier new">}</span><br />
+                    <span style="font-family: courier new">}</span><br />
+                </span>
+                <br />
+                The &#39;<a href="http://msdn2.microsoft.com/en-us/library/ms751463.aspx">Stream Sample</a>&#39; available on MSDN contains all the code you need to upload a file as a stream to a self-hosted WCF service and then save it to disk on the server by reading the stream in 4KB chunks. The download contains about 150 solutions with more than 4800 files, so there is a lot of stuff in it. Absolutely worth a look. The streaming sample is located here:<br />
+                <span style="font-family: courier new">&lt;unzip folder&gt; \TechnologySamples\Basic\Contract\Service\Stream</span><br />
+                <br />
+                Please let me know if you have been able to get HTTP streaming with MTOM encoding to work with Microsoft VS2005 Cassini.</p>
+            <p>
+                Finally, a useful tip for streaming download: <a href="http://blogs.thinktecture.com/buddhike/archive/2007/09/06/414936.aspx">How to release streams and files using Disponse() on the the message contract</a>
+            .</span></p>
+        <div style="clear: both">
+        </div>
+    </div>
+</body>
+</html>

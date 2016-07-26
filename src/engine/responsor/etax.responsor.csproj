@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2487867F-4D4B-4DB4-9EF6-C1DA46EFC71F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenETaxBill.Engine.Responsor</RootNamespace>
+    <AssemblyName>OpenETaxBill.Engine.Responsor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <StartupObject>
+    </StartupObject>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>engine.responsor.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="OpenETaxBill.Channel">
+      <HintPath>..\..\..\..\etaxbill-channel\output\v1.0.2016.07\Debug\OpenETaxBill.Channel.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenETaxBill.SDK">
+      <HintPath>..\..\..\..\etaxbill-sdk\output\v1.0.2016.07\Debug\OpenETaxBill.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="engine\econfig.cs" />
+    <Compile Include="engine\elogger.cs" />
+    <Compile Include="engine\engine.cs" />
+    <Compile Include="eTaxInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="eTaxInstaller.Designer.cs">
+      <DependentUpon>eTaxInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="eTaxResponsor.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="eTaxResponsor.Designer.cs">
+      <DependentUpon>eTaxResponsor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="service\requestor.cs" />
+    <Compile Include="server\host.cs" />
+    <Compile Include="server\iservice.cs" />
+    <Compile Include="server\service.cs" />
+    <Compile Include="service\listener.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="service\worker.cs" />
+    <Compile Include="engine\exception.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0%28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0%28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="eTaxInstaller.resx">
+      <DependentUpon>eTaxInstaller.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="eTaxResponsor.resx">
+      <DependentUpon>eTaxResponsor.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="engine.responsor.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\library\etax.library.csproj">
+      <Project>{4eea384a-cc29-4f33-94ee-0e6d3e27da58}</Project>
+      <Name>etax.library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
+    <OutputType>Exe</OutputType>
+    <DefineConstants>TRACE;DEBUG;CONSOLE</DefineConstants>
+    <PostBuildEvent>:begin
+
+SET framebiz_path=$(SolutionDir)\output\v1.0.2016.07\$(ConfigurationName)
+if not exist %25framebiz_path%25 mkdir %25framebiz_path%25
+goto :target_copy
+
+:target_copy
+copy /Y $(TargetPath) %25framebiz_path%25
+if exist $(TargetPath).config copy /Y $(TargetPath).config %25framebiz_path%25
+if exist $(TargetName).xml copy /Y $(TargetName).xml %25framebiz_path%25
+goto :refence_copy
+
+:refence_copy
+@rem if not $(TargetExt)==.exe goto end
+if not exist *.dll goto end
+copy /Y $(TargetDir)\*.dll %25framebiz_path%25
+goto end
+
+:end</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <OutputType>WinExe</OutputType>
+    <DefineConstants>TRACE;DEBUG;LINUX_MONO</DefineConstants>
+    <PostBuildEvent>
+if [ ! -d $(SolutionDir)/output ]; then
+  mkdir $(SolutionDir)/output
+fi
+if [ ! -d $(SolutionDir)/output/$(ConfigurationName) ]; then
+  mkdir $(SolutionDir)/output/$(ConfigurationName)
+fi
+cp -u $(TargetPath) $(SolutionDir)/output/$(ConfigurationName)
+if [ -f $(TargetPath).config ]; then
+  cp -u $(TargetPath).config $(SolutionDir)/output/$(ConfigurationName)
+fi
+if [ -f $(TargetName).XML ]; then
+  cp -u $(TargetName).XML $(SolutionDir)/output/$(ConfigurationName)
+fi
+filescount=`ls $(TargetDir)/*.dll | awk 'END { print NR }'`  
+if [ $filescount -gt 0 ]; then  
+  cp -u $(TargetDir)/*.dll $(SolutionDir)/output/$(ConfigurationName)
+fi
+</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

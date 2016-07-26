@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+    <title>OdinETAX 전자세금계산서를 발급하였습니다.</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+</head>
+<body style='text-align: center; margin-top: 30px'>
+    <table cellpadding='0' cellspacing='0' border='0' width='665px' align='center'>
+        <tr>
+            <td>
+                <!-- 로고 및 주소 -->
+                <table cellpadding='0' cellspacing='0' border='0' width='100%'>
+                    <tr>
+                        <td style='font-size: 30px; color: #484848; font-family: UniversConBold; text-align: left'>
+                            <a href='{etaxurl}' style='color: #484848; text-decoration: none;'>OdinETAX</a>
+                        </td>
+                        <td style='font-size: 12px; color: #7b7b7b; font-family: Arial; text-align: right'>
+                            <a href='{etaxurl}' style='color: #7b7b7b; text-decoration: none;'>http://etax.odinsoftware.co.kr</a>
+                        </td>
+                    </tr>
+                </table>
+                <!-- 텍스트 내용 -->
+                <table cellpadding='0' cellspacing='0' border='0' width='100%'>
+                    <tr>
+                        <td style='font-size: 18px; font-weight: bold; color: #484848; font-family: 바탕; line-height: 25px; padding-top: 60px; text-align: center;'>
+                            거래처에서 보낸 <span style='color: #254A8D;'>전자세금계산서</span>가 도착했습니다.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='font-size: 12px; color: #7b7b7b; font-family: 굴림; text-align: center; padding: 15px 0px 30px 0px'>
+                            지금 받으신 전자세금계산서는 OdinETAX에서 다시 확인할 수 있습니다.
+                        </td>
+                    </tr>
+                </table>
+                <!-- 전자세금계산서 승인 번호 -->
+                <table cellpadding='0' cellspacing='0' style='border-top: 2px #cccccc solid; border-left: 1px #cccccc solid; font-size: 12px; color: #7b7b7b; font-family: 굴림; line-height: 25px; text-align: center; width: 100%'>
+                    <tr>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 180px'>
+                            전자세금계산서 승인번호
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                            {issueId}
+                        </td>
+                    </tr>
+                </table>
+                <!-- 전자세금계산서 분류 -->
+                <table cellpadding='0' cellspacing='0' style='border-top: 2px #cccccc solid; border-left: 1px #cccccc solid; font-size: 12px; color: #7b7b7b; font-family: 굴림; line-height: 25px; text-align: center; width: 100%; margin-top: 10px'>
+                    <tr>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 180px'>
+                            전자세금계산서 분류
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 150px'>
+                            전자세금계산서
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 180px'>
+                            전자세금계산서 종류
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 150px'>
+                            {typeCode}
+                        </td>
+                    </tr>
+                </table>
+                <!-- 공급자/공급받는자 테이블 -->
+                <table cellpadding='0' cellspacing='0' border='0' width='100%' style='margin-top: 10px'>
+                    <tr>
+                        <!-- 공급자 내용 -->
+                        <td>
+                            <table cellpadding='0' cellspacing='0' style='border-top: 2px #cccccc solid; border-left: 1px #cccccc solid; font-size: 12px; color: #7b7b7b; font-family: 굴림; line-height: 25px; text-align: center; width: 330px'>
+                                <tr>
+                                    <td colspan='2' style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed'>
+                                        공급자
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        회사명
+                                    </td>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        {invoicerName}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        대표자
+                                    </td>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        {invoicerPerson}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        연락처
+                                    </td>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        {invoicerPhone}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <!-- 공급받는자 내용 -->
+                        <td style='padding-left: 5px'>
+                            <table cellpadding='0' cellspacing='0' style='border-top: 2px #cccccc solid; border-left: 1px #cccccc solid; font-size: 12px; color: #7b7b7b; font-family: 굴림; line-height: 25px; text-align: center; width: 330px'>
+                                <tr>
+                                    <td colspan='2' style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed'>
+                                        공급받는자
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        회사명
+                                    </td>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        {invoiceeName}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        대표자
+                                    </td>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        {invoiceePerson}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        연락처
+                                    </td>
+                                    <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                                        {invoiceePhone}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <!-- 세금계산서 금액 -->
+                <table cellpadding='0' cellspacing='0' style='border-top: 2px #cccccc solid; border-left: 1px #cccccc solid; font-size: 12px; color: #7b7b7b; font-family: 굴림; line-height: 25px; text-align: center; width: 100%; margin-top: 10px'>
+                    <tr>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 85px'>
+                            합계금액
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 135px'>
+                            {grandTotal}
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 85px'>
+                            공급가액
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 134px'>
+                            {chargeTotal}
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 85px'>
+                            세액
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 134px'>
+                            {taxTotal}
+                        </td>
+                    </tr>
+                </table>
+                <!-- 세금계산서 발행일 -->
+                <table cellpadding='0' cellspacing='0' style='border-top: 2px #cccccc solid; border-left: 1px #cccccc solid; font-size: 12px; color: #7b7b7b; font-family: 굴림; line-height: 25px; text-align: center; width: 100%; margin-top: 10px'>
+                    <tr>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 85px'>
+                            작성일
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 135px'>
+                            {issueDate}
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 85px'>
+                            발행일자
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 134px'>
+                            {sentTime}
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; background-color: #f2f1ed; width: 85px'>
+                            수정사유
+                        </td>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; width: 134px'>
+                            {description}
+                        </td>
+                    </tr>
+                </table>
+                <!-- 인증키 -->
+                <table cellpadding='0' cellspacing='0' style='border-top: 2px #cccccc solid; border-left: 1px #cccccc solid; font-size: 12px; color: #7b7b7b; font-family: 굴림; line-height: 25px; text-align: center; width: 100%; margin-top: 10px'>
+                    <tr style='background-color: #f2f1ed'>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid;'>
+                            전자세금계산서 확인시 필요한 인증키
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style='border-right: 1px #cccccc solid; border-bottom: 1px #cccccc solid; color: #023b63; font-weight: bold'>
+                            {securityId}
+                        </td>
+                    </tr>
+                </table>
+                <table cellpadding='0' cellspacing='0' border='0' style='width: 100%; padding-top: 20px; padding-bottom: 30px; text-align: center'>
+                    <tr>
+                        <td>
+                            <input name='Button1' type='button' value='지금 바로 확인하기' onclick="window.open('{etaxurl}outside/ebillView_outer.aspx?invoiceeId={invoiceeId}&securityId={securityId}', 'viewer', 'toolbar=0,menubar=0,resizable=no,scrollbars=1,width=820,height=550,top=50,left=50');" style='font-size: 12px; font-family: 굴림; color: #7b7b7b' />
+                        </td>
+                    </tr>
+                </table>
+                <!-- 하단 주소 -->
+                <table cellpadding='0' cellspacing='0' border='0' style='background-color: #eaeaea; font-size: 11px; color: #b1b0b0; font-family: 돋움; line-height: 15px; text-align: left; width: 100%; padding: 10px 0px 10px 0px'>
+                    <tr>
+                        <td style='font-size: 18px; font-family: UniversConBold; padding-left: 20px; padding-right: 30px'>
+                            OdinETAX</td>
+                        <td>
+                            이 메일은 발신전용 메일이므로 회신이 되지 않습니다. 문의사항은 상담센터를 이용하시기 바랍니다.<br />
+                            {OfficeAddress}
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

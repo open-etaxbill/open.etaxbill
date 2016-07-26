@@ -1,0 +1,840 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title></title>
+	    <style type="text/css">
+.dp-highlighter
+{
+	font-family: "Consolas", "Courier New", Courier, mono, serif;
+	font-size: 12px;
+	background-color: #E7E5DC;
+	width: 99%;
+	overflow: auto;
+	margin: 18px 0 18px 0 !important;
+	padding-top: 1px; /* adds a little border on top when controls are hidden */
+}
+
+.dp-highlighter .bar
+{
+	padding-left: 45px;
+}
+
+.dp-highlighter .tools
+{
+	padding: 3px 8px 3px 10px;
+	font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: silver;
+	background-color: #f8f8f8;
+	padding-bottom: 10px;
+	border-left: 3px solid #6CE26C;
+}
+
+.dp-highlighter .tools a
+{
+	font-size: 9px;
+	color: #a0a0a0;
+	background-color: inherit;
+	text-decoration: none;
+	margin-right: 10px;
+}
+
+.article a:link          { color:#5a5194;  text-decoration:none;}
+
+.dp-highlighter a,
+.dp-highlighter a:hover
+{
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+a:link          { color:#333;     text-decoration:none;}
+
+.dp-highlighter ol
+{
+	list-style: decimal; /* for ie */
+	background-color: #fff;
+	margin: 0px 0px 1px 45px !important; /* 1px bottom margin seems to fix occasional Firefox scrolling */
+	padding: 0px;
+	color: #5C5C5C;
+}
+
+.dp-highlighter ol,
+.dp-highlighter ol li,
+.dp-highlighter ol li span 
+{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.dp-highlighter ol li.alt
+{
+	background-color: #FFF;
+	color: inherit;
+}
+
+.dp-highlighter ol li,
+.dp-highlighter .columns div
+{
+	list-style: decimal-leading-zero; /* better look for others, override cascade from OL */
+	list-style-position: outside !important;
+	border-left: 3px solid #6CE26C;
+	background-color: #F8F8F8;
+	color: #5C5C5C;
+	padding: 0 3px 0 10px !important;
+	margin: 0 !important;
+	line-height: 14px;
+}
+
+.dp-highlighter ol li span
+{
+	color: black;
+	background-color: inherit;
+}
+
+.dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
+.dp-highlighter .string { color: blue; background-color: inherit; }
+textarea        { border:1px solid #aaa;}
+
+.article blockquote      { background:url('http://cfs.tistory.com/custom/blog/15/150030/skin/images/iconBlockquote.gif') no-repeat left top;  
+padding-left:25px;  margin:10px 20px;
+            }
+
+.dp-highlighter .comment, .dp-highlighter .comments { color: #008200; background-color: inherit; }
+
+
+.comment                          { border-top:1px solid #ddd;  background-color:#f5f5f5; padding:10px; margin-bottom:4px;  width:/*@post-width:-60=*/ 622px /*@*/; overflow:hidden;} 
+        </style>
+	</head>
+	<body style="font-family: '맑은 고딕'; font-size: x-small">
+	
+	    &nbsp;얼마전에 개발서버에서 HDD가 가득찬 적이 있었습니다. 알고 보니 .mdf 파일은 수백메가 수준인데 .ldf 파일이 무려 30기가가 넘게 쌓여 
+        있더군요. shrink 문을 날려도 줄지도 않고... 게다가 일단 트랜잭션 로그파일이 차게 되면 insert, select, delete 등 
+        select를 제외한 아무 작업도 되지 않습니다. HDD 공간을 확보해도 인덱스라도 한번 재구성하고 나면 금방 다시 차버립니다.
+        <div>
+            <br />
+            <div>
+                <div class="txc-textbox" 
+                    style="BORDER-BOTTOM: rgb(238,238,238) 1px solid; BORDER-LEFT: rgb(238,238,238) 1px solid; PADDING-BOTTOM: 10px; BACKGROUND-COLOR: rgb(238,238,238); PADDING-LEFT: 10px; PADDING-RIGHT: 10px; BORDER-TOP: rgb(238,238,238) 1px solid; BORDER-RIGHT: rgb(238,238,238) 1px solid; PADDING-TOP: 10px">
+                    데이터베이스의 로그 파일이 꽉 찼습니다. 데이터베이스의 트랜잭션 로그를 백업하여 사용 가능한 일부 공간을 확보하십시오<br />
+                </div>
+            </div>
+            <br />
+            <div>
+                &nbsp;뭔짓을 해도 위와 같은 에러만 나죠. 아주 미칩니다. ㅋㅋ</div>
+            <div>
+                &nbsp;그래서... .ldf 파일 사이즈를 줄이는 방법을 구글링해서 해결하기는 했죠. 그런데... 갑자기 트랜잭션 로그란 놈이 뭐하는 놈인지 
+                궁금하더라구요. 이렇게 막 지워도 되는건지 겁도 나고... 제가 업이 DBA가 아닌 개발자라... 평소에 이런 방면에 대해서는 잘 몰랐거든요. 
+                그래서 하루저녁 정도 백업 관련 자료를 찾아보면서 공부한 내용을 정리해 보았습니다.</div>
+            <div>
+                <br />
+            </div>
+            <div>
+                <span class="Apple-style-span" style="FONT-WEIGHT: bold">1. SQL Server DBA가 수행해야 
+                할 세가지 백업<br />
+                <span class="Apple-style-span" style="FONT-WEIGHT: normal">&nbsp;DB가 깨졌을 때를 대비하여 DBA는 
+                다음의 세가지 백업을 수행해야 합니다.</span><br />
+                </span>
+            </div>
+            <div>
+                <span class="Apple-style-span" style="FONT-WEIGHT: bold">1) Full Backup</span></div>
+            <div style="MARGIN-LEFT: 4em">
+                말 그대로 풀 백업입니다. .mdf 파일에 들어있는 모든 데이터를 백업받죠.
+            </div>
+            <div style="MARGIN-LEFT: 4em">
+                그런데 풀백업이 이루어지는 동안에도 트랜잭션이 계속 진행되기 때문에 실제로는 아직 커밋되지 않은 작업이 백업시 포함될 수 있습니다. 나중에 이 
+                백업을 리스토어했을 때 커밋되지 않은 데이터가 들어있다면 좀 이상해지겠죠? 그래서 실제로 풀백업을 받을 때는 현재 진행중인 트랜잭션에 대한 
+                트랜잭션 로그도 함께 백업됩니다.</div>
+            <div style="MARGIN-LEFT: 4em">
+                풀 백업이 중요한 것은, <span class="Apple-style-span" style="FONT-WEIGHT: bold">풀 백업이 
+                보관되어 있지 않다면 Differential Backup이나 트랜잭션 로그 백업을 아무리 열심히 받았어도 아무 소용이 없기 때문</span>입니다<span 
+                    class="Apple-style-span" style="FONT-WEIGHT: bold">.<br />
+                <br />
+                </span>
+            </div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div>
+                HDD로 풀백업을 수행하는 SQL은 다음과 같습니다. (물론 GUI로도 가능합니다.)<br />
+            </div>
+        </div>
+        <div>
+            <div>
+            </div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                        view plain</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                        to clipboard</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                            href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span>BACKUP&nbsp;<span class="keyword">DATABASE</span>&nbsp;[DATABASENAME]&nbsp;<span 
+                            class="keyword">TO</span>&nbsp;DIST&nbsp;=&nbsp;<span class="string">&#39;C:\Temp\BackupFileName&#39;</span>&nbsp;&nbsp;</span></li>
+                </ol>
+            </div>
+            <textarea class="sql" cols="20" name="code1" rows="1" style="DISPLAY: none">BACKUP DATABASE [DATABASENAME] TO DIST = 'C:\Temp\BackupFileName'
+</textarea><br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            만약 백업받을 파일을 백업장치로 등록하면 다음과 같이 간단하게 할 수 있습니다.<br />
+        </div>
+        <div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                        view plain</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                        to clipboard</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                            href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span><span class="keyword">EXEC</span>&nbsp;sp_addumpdevice&nbsp;<span 
+                            class="string">&#39;disk&#39;</span>,&nbsp; &nbsp;&nbsp;</span></li>
+                    <li><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="string">&#39;[BACKUPDEVICENAME]&#39;</span><span>,&nbsp;</span><span 
+                            class="string">&#39;C:\Temp\BackupFileName&#39;</span><span>&nbsp;&nbsp;</span></li>
+                    <li class="alt"><span>BACKUP&nbsp;</span><span class="keyword">DATABASE</span><span>&nbsp;[DATABASENAME]&nbsp;</span><span 
+                            class="keyword">TO</span><span>&nbsp;[BACKUPDEVICENAME]&nbsp;&nbsp;</span></li>
+                </ol>
+            </div>
+            <textarea class="sql" cols="20" name="code2" rows="1" style="DISPLAY: none">EXEC sp_addumpdevice 'disk', 
+         '[BACKUPDEVICENAME]', 'C:\Temp\BackupFileName'
+BACKUP DATABASE [DATABASENAME] TO [BACKUPDEVICENAME]
+</textarea><br />
+        </div>
+        <div>
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">2) Differential Backup 
+            (차등 백업? 차분 백업?)</span></div>
+        <div style="MARGIN-LEFT: 4em">
+            이건 OS 백업받을 때의 Differential Backup과 유사합니다. &quot;<span class="Apple-style-span" 
+                style="FONT-WEIGHT: bold">가장 마지막에 Full Backup 받은 이후의 변경 부분에 대한 백업&quot;</span>입니다. 
+            마지막에 받은 Differential Backup 이후의 변경사항을 백업받는 것이 아닙니다. (SQL Server에는 Incremental 
+            Backup이란 개념이 없습니다.)
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            만약 10월 1일에 풀백업을 받은 후 10월 5일, 10일 15일에 Differential 백업 을 받았다면 DB를 15일자로 되돌리기 위해서는 
+            10월 1일 풀백업을 Restore한 후 15일자 Differential 백업을 Restore하면 됩니다. (Intremental Backup과 
+            달리 5일, 10일, 15일자를 모두 Restore할 필요가 없다는 거죠.)</div>
+        <div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                        view plain</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                        to clipboard</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                            href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span>BACKUP&nbsp;<span class="keyword">DATABASE</span>&nbsp;[DATABASENAME]&nbsp;<span 
+                            class="keyword">TO</span>&nbsp;[BACKUPDEVICENAME]&nbsp;<span class="keyword">WITH</span>&nbsp;DIFFERENTIAL&nbsp;&nbsp;</span></li>
+                </ol>
+            </div>
+            <textarea class="sql" cols="20" name="code3" rows="1" style="DISPLAY: none">BACKUP DATABASE [DATABASENAME] TO [BACKUPDEVICENAME] WITH DIFFERENTIAL
+</textarea>
+            <br />
+        </div>
+        <div>
+            <div>
+                <span class="Apple-style-span" style="FONT-WEIGHT: bold">3) Transaction Log 
+                Backup (로그 백업)</span></div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div>
+                트랜잭션 로그 백업에 대해 이해하려면 먼저 트랜잭션 로그란 놈에 대해서 이해를 해야겠죠?</div>
+            <div>
+                트랜잭션 로그란 SQL Server에서 실행되는 모든 SQL문을 기록한 로그입니다. 어느 세션이 어떤 SQL을 실행했는지가 순차적으로 
+                기록됩니다. 우리가 트랜잭션을 Rollback 시켰을 때 Begin Tran 시점 이전으로 되돌릴 수 있는 것은 트랜잭션을 시작한 이후의 모든 
+                작업내용이 트랜잭션 로그에 기록되어 있기 때문입니다.</div>
+            <div>
+                트랜잭션 로그는 다음과 같이 하여 백업받을 수 있습니다. (물론 GUI로도 가능합니다.)<br />
+                <div class="dp-highlighter">
+                    <div class="bar">
+                        <div class="tools">
+                            <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                            view plain</a><a href="#" 
+                                onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                            to clipboard</a><a href="#" 
+                                onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                                href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                    </div>
+                    <ol class="dp-sql">
+                        <li class="alt"><span>BACKUP&nbsp;LOG&nbsp;[DATABASENAME]&nbsp;<span class="keyword">TO</span>&nbsp;[BACKUPDEVICENAME]&nbsp;&nbsp;</span></li>
+                    </ol>
+                </div>
+                <textarea class="sql" cols="20" name="code4" rows="1" style="DISPLAY: none">BACKUP LOG [DATABASENAME] TO [BACKUPDEVICENAME]
+</textarea></div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            &nbsp;</div>
+        <div style="MARGIN-LEFT: 4em">
+            로그 백업은 위의 데이터 백업과는 다른 몇가지 특성이 있습니다.<br />
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            ① 일단 <span class="Apple-style-span" style="FONT-WEIGHT: bold">백업된 트랜잭션 로그는 자동으로 
+            삭제</span>됩니다. 이때 ldf파일 사이즈가 줄어들지는 않지만 ldf 내에서 로그가 삭제되기 때문에 해당 ldf 파일에는 새로운 로그를 
+            기록할 수 있는 빈 공간이 확보됩니다.<span class="Apple-style-span" style="FONT-WEIGHT: bold">
+            </span>따라서,<span class="Apple-style-span" style="FONT-WEIGHT: bold"> 주기적으로 트랜잭션 
+            로그를 백업받으면, 별도로 로그를 삭제하지 않더라도 ldf 파일이 계속 커지는 것을 방지할 수 있습니다.</span></div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            ② 트랜잭션 로그는 가지고 있는 최신 풀백업 혹은 풀백업 + DifferentialBackup 세트로 부터 복원을 원하는 시점까지의 모든 
+            백업본이 존재하지 않으면 아무 의미가 없습니다. <span class="Apple-style-span" 
+                style="FONT-WEIGHT: bold">백업받은 로그 중 한 세트라도 분실하면 소용 없다는 의미입니다.</span> 물론 풀백업을 
+            한번도 받은적이 없다면 트랜잭션 로그는 소용없습니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            ③ 트랜잭션 로그가 온전하다면 Fault가 발생한 Database를 Fault 발생 직전의 시점으로 복원할 수 있습니다. 또한, 특정 시점으로의 
+            Rollback 등 미세한 복원이 가능합니다.
+        </div>
+        <div>
+            <br />
+        </div>
+        <div>
+            &nbsp;&nbsp;※ 파일 백업은... 논외로 치겠습니다. ^^;</div>
+        <div>
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div>
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">2. 트랜잭션 로그를 이용한 데이터 복원</span></div>
+        <div>
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: normal; FONT-FAMILY: -webkit-monospace; COLOR: rgb(0,0,0); FONT-SIZE: 13px; FONT-WEIGHT: bold">
+            <br />
+            </span>
+        </div>
+        <div>
+            트랜잭션 로그를 구체적으로 어떤 식으로 써먹을 수 있는지 두가지 예를 들어 살펴보겠습니다.<br />
+            <br />
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">&nbsp; 1) 장애 시점까지의 DB 복구</span></div>
+        <div style="MARGIN-LEFT: 4em">
+            다음과 같이 백업을 받고 있습니다.<br />
+        </div>
+        <div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div class="txc-textbox" 
+            style="BORDER-BOTTOM: rgb(238,238,238) 1px solid; BORDER-LEFT: rgb(238,238,238) 1px solid; PADDING-BOTTOM: 10px; BACKGROUND-COLOR: rgb(238,238,238); PADDING-LEFT: 10px; PADDING-RIGHT: 10px; BORDER-TOP: rgb(238,238,238) 1px solid; BORDER-RIGHT: rgb(238,238,238) 1px solid; PADDING-TOP: 10px">
+            <div style="MARGIN-LEFT: 4em">
+                ① 10월 1일 DB Full Backup</div>
+            <div style="MARGIN-LEFT: 4em">
+                ② 10월 5일 Differential Backup</div>
+            <div style="MARGIN-LEFT: 4em">
+                ③ 10월 7일 Transaction Log Backup</div>
+            <div style="MARGIN-LEFT: 4em">
+                ④ 10월 9일 Differential Backup<br />
+                ⑤ 10월 10일 Transaction Log Backup<br />
+            </div>
+            <div style="MARGIN-LEFT: 4em">
+                ⑥ 10월 11일 Transaction Log Backup</div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+            만약 10월 12일에 DB에 Fault가 발생했다고 가정하겠습니다.<br />
+        </div>
+        <div>
+            <blockquote>
+                Q : DB를 Fault 발생 시점으로 완전하게 복구할 수 있을까요?<br />
+                A : Yes~! .ldf파일의 트랜잭션 로그만 손상되지 않았다면 가능합니다.</blockquote>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            복구 절차는 다음과 같습니다.<br />
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <li>현재 활성화된 트랜잭션 로그를 백업<br />
+            </li>
+            <li>가장 최근에 수행한 전체 데이터베이스 백업을 복원<br />
+            </li>
+            <li>차등 백업이 있으면 가장 최근의 것을 복원<br />
+            </li>
+            <li>가장 최근에 차등 또는 전체 데이터베이스를 백업한 후에 만든 트랜잭션 로그 백업을 모두 차례대로 적용<br />
+            </li>
+            <li>가장 최근에 로그를 백업한 후에 변경된 사항을 모두 수동으로 다시 실행</li>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            위의 케이스에서는 다음과 같이 되겠지요.</div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div class="txc-textbox" 
+            style="BORDER-BOTTOM: rgb(238,238,238) 1px solid; BORDER-LEFT: rgb(238,238,238) 1px solid; PADDING-BOTTOM: 10px; BACKGROUND-COLOR: rgb(238,238,238); PADDING-LEFT: 10px; PADDING-RIGHT: 10px; BORDER-TOP: rgb(238,238,238) 1px solid; BORDER-RIGHT: rgb(238,238,238) 1px solid; PADDING-TOP: 10px">
+            <div style="MARGIN-LEFT: 4em">
+                ① Fault가 발생한 시점의 트랜잭션 로그를 백업</div>
+            <div style="MARGIN-LEFT: 4em">
+                ② 10월 1일자 DB Full Backup을 Restore</div>
+            <div style="MARGIN-LEFT: 4em">
+                ③ 10월 9일자 Differential Backup을 Restore</div>
+            <div style="MARGIN-LEFT: 4em">
+                ④ 10월 10일자 트랜잭션 로그를 Restore</div>
+            <div style="MARGIN-LEFT: 4em">
+                ⑤ 10월 11일자 트랜잭션 로그를 Restore<br />
+                ⑥ ①에서 백업받은 트랜잭션 로그를 Restore</div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            Fault&nbsp;발생지점까지 복원시키는 자세한 방법은
+            <a href="http://msdn.microsoft.com/ko-kr/library/ms175093.aspx" target="_blank" 
+                title="[http://msdn.microsoft.com/ko-kr/library/ms175093.aspx]로 이동합니다.">여기</a>를 
+            참고하세요.<br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div>
+            <br />
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">&nbsp; 2) 특정 시점까지의 장애복구 
+            (STOPAT)</span></div>
+        <div style="MARGIN-LEFT: 4em">
+            10월 12일에 실수로 중요 테이블을 Delete 시켰다고 가정합니다. 혹은 Update 하다가 실수로</div>
+        <div style="MARGIN-LEFT: 4em">
+            Where 절을 깜빡잊고 안적었다던지.. 하여간... 이런 상황.&nbsp;백업받은 상황은 위와 동일하다고 가정합니다.&nbsp;</div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+            이러한 경우에도 복원이 가능할까요?</div>
+        <div style="MARGIN-LEFT: 4em">
+            넵! 트랜잭션 로그를 복원할 때는 &quot;STOPAT&quot;이라는 옵션을 통해 특정 시점까지만 복원이 가능합니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div>
+            <div style="MARGIN-LEFT: 4em">
+            </div>
+        </div>
+        <div class="txc-textbox" 
+            style="BORDER-BOTTOM: rgb(238,238,238) 1px solid; BORDER-LEFT: rgb(238,238,238) 1px solid; PADDING-BOTTOM: 10px; BACKGROUND-COLOR: rgb(238,238,238); PADDING-LEFT: 10px; PADDING-RIGHT: 10px; BORDER-TOP: rgb(238,238,238) 1px solid; BORDER-RIGHT: rgb(238,238,238) 1px solid; PADDING-TOP: 10px">
+            <div>
+                <div style="MARGIN-LEFT: 4em">
+                    ① <span class="Apple-style-span" style="FONT-WEIGHT: bold">문제가 발견된 시간을 기록하고, 해당 
+                    DB를 중지시킨 후 즉시 트랜잭션 로그를 백업받음</span></div>
+            </div>
+            <div style="MARGIN-LEFT: 4em">
+            </div>
+            <div>
+                <div style="MARGIN-LEFT: 4em">
+                    ② 10월 1일자 DB Full Backup을 Restore</div>
+            </div>
+            <div style="MARGIN-LEFT: 4em">
+            </div>
+            <div>
+                <div style="MARGIN-LEFT: 4em">
+                    ③ 10월 9일자 Differential Backup을 Restore</div>
+            </div>
+            <div style="MARGIN-LEFT: 4em">
+                ④ 10월 10일자 트랜잭션 로그를 Restore</div>
+            <div>
+                <div style="MARGIN-LEFT: 4em">
+                    ⑤ 10월 11일자 트랜잭션 로그를 Restore</div>
+            </div>
+            <div style="MARGIN-LEFT: 4em">
+            </div>
+            <div>
+                <div style="MARGIN-LEFT: 4em">
+                    ⑥ ①에서 백업받은 트랜잭션 로그를 <span class="Apple-style-span" style="FONT-WEIGHT: bold">
+                    &quot;STOPAT&quot; 옵션을 주어 ①에서 기록한 시간 직전까지만 Restore함.</span></div>
+            </div>
+        </div>
+        <div>
+            <div style="MARGIN-LEFT: 4em">
+            </div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            ⑤에 해당하는 작업은 다음과 같이 하면 됩니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                        view plain</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                        to clipboard</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                            href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span>RESTORE&nbsp;LOG&nbsp;[DATABASENAME] &nbsp;&nbsp;</span></li>
+                    <li><span class="keyword">FROM</span><span>&nbsp;&nbsp;[BACKUPDEVICENAME] &nbsp;&nbsp;</span></li>
+                    <li class="alt"><span class="keyword">WITH</span><span>&nbsp;FILE&nbsp;=&nbsp;3,&nbsp;STOPAT&nbsp;=&nbsp;</span><span 
+                            class="string">&#39;2009-10-15&nbsp;14:15:23&#39;</span><span>&nbsp;,&nbsp;RECOVERY&nbsp;&nbsp;</span></li>
+                </ol>
+            </div>
+            <textarea class="sql" cols="20" name="code5" rows="1" style="DISPLAY: none">RESTORE LOG [DATABASENAME]
+FROM  [BACKUPDEVICENAME]
+WITH FILE = 3, STOPAT = '2009-10-15 14:15:23' , RECOVERY
+</textarea></div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            지정 시간까지 복원시키는 방법에 대한 자세한 내용은
+            <a href="http://msdn.microsoft.com/ko-kr/library/ms179451.aspx" target="_blank" 
+                title="[http://msdn.microsoft.com/ko-kr/library/ms179451.aspx]로 이동합니다.">여기</a>를 
+            참고하세요.</div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            위의 SQL 문 중에서 FILE=3 이라는 옵션은 &quot;LogBackupDeviceName&quot;이라는 백업 디바이스의 백업세트 중 세번째 파일을 이용해 
+            백업하라는 의미입니다. 백업 세트 내에 들어있는 파일 목록을 확인하는 방법은 다음과 같습니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: normal; FONT-FAMILY: -webkit-monospace; WHITE-SPACE: pre-wrap; COLOR: rgb(0,0,0); FONT-SIZE: 13px">
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                        view plain</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                        to clipboard</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                            href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span>RESTORE&nbsp;FILELISTONLY&nbsp;<span class="keyword">FROM</span>&nbsp;[BACKUPDEVICENAME];&nbsp;&nbsp;</span></li>
+                </ol>
+            </div>
+            <textarea class="sql" cols="20" name="code6" rows="1" style="DISPLAY: none">RESTORE FILELISTONLY FROM [BACKUPDEVICENAME];</textarea>
+            </span>RESTORE 문의 옵션에 대한 자세한 내용은
+            <a href="http://msdn.microsoft.com/ko-kr/library/ms186858(SQL.90).aspx" 
+                target="_blank" 
+                title="[http://msdn.microsoft.com/ko-kr/library/ms186858(SQL.90).aspx]로 이동합니다.">
+            여기</a>를 참고하세요.&nbsp;
+        </div>
+        <div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div>
+            <div>
+                <span class="Apple-style-span" style="FONT-WEIGHT: bold">3. 트랜잭션 로그를 삭제하여 
+                로그파일(*.ldf 파일) 사이즈 줄이기</span></div>
+            <div>
+                <span class="Apple-style-span" 
+                    style="LINE-HEIGHT: normal; FONT-FAMILY: -webkit-monospace; COLOR: rgb(0,0,0); FONT-SIZE: 13px; FONT-WEIGHT: bold">
+                <br />
+                </span>
+            </div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div>
+            <div>
+                &nbsp;위에서 얘기한 바와 같이 트랜잭션 로그를 백업받으면 자동으로 트랜잭션 로그가 삭제됩니다. 하지만 평소에 트랜잭션 로그를 백업받지 않던 
+                DB서버에서 HDD 가 가득 찼다던지... 하면 트랜잭션 로그를 백업받을 여유가 없을 뿐더러... 무엇보다도
+                <span class="Apple-style-span" style="FONT-WEIGHT: bold">트랜잭션 로그를 삭제한다고 해서 무조건 
+                .ldf 파일 사이즈가 줄어들지는 않는다</span>는 것이 문제입니다. ^^</div>
+            <div>
+                <br />
+            </div>
+            <div>
+                &nbsp;트랜잭션 로그를 백업받지 않고 파일 사이즈를 줄이는 방법은 다음과 같이 두 단계로 이루어집니다.</div>
+            <div>
+                <br />
+            </div>
+            <div>
+                <span class="Apple-style-span" style="FONT-WEIGHT: bold">1) 로그 삭제 (BACKUP LOG ~)</span></div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div>
+                &nbsp;.ldf 파일 내에서 로그를 삭제합니다.&nbsp;</div>
+            <div>
+                &nbsp;위에서 얘기한 바와 같이 &quot;BACKUP LOG&quot; 문을 실행하면 트랜잭션 로그를 백업한 후 자동으로 로그를 삭제하지만, 다음과 같은 옵션을 주면 
+                백업받지 않고 로그만 삭제할 수 있습니다.</div>
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                        view plain</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                        to clipboard</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                            href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span>DBCC&nbsp;SQLPERF(LOGSPACE)&nbsp;<span class="comment">--&nbsp;현재&nbsp;로그파일의&nbsp;상태를&nbsp;확인한다.
+                        </span>&nbsp;&nbsp;</span></li>
+                    <li><span>BACKUP&nbsp;LOG&nbsp;[DATABASENAME]&nbsp;</span><span class="keyword">WITH</span><span>&nbsp;NO_LOG&nbsp;&nbsp;</span><span 
+                            class="comment">--&nbsp;실제로&nbsp;로그를&nbsp;삭제하는&nbsp;명령 </span><span>&nbsp;&nbsp;</span></li>
+                    <li class="alt"><span class="comment">
+                        --BACKUP&nbsp;LOG&nbsp;[DATABASENAME]&nbsp;WITH&nbsp;TRUNCATE_ONLY&nbsp;위의&nbsp;SQL과&nbsp;동일한&nbsp;효과</span><span>&nbsp;&nbsp;</span></li>
+                </ol>
+            </div>
+            <textarea class="sql" cols="20" name="code7" rows="1" style="DISPLAY: none">DBCC SQLPERF(LOGSPACE) -- 현재 로그파일의 상태를 확인한다.
+BACKUP LOG [DATABASENAME] WITH NO_LOG  -- 실제로 로그를 삭제하는 명령
+--BACKUP LOG [DATABASENAME] WITH TRUNCATE_ONLY 위의 SQL과 동일한 효과
+</textarea></div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div>
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">2) 로그파일 축소 (DBCC 
+            SHRINK~~)</span></div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            &nbsp;.ldf 파일의 사이즈를 축소합니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            &nbsp;위의 로그 삭제 작업은 ldf 파일 내에서 로그를 삭제하여 공간을 확보하지만 정작 ldf 파일의 사이즈는 줄어들지 않기 때문에 HDD의 
+            여유공간을 확보하지 않습니다. 로그를 삭제한 후 아래와 같이 로그 파일에 대해 SHRINK 작업을 수행하면 위에서 삭제한 트랜잭션 로그의 
+            공간만큼 실제로 ldf 파일을 축소시켜 HDD의 공간이 확보됩니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">
+                        view plain</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy 
+                        to clipboard</a><a href="#" 
+                            onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a 
+                            href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span>SP_HELPDB&nbsp;[DATABASENAME]&nbsp;<span class="comment">--&nbsp;대상&nbsp;파일이름&nbsp;확인&nbsp;(name&nbsp;컬럼)
+                        </span>&nbsp;&nbsp;</span></li>
+                    <li><span>DBCC&nbsp;SHRINKFILE([LOGFILENAME],&nbsp;5,&nbsp;TRUNCATEONLY)&nbsp;</span><span 
+                            class="comment">--&nbsp;5MB까지&nbsp;파일을&nbsp;축소 </span><span>&nbsp;&nbsp;</span></li>
+                    <li class="alt"><span class="comment">
+                        --&nbsp;DBCC&nbsp;SHRINKFILE(DBName_log,&nbsp;5,&nbsp;TRUNCATEONLY)&nbsp;--&nbsp;보통은&nbsp;이렇게...</span><span>&nbsp;&nbsp;</span></li>
+                </ol>
+            </div>
+            <textarea class="sql" cols="20" name="code" rows="1" style="DISPLAY: none">SP_HELPDB [DATABASENAME] -- 대상 파일이름 확인 (name 컬럼)
+DBCC SHRINKFILE([LOGFILENAME], 5, TRUNCATEONLY) -- 5MB까지 파일을 축소
+-- DBCC SHRINKFILE(DBName_log, 5, TRUNCATEONLY) -- 보통은 이렇게...
+</textarea>&nbsp;</div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            &nbsp;위에서 얘기했듯이, 트랜잭션 로그는 풀백업 시점에서부터 장애 시점까지의 모든 로그가 보관되어 있지 않다면 소용이 없기 때문에, 로그파일을 
+            삭제한 후 장애가 발생하면 장애 시점까지의 복원이 불가능해집니다. 따라서,&nbsp;<span class="Apple-style-span" 
+                style="FONT-WEIGHT: bold">트랜잭션 로그를 삭제하여 HDD 공간을 확보한 후에는 반드시 풀 백업을 새로 받는 것이 
+            좋습니다.</span></div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            &nbsp;로그를 삭제하지 않고 무조건 SHRINK DATABASE를 한다고 해서 ldf파일의 공간이 줄어들지는 않습니다. 왜냐하면,
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">&quot;SHRINK 는 불필요한 공간을 정리하는 
+            작업&quot;</span>이기 때문입니다. 디스크 조각모음을 시킨다고 해서 필요한 로그를 마음대로 삭제해 버리면 안되겠죠? ^^</div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            &nbsp;다음과 같은 경우에는 SHRINK 작업을 수행하면 트랜잭션 로그가 삭제되고, .ldf 파일이 축소됩니다. 즉,&nbsp;SQL Server는&nbsp;다음의 세 
+            가지 경우에는 남아있는 트랜잭션 로그를 무용지물이라고 판단합니다. 세가지 경우의 상황에서 장애가 발생했다고 상상해보세요. 트랜잭션 로그가 있어도 
+            장애 복구에 도움이 되지 않는 다는 것을 알 수 있습니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+            &nbsp;반대로 <span class="Apple-style-span" style="FONT-WEIGHT: bold">다음의 세가지 중 한가지 경우에도 
+            해당이 안된다면 SHRINK 작업을 수행하더라도 .ldf 파일의 사이즈가 줄어들지 않습니다. </span>왜? 이 트랜잭션 로그가 장애 복구에 
+            필요할 수도 있기 때문이죠.&nbsp;</div>
+        <div style="MARGIN-LEFT: 4em">
+            <br />
+        </div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 8em">
+            ①&nbsp;BACKUPLOG 문으로 로그를 지운 경우 : 이미 로그가 백업되었고, 백업된 로그는 내부적으로 삭제되기 때문에 .ldf 파일이 축소될 수 
+            있습니다. WITH NO_LOG 옵션을 준 경우도 마찬가지입니다.</div>
+        <div style="MARGIN-LEFT: 4em">
+        </div>
+        <div style="MARGIN-LEFT: 8em">
+            ②&nbsp;복구모델이 SIMPLE인 경우 : 복구모델이 SIMPLE이라는 것은 현 시점의 트랜잭션 로그가 보관되지 않는다는 의미이기 때문에 지나간 
+            트랜잭션 로그도 소용 없다고 판단할 수 있습니다.&nbsp;</div>
+        <div style="MARGIN-LEFT: 8em">
+            ③ 한번<span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">도&nbsp;DATABASE 
+            풀백업을 받은 적이 없는 경우 : 풀백업이 없다면 트랜잭션 로그 보관은 의미가 없습니다.</span></span></div>
+        <div>
+        </div>
+        <span class="Apple-style-span" 
+            style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+        <br />
+        </span>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">4. SQL Server의 복구 
+            모델</span></span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">SQL Server에서는 다음의 
+            세가지 복구모델을 지원합니다. 이 복구모델에 따라 트랜잭션 로그를 기록하고 보관하는 방식이 달라집니다.</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Gulim; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102)">
+            <br />
+            </span>
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">1) 전체 (Full)</span></span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">모든 작업에 대해 트랜잭션 로그가 
+            기록되고, 필요시 복원하거나 원하는 시점까지 복원이 가능합니다. 기본 설정이며, 로그가 가장 많이 기록되고 성능은 가장 떨어집니다.</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">2) 대량로그 (Bulk Log)</span></span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">전체 모델과 거의 유사하나 대량의 
+            로그가 기록되는 다음의 작업들에 대해 로그를 남기지 않기 때문에 로그가 더 적게 남고, 성능이 전체 모델보다 더 높습니다.</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">. SELECT INTO</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">. BCP 혹은 BULK 
+            INSERT</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">. CREATE INDEX 혹은 
+            INDEXED VIEW</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">. TEXT 및 이미지 작업</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span class="Apple-style-span" style="FONT-WEIGHT: bold">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">3) 단순 (Simple)</span></span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <span style="FONT-FAMILY: Gulim"><span style="FONT-SIZE: 9pt">단순 복구모델에서는 
+            CheckPoint (DBMS가 메모리와 HDD 의 Sync를 맞추는 시점) 발생시마다 Sync 후 트랜잭션 로그를 삭제합니다. 따라서, 
+            트랜잭션 로그를 사용한 DB 복원이 불가능하며, 장애 발생시 풀백업 혹은 Differential 백업을 받은 시점까지만 복원이 가능합니다. 
+            (BACKUP LOG 문도 실행되지 않습니다.)</span></span></span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Gulim; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102)">
+            만약 DB를 백업받지 않는 서버라면 (장애나면 데이터 포기?? ^^) 단순 복구모델로 설정해도 좋을 듯 합니다. 어차피 풀백업이 없으면 트랜잭션 
+            로그도 소용 없으니까요.</span></div>
+        <div style="LINE-HEIGHT: 1.8">
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Gulim; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102)">
+            <br />
+            </span>
+        </div>
+        <div style="LINE-HEIGHT: 1.8">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Gulim; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102)">
+            현재 운영중인 DB의 복구모델을 변경할 때는 각 복구모델을 변경한 후에 장애가 발생해도 복구가 가능하도록 하기 위해 복구모델 간의 관계를 잘 
+            따져보아야 하는데 이부분에 대한 자세한 내용은
+            <a href="http://msdn.microsoft.com/ko-kr/library/ms190203.aspx" target="_blank" 
+                title="[http://msdn.microsoft.com/ko-kr/library/ms190203.aspx]로 이동합니다.">여기</a>를 
+            참고하세요.</span></div>
+        <div style="LINE-HEIGHT: 1.8; MARGIN-LEFT: 4em">
+            <span class="Apple-style-span" 
+                style="LINE-HEIGHT: 16px; FONT-FAMILY: Verdana; WHITE-SPACE: pre-wrap; COLOR: rgb(102,102,102); FONT-SIZE: 11px">
+            <br />
+            </span>
+        </div>
+	
+	</body>
+</html>

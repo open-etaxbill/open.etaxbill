@@ -1,0 +1,481 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+.dp-highlighter
+{
+	font-family: "Consolas", "Courier New", Courier, mono, serif;
+	font-size: 12px;
+	background-color: #E7E5DC;
+	width: 99%;
+	overflow: auto;
+	margin: 18px 0 18px 0 !important;
+	padding-top: 1px; /* adds a little border on top when controls are hidden */
+}
+
+.dp-highlighter .bar
+{
+	padding-left: 45px;
+}
+
+.dp-highlighter .tools
+{
+	padding: 3px 8px 3px 10px;
+	font: 9px Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color: silver;
+	background-color: #f8f8f8;
+	padding-bottom: 10px;
+	border-left: 3px solid #6CE26C;
+}
+
+.dp-highlighter .tools a
+{
+	font-size: 9px;
+	color: #a0a0a0;
+	background-color: inherit;
+	text-decoration: none;
+	margin-right: 10px;
+}
+
+.dp-highlighter a,
+.dp-highlighter a:hover
+{
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+}
+
+.dp-highlighter ol
+{
+	list-style: decimal; /* for ie */
+	background-color: #fff;
+	margin: 0px 0px 1px 45px !important; /* 1px bottom margin seems to fix occasional Firefox scrolling */
+	padding: 0px;
+	color: #5C5C5C;
+}
+
+.dp-highlighter ol,
+.dp-highlighter ol li,
+.dp-highlighter ol li span 
+{
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+.dp-highlighter ol li.alt
+{
+	background-color: #FFF;
+	color: inherit;
+}
+
+.dp-highlighter ol li,
+.dp-highlighter .columns div
+{
+	list-style: decimal-leading-zero; /* better look for others, override cascade from OL */
+	list-style-position: outside !important;
+	border-left: 3px solid #6CE26C;
+	background-color: #F8F8F8;
+	color: #5C5C5C;
+	padding: 0 3px 0 10px !important;
+	margin: 0 !important;
+	line-height: 14px;
+}
+
+.dp-highlighter ol li span
+{
+	color: black;
+	background-color: inherit;
+}
+
+.dp-highlighter .comment, .dp-highlighter .comments { color: #008200; background-color: inherit; }
+.dp-highlighter .keyword { color: #069; font-weight: bold; background-color: inherit; }
+        </style>
+</head>
+<body style="font-family: '맑은 고딕'; font-size: x-small">
+    격리 수준(Transaction Isolation Level)이란 SQL Server에서 잠금(Lock)을 어떤 식으로 적용할 것인가에 관한 얘기이다. 주로 <span class="Apple-style-span" style="font-weight: bold">SELECT시의 Lock을 어떻게 걸 것이냐에 따라 격리 수준이 구분</span>지어진다.
+    <div>
+        <br />
+    </div>
+    <div>
+        <span class="Apple-style-span" style="font-weight: bold">1. READ COMMITTED</span></div>
+    <div>
+        &nbsp;&nbsp;글자 그대로 해석하면 &quot;커밋된 데이터만 읽을 수 있는&quot; 격리수준이다.&nbsp;</div>
+    <div>
+        &nbsp;&nbsp;SQL Server의 기본 격리수준으로서 SELECT 실행시 공유잠금을 건다. 이 격리수준에서는 SELECT를 시도하려는 DATA에 다른 트랜잭션에서 업데이트를 진행한 경우, 배타적 잠금(X-Lock)이 걸린 데이터에 공유잠금(S-Lock)을 걸려고 시도하므로 업데이트의 트랜잭션이 종료될 때까지 SELECT는 Block된다. Block된 SELECT는 트랜잭션이 종료되면 자동으로 실행된다.</div>
+    <div>
+        &nbsp;&nbsp;예를 들어 다음과 같은 SQL을 순서대로 실행시킬 경우, 세션 2는 블럭된다.
+    </div>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;1 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">BEGIN</span><span>&nbsp;TRAN &nbsp;&nbsp;</span></li>
+            <li class="alt"><span class="keyword">UPDATE</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">SET</span><span>&nbsp;VAL=1&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;PK&nbsp;=&nbsp;10&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code1" rows="1" style="display: none">-- 세션 1
+BEGIN TRAN
+UPDATE TABLENAME SET VAL=1 WHERE PK = 10
+</textarea>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;2&nbsp;&nbsp;:&nbsp;위의&nbsp;SQL&nbsp;실행&nbsp;후&nbsp;실행 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">SELECT</span><span>&nbsp;*&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;&nbsp;PK&nbsp;=&nbsp;10&nbsp;</span><span class="comment">--&nbsp;블럭된다!!!</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code2" rows="1" style="display: none">-- 세션 2  : 위의 SQL 실행 후 실행
+SELECT * FROM TABLENAME WHERE  PK = 10 -- 블럭된다!!!
+</textarea>
+    <div>
+        <br />
+    </div>
+    <div>
+        <br />
+    </div>
+    <div>
+        <br />
+    </div>
+    <div>
+        <span class="Apple-style-span" style="font-weight: bold">2. READ UNCOMMITTED</span></div>
+    <div>
+        &nbsp;&nbsp;말 그대로 &quot;커밋되지 않은 데이터도 읽을 수 있는&quot; 격리수준이다.</div>
+    <div>
+        &nbsp;&nbsp;업데이트가 커밋되지 않은 데이터에는 배타적 잠금(X-Lock)이 걸려있다. 배타적 잠금이 걸린 데이터를 SELECT할 수 있다는 것은 SELECT시 어떠한 잠금도 걸지 않는다는 것을 의미한다.</div>
+    <div>
+        업데이트되지 않은 데이터를 읽을 수 있다는 것은 무결성을 깨트릴 위험성이 있다는 의미이다. 예를 들어 SELECT한 결과가 실제로 DB에 INSERT되지 않고 ROLLBACK될 경우, 존재하지 않는 DATA를 SELECT한 결과가 된다. 하지만 그런 경우가 매우 적고, READ UNCOMMITTED 수준에서는 동시성이 향상되는 효과가 있기 때문에 자주 사용되는 수준이다.</div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px">
+            <br />
+        </span>
+    </div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px"><span class="Apple-style-span" style="line-height: 18px; font-family: 굴림; color: rgb(51,51,51); font-size: 12px">
+            <div>
+                &nbsp;&nbsp;예를 들어 다음과 같은 SQL을 순서대로 실행시킬 경우, 세션 2에서는 1 값이 SELECT된다..</div>
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;1 </span>&nbsp;&nbsp;</span></li>
+                    <li><span class="keyword">UPDATE</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">SET</span><span>&nbsp;VAL=2&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;PK&nbsp;=&nbsp;10 &nbsp;&nbsp;</span>
+        </span></li>
+            <li class="alt"><span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">BEGIN</span><span>&nbsp;TRAN &nbsp;&nbsp;</span></span></li>
+        <li class="alt"><span class="keyword">UPDATE</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">SET</span><span>&nbsp;VAL=1&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;PK&nbsp;=&nbsp;10&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code3" rows="1" style="display: none">-- 세션 1
+UPDATE TABLENAME SET VAL=2 WHERE PK = 10
+
+BEGIN TRAN
+UPDATE TABLENAME SET VAL=1 WHERE PK = 10
+</textarea>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;2&nbsp;&nbsp;:&nbsp;위의&nbsp;SQL&nbsp;실행&nbsp;후&nbsp;실행 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">SELECT</span><span>&nbsp;*&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">WITH</span><span>&nbsp;(READUNCOMMITTED)&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;&nbsp;PK&nbsp;=&nbsp;10&nbsp;</span><span class="comment">--&nbsp;1&nbsp;값이&nbsp;SELECT된다.</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code4" rows="1" style="display: none">-- 세션 2  : 위의 SQL 실행 후 실행
+SELECT * FROM TABLENAME WITH (READUNCOMMITTED) WHERE  PK = 10 -- 1 값이 SELECT된다.
+</textarea>
+    <div>
+        <br />
+    </div>
+    READ UNCOMMITTED 격리수준은 다음과 같이 설정할 수 있다.</div>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="keyword">SELECT</span>&nbsp;*&nbsp;<span class="keyword">FROM</span>&nbsp;TABLE1&nbsp;<span class="keyword">WITH</span>&nbsp;(READUNCOMMITTED)&nbsp;<span class="keyword">WHERE</span>&nbsp;...&nbsp;<span class="comment">--&nbsp;해당&nbsp;SELECT문장에만&nbsp;적용 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">SELECT</span><span>&nbsp;*&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLE1&nbsp;</span><span class="keyword">WITH</span><span>&nbsp;(NOLOCK)&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;...&nbsp;</span><span class="comment">--&nbsp;해당&nbsp;SELECT문장에만&nbsp;적용 </span><span>&nbsp;&nbsp;</span></li>
+            <li class="alt"><span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">SET</span><span>&nbsp;</span><span class="keyword">TRANSACTION</span><span>&nbsp;</span><span class="keyword">ISOLATION</span><span>&nbsp;</span><span class="keyword">LEVEL</span><span>&nbsp;</span><span class="keyword">READ</span><span>&nbsp;</span><span class="keyword">UNCOMMITTED</span><span>&nbsp;</span><span class="comment">--&nbsp;해당&nbsp;세션에&nbsp;적용</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code5" rows="1" style="display: none">SELECT * FROM TABLE1 WITH (READUNCOMMITTED) WHERE ... -- 해당 SELECT문장에만 적용
+SELECT * FROM TABLE1 WHERE ... -- 해당 SELECT문장에만 적용
+
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED -- 해당 세션에 적용
+</textarea>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px">
+            <br />
+        </span>
+    </div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px">
+            <br />
+        </span>
+    </div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px">
+            <br />
+        </span>
+    </div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px"><span class="Apple-style-span" style="line-height: 18px; font-family: 굴림; color: rgb(51,51,51); font-size: 12px">
+            <div>
+                <span class="Apple-style-span" style="font-weight: bold">3. REPEATABLE READ</span></div>
+            <div>
+                &nbsp;&nbsp;직역하면 &quot;반복가능한 읽기&quot; 정도?</div>
+            <div>
+                &nbsp;&nbsp;REPEATABLE READ 수준에서는 동일 트랜잭션 내에서 한번 SELECT했던 ROW에 대해서는 UPDATE나 DELETE가 불가능하며 트랜잭션 종료시까지 다시 SELECT했을 때 같은 값이 SELECT된다는 것이 보장된다.</div>
+            <div>
+                &nbsp;&nbsp;내부적으로는 SELECT했을 때 해당 ROW에 걸리는 S-LOCK이 즉시 해제되지 않고 트랜잭션 종료시까지 유지된다는 것을 의미한다.</div>
+            <div>
+                <br />
+            </div>
+            <div>
+                다음의 예를 보자</div>
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;1 </span>&nbsp;&nbsp;</span></li>
+                    <li><span class="keyword">BEGIN</span><span>&nbsp;TRAN &nbsp;&nbsp;</span>
+        </span></li>
+            <li class="alt"><span class="keyword">SELECT</span><span>&nbsp;VAL&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">WITH</span><span>&nbsp;(REPEATABLEREAD)&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;&nbsp;PK&nbsp;=&nbsp;10&nbsp;</span><span class="comment">--&nbsp;VAL의&nbsp;값이&nbsp;1인&nbsp;RECORD&nbsp;1개가&nbsp;출력되었다고&nbsp;치자.</span><span>&nbsp;&nbsp;</span></span></li> </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code6" rows="1" style="display: none">-- 세션 1
+BEGIN TRAN
+SELECT VAL FROM TABLENAME WITH (REPEATABLEREAD) WHERE  PK = 10 -- VAL의 값이 1인 RECORD 1개가 출력되었다고 치자.
+</textarea>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;2&nbsp;&nbsp;:&nbsp;위의&nbsp;SQL&nbsp;실행&nbsp;후&nbsp;실행 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">UPDATE</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">SET</span><span>&nbsp;VAL&nbsp;=&nbsp;2&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;PK&nbsp;=&nbsp;10&nbsp;</span><span class="comment">--&nbsp;세션1&nbsp;트랜잭션&nbsp;종료시까지&nbsp;BLOCK된다.</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code7" rows="1" style="display: none">-- 세션 2  : 위의 SQL 실행 후 실행
+UPDATE TABLENAME SET VAL = 2 WHERE PK = 10 -- 세션1 트랜잭션 종료시까지 BLOCK된다.
+</textarea>
+    <div>
+        <br />
+    </div>
+    이 상태에서 세션 1에서 다시 SELECT해본다
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;1 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">SELECT</span><span>&nbsp;VAL&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">WITH</span><span>&nbsp;(REPEATABLEREAD)&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;&nbsp;PK&nbsp;=&nbsp;10&nbsp;</span><span class="comment">--&nbsp;조금&nbsp;전과&nbsp;동일하게&nbsp;1&nbsp;값이&nbsp;1개&nbsp;출력된다.</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code8" rows="1" style="display: none">-- 세션 1
+SELECT VAL FROM TABLENAME WITH (REPEATABLEREAD) WHERE  PK = 10 -- 조금 전과 동일하게 1 값이 1개 출력된다.
+</textarea>
+    <div>
+        <br />
+    </div>
+    그러나 이 격리수준은 SELECT된 ROW의 데이터에 UPDATE할 수 없다는 의미이지, 이 테이블에 INSERT 까지 차단된다는 의미는 아니어서 <span class="Apple-style-span" style="font-weight: bold">SELECT했던 행의 값들은 동일하게 유지</span>되지만, <span class="Apple-style-span" style="font-weight: bold">SELECT의 결과가 항상 동일하다는 의미는 아니다.</span>&nbsp;(즉 SELECT 결과 RecordSet의 변경은 되지 않지만 추가는 발생할 수 있다.)</div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px"><span class="Apple-style-span" style="line-height: 18px; font-family: 굴림; color: rgb(51,51,51); font-size: 12px">다음과 같이 해보자.
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;1 </span>&nbsp;&nbsp;</span></li>
+                    <li><span class="keyword">BEGIN</span><span>&nbsp;TRAN &nbsp;&nbsp;</span>
+        </span></li>
+            <li class="alt"><span class="keyword">SELECT</span><span>&nbsp;VAL&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">WITH</span><span>&nbsp;(REPEATABLEREAD)&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;&nbsp;VAL&nbsp;=&nbsp;1&nbsp;</span><span class="comment">--&nbsp;VAL의&nbsp;값이&nbsp;1인&nbsp;RECORD&nbsp;1개가&nbsp;출력</span><span>&nbsp;&nbsp;</span></span></li> </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code9" rows="1" style="display: none">-- 세션 1
+BEGIN TRAN
+SELECT VAL FROM TABLENAME WITH (REPEATABLEREAD) WHERE  VAL = 1 -- VAL의 값이 1인 RECORD 1개가 출력
+</textarea>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;2&nbsp;&nbsp;:&nbsp;위의&nbsp;SQL&nbsp;실행&nbsp;후&nbsp;실행 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">INSERT</span><span>&nbsp;</span><span class="keyword">INTO</span><span>&nbsp;TABLENAME&nbsp;(PK,&nbsp;VAL)&nbsp;</span><span class="keyword">VALUES</span><span>&nbsp;(11,&nbsp;1)&nbsp;</span><span class="comment">--&nbsp;잘&nbsp;실행된다.</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code10" rows="1" style="display: none">-- 세션 2  : 위의 SQL 실행 후 실행
+INSERT INTO TABLENAME (PK, VAL) VALUES (11, 1) -- 잘 실행된다.
+</textarea>
+    <div>
+        <br />
+    </div>
+    이 상태에서 세션 1에서 다시 SELECT해본다. &nbsp;
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;1 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">SELECT</span><span>&nbsp;VAL&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLENAME&nbsp;</span><span class="keyword">WITH</span><span>&nbsp;(REPEATABLEREAD)&nbsp;</span><span class="keyword">WHERE</span><span>&nbsp;&nbsp;VAL&nbsp;=&nbsp;1&nbsp;</span><span class="comment">--&nbsp;VAL&nbsp;값이&nbsp;1인&nbsp;레코드가&nbsp;2개&nbsp;출력된다.</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code11" rows="1" style="display: none">-- 세션 1
+SELECT VAL FROM TABLENAME WITH (REPEATABLEREAD) WHERE  VAL = 1 -- VAL 값이 1인 레코드가 2개 출력된다.
+</textarea>
+    <div>
+        SELECT 결과가 동일하게 보장되지는 않음을 확인할 수 있다.</div>
+    <div>
+        <br />
+    </div>
+    REPEATABLE READ 격리수준은 다음과 같이 설정할 수 있다.</div>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="keyword">SELECT</span>&nbsp;*&nbsp;<span class="keyword">FROM</span>&nbsp;TABLE1&nbsp;<span class="keyword">WITH</span>&nbsp;(REPEATABLEREAD)&nbsp;<span class="keyword">WHERE</span>&nbsp;...&nbsp;<span class="comment">--&nbsp;해당&nbsp;SELECT문장에만&nbsp;적용 </span>&nbsp;&nbsp;</span></li>
+            <li><span>&nbsp;&nbsp;</span></li>
+            <li class="alt"><span class="keyword">SET</span><span>&nbsp;</span><span class="keyword">TRANSACTION</span><span>&nbsp;</span><span class="keyword">ISOLATION</span><span>&nbsp;</span><span class="keyword">LEVEL</span><span>&nbsp;</span><span class="keyword">REPEATABLE</span><span>&nbsp;</span><span class="keyword">READ</span><span>&nbsp;</span><span class="comment">--&nbsp;해당&nbsp;세션에&nbsp;적용</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code12" rows="1" style="display: none">SELECT * FROM TABLE1 WITH (REPEATABLEREAD) WHERE ... -- 해당 SELECT문장에만 적용
+
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ -- 해당 세션에 적용
+</textarea>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px">
+            <br />
+        </span>
+    </div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px">
+            <br />
+        </span>
+    </div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px">
+            <br />
+        </span>
+    </div>
+    <div>
+        <span class="Apple-style-span" style="line-height: normal; font-family: -webkit-monospace; color: rgb(0,0,0); font-size: 13px"><span class="Apple-style-span" style="line-height: 18px; font-family: 굴림; color: rgb(51,51,51); font-size: 12px">
+            <div>
+                <span class="Apple-style-span" style="font-weight: bold">4. SERIALIZABLE</span></div>
+            <div>
+                &nbsp;&nbsp;우리말로는 &quot;직렬화&quot;이다. 직렬화란 한줄로 서서 순서대로 처리되는 상황을 의미하며 동시성은 최악이 된다.</div>
+            <div>
+                &nbsp;&nbsp;이 경우에는 SELECT 했을 때 SELECT된 ROW에 RANGED S-LOCK이 걸리고 트랜잭션 종료시까지 유지되기 때문에, 트랜잭션 종료시까지 해당 범위에 대해서 일체의 UPDATE, INSERT, DELETE가 차단되고, 따라서 <span class="Apple-style-span" style="font-weight: bold">동일한 SELECT 결과 재현이 보장</span>된다. 이것은 SQL Server에서 지원하는 가장 높은 격리수준이며 가장 높은 데이터 무결성이 제공되지만, 성능은 최악이다. COM+의 기본 수준이라고 한다.</div>
+            다음의 예를 보자
+            <div class="dp-highlighter">
+                <div class="bar">
+                    <div class="tools">
+                        <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+                </div>
+                <ol class="dp-sql">
+                    <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;1 </span>&nbsp;&nbsp;</span></li>
+                    <li><span class="keyword">BEGIN</span><span>&nbsp;TRAN &nbsp;&nbsp;</span>
+        </span></li>
+            <li class="alt"><span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">SELECT</span><span>&nbsp;*&nbsp;</span><span class="keyword">FROM</span><span>&nbsp;TABLENAME&nbsp; &nbsp;&nbsp;</span></span></li>
+        <li class="alt"><span class="keyword">WITH</span><span>&nbsp;(</span><span class="keyword">SERIALIZABLE</span><span>) &nbsp;&nbsp;</span></li>
+        <li><span class="keyword">WHERE</span><span>&nbsp;VAL&nbsp;&lt;&nbsp;5&nbsp;</span><span class="comment">--&nbsp;VAL값이&nbsp;5이하인&nbsp;RECORD에&nbsp;RANGED&nbsp;S-LOCK이&nbsp;걸린다.</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code13" rows="1" style="display: none">-- 세션 1
+BEGIN TRAN
+
+SELECT * FROM TABLENAME 
+WITH (SERIALIZABLE)
+WHERE VAL &lt; 5 -- VAL값이 5이하인 RECORD에 RANGED S-LOCK이 걸린다.
+</textarea>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="comment">--&nbsp;세션&nbsp;2&nbsp;&nbsp;:&nbsp;위의&nbsp;SQL&nbsp;실행&nbsp;후&nbsp;실행 </span>&nbsp;&nbsp;</span></li>
+            <li><span class="keyword">INSERT</span><span>&nbsp;</span><span class="keyword">INTO</span><span>&nbsp;TABLENAME&nbsp;(PK,&nbsp;VAL)&nbsp;</span><span class="keyword">VALUES</span><span>&nbsp;(11,&nbsp;1)&nbsp;</span><span class="comment">--&nbsp;이&nbsp;SQL은&nbsp;BLOCK된다!! </span><span>&nbsp;&nbsp;</span></li>
+            <li class="alt"><span class="keyword">INSERT</span><span>&nbsp;</span><span class="keyword">INTO</span><span>&nbsp;TABLENAME&nbsp;(PK,&nbsp;VAL)&nbsp;</span><span class="keyword">VALUES</span><span>&nbsp;(12,&nbsp;7)&nbsp;</span><span class="comment">--&nbsp;이&nbsp;SQL은&nbsp;잘&nbsp;실행된다.</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code14" rows="1" style="display: none">-- 세션 2  : 위의 SQL 실행 후 실행
+INSERT INTO TABLENAME (PK, VAL) VALUES (11, 1) -- 이 SQL은 BLOCK된다!!
+INSERT INTO TABLENAME (PK, VAL) VALUES (12, 7) -- 이 SQL은 잘 실행된다.
+</textarea>
+    <div>
+        첫번째 INSERT문이 BLOCK되는 것은 INSERT하려는 VAL값이 세션1에서 RANGE LOCK을 건 범위에 포함되기 때문이다. 그러나 두번째 INSERT문은 RANGE LOCK의 범위 밖의 값이므로 INSERT가 가능하다.
+    </div>
+    <div>
+        <br />
+    </div>
+    <div>
+        여기서 RANGE-LOCK이 걸리는 것은 해당 컬럼에 인덱스가 있을 경우에 한한다. 위의 예제에서 VAL 컬럼에 인덱스가 없다면 테이블 전체에 LOCK이 걸리기 때문에 첫번째 INSERT문은 물론이고 두번째 INSERT문도 BLOCK된다.</div>
+    <div>
+        <br />
+    </div>
+    <div>
+        VAL 컬럼에 인덱스가 있을 경우 위의 SELECT를 실행한 후 SP_LOCK 프로시져를 실행해 LOCK 상태를 살펴보면 아래와 같다.</div>
+    <div>
+        <div class="imageblock center" style="text-align: center; clear: both">
+            <a href="http://cfs10.tistory.com/original/23/tistory/2009/02/05/23/22/498af62970a1e" rel="lightbox" target="_blank">
+                <img alt="" height="189" src="http://cfs10.tistory.com/image/23/tistory/2009/02/05/23/22/498af62970a1e" width="503" /></a></div>
+        <br />
+        위의 이미지를 보면 Range Lock (RangeS-S)이 걸려있는 것을 볼 수 있다.</div>
+    <div>
+        <br />
+    </div>
+    <div>
+        이 상태에서 인덱스만 삭제한 후 동일한 SELECT문을 실행시키면 다음과 같이 된다.<br />
+        <div class="imageblock center" style="text-align: center; clear: both">
+            <a href="http://cfs10.tistory.com/original/34/tistory/2009/02/05/23/22/498af62ede184" rel="lightbox" target="_blank">
+                <img alt="" height="220" src="http://cfs10.tistory.com/image/34/tistory/2009/02/05/23/22/498af62ede184" width="425" /></a></div>
+        <br />
+    </div>
+    <div>
+        전체 테이블에 S-Lock이 걸린 것을 볼 수 있다. (인덱스의 유무는 잠금의 크기에 이정도로 큰 영향을 준다!!!)</div>
+    <div>
+        <br />
+    </div>
+    SERIALIZABLE 격리수준은 다음과 같이 설정할 수 있다.</div>
+    <div class="dp-highlighter">
+        <div class="bar">
+            <div class="tools">
+                <a href="#" onclick="dp.sh.Toolbar.Command('ViewSource',this);return false;">view plain</a><a href="#" onclick="dp.sh.Toolbar.Command('CopyToClipboard',this);return false;">copy to clipboard</a><a href="#" onclick="dp.sh.Toolbar.Command('PrintSource',this);return false;">print</a><a href="#" onclick="dp.sh.Toolbar.Command('About',this);return false;">?</a></div>
+        </div>
+        <ol class="dp-sql">
+            <li class="alt"><span><span class="keyword">SELECT</span>&nbsp;*&nbsp;<span class="keyword">FROM</span>&nbsp;TABLE1&nbsp;<span class="keyword">WITH</span>&nbsp;(<span class="keyword">SERIALIZABLE</span>)&nbsp;<span class="keyword">WHERE</span>&nbsp;...&nbsp;<span class="comment">--&nbsp;해당&nbsp;SELECT문장에만&nbsp;적용 </span>&nbsp;&nbsp;</span></li>
+            <li><span>&nbsp;&nbsp;</span></li>
+            <li class="alt"><span class="keyword">SET</span><span>&nbsp;</span><span class="keyword">TRANSACTION</span><span>&nbsp;</span><span class="keyword">ISOLATION</span><span>&nbsp;</span><span class="keyword">LEVEL</span><span>&nbsp;</span><span class="keyword">SERIALIZABLE</span><span>&nbsp;</span><span class="comment">--&nbsp;해당&nbsp;세션에&nbsp;적용</span><span>&nbsp;&nbsp;</span></li>
+        </ol>
+    </div>
+    <textarea class="sql" cols="20" name="code" rows="1" style="display: none">SELECT * FROM TABLE1 WITH (SERIALIZABLE) WHERE ... -- 해당 SELECT문장에만 적용
+
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE -- 해당 세션에 적용
+</textarea>
+    <div>
+        <br />
+    </div>
+</body>
+</html>
