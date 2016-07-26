@@ -6,7 +6,6 @@ using System.Text;
 using OpenETaxBill.Channel.Library.Security.Encrypt;
 using OpenETaxBill.Channel.Library.Security.Signature;
 using OpenETaxBill.Channel.Library.Utility;
-using OpenETaxBill.SDK.Data;
 using OpenETaxBill.SDK.Data.Collection;
 using OpenETaxBill.SDK.Queue;
 
@@ -60,13 +59,13 @@ namespace OpenETaxBill.Engine.Library
         //-------------------------------------------------------------------------------------------------------------------------
         // 
         //-------------------------------------------------------------------------------------------------------------------------
-        private OpenETaxBill.Engine.Library.USvcHelper m_svcHelper = null;
-        public OpenETaxBill.Engine.Library.USvcHelper USvcHelper
+        private OpenETaxBill.Engine.Library.UAppHelper m_svcHelper = null;
+        public OpenETaxBill.Engine.Library.UAppHelper USvcHelper
         {
             get
             {
                 if (m_svcHelper == null)
-                    m_svcHelper = new OpenETaxBill.Engine.Library.USvcHelper(QMaster);
+                    m_svcHelper = new OpenETaxBill.Engine.Library.UAppHelper(QMaster);
 
                 return m_svcHelper;
             }
@@ -229,7 +228,7 @@ namespace OpenETaxBill.Engine.Library
         private X509CertMgr m_aspSignCert = null;
 
         /// <summary>
-        /// 전자서명용 -> ASP사업자인 오딘소프트의 서명용 인증서 (테스트 기간에는 진흥원에서 제공한 2048 인증서 사용)
+        /// ASP/ERP 사업자의 전자서명용 인증서 (테스트 기간에는 진흥원에서 제공한 인증서 사용)
         /// </summary>
         public X509CertMgr AspSignCert
         {
@@ -251,8 +250,9 @@ namespace OpenETaxBill.Engine.Library
         private X509CertMgr m_aspKmCert = null;
 
         /// <summary>
-        /// 암호화용 -> ASP사업자인 오딘소프트의 암호화용 인증서 (테스트 기간에는 진흥원에서 제공한 2048 인증서 사용)
-        /// 국세청 사이트에 오딘소프트(ASP사업자)의 공개키 등록시 kmCert.der을 등록 하여야 한다. 
+        /// ASP/ERP 사업자의 암호화용 인증서, 국세청 사이트에 ASP사업자의 공개키를 등록 하면,
+        /// 다른 사업자가 공개키로 암호화하여 메일 발송을 하게 되며,
+        /// 개인키로 복호화 한다.
         /// </summary>
         public X509CertMgr AspKmCert
         {
@@ -274,7 +274,7 @@ namespace OpenETaxBill.Engine.Library
         private X509Certificate2 m_ntsPublicKey = null;
 
         /// <summary>
-        /// 암호화용 -> 국세청에서 제공하는 공캐키, 검증시에는 진흥원 키 사용
+        /// 국세청에서 제공하는 암호화용 공캐키
         /// </summary>
         public X509Certificate2 NtsPublicKey
         {
@@ -282,19 +282,11 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (m_ntsPublicKey == null)
                 {
-                    if (USvcHelper.LiveServer == true)
-                    {
-                        var _publicFile = Path.Combine(USvcHelper.NtsCertFolder, "국세청.der");
-                        m_ntsPublicKey = new X509Certificate2(_publicFile);
+                    var _publicFile = Path.Combine(USvcHelper.NtsCertFolder, "국세청.der");
+                    m_ntsPublicKey = new X509Certificate2(_publicFile);
 
-                        // DB에 저장 된 국세청 공개키 사용시 아래 문장을 사용 합니다.
-                        //m_ntsPublicKey = GetProviderCertByProvider(UAppHelper.ReceiverBizNo);
-                    }
-                    else
-                    {
-                        var _publicFile = Path.Combine(USvcHelper.NtsCertFolder, "진흥원.der");
-                        m_ntsPublicKey = new X509Certificate2(_publicFile);
-                    }
+                    // DB에 저장 된 국세청 공개키 사용시 아래 문장을 사용 합니다.
+                    //m_ntsPublicKey = GetProviderCertByProvider(UAppHelper.ReceiverBizNo);
                 }
 
                 return m_ntsPublicKey;

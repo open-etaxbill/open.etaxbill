@@ -27,9 +27,9 @@ namespace OpenETaxBill.Engine.Responsor
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="p_portNumber"></param>
-        public Worker(int p_portNumber)
-            : base(p_portNumber)
+        /// <param name="p_port_number"></param>
+        public Worker(int p_port_number)
+            : base(p_port_number)
         {
 
         }
@@ -37,10 +37,10 @@ namespace OpenETaxBill.Engine.Responsor
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="p_localAddress"></param>
-        /// <param name="p_portNumber"></param>
-        public Worker(string p_localAddress, int p_portNumber)
-            : base(p_localAddress, p_portNumber)
+        /// <param name="p_local_address"></param>
+        /// <param name="p_port_number"></param>
+        public Worker(string p_local_address, int p_port_number)
+            : base(p_local_address, p_port_number)
         {
 
         }
@@ -48,31 +48,31 @@ namespace OpenETaxBill.Engine.Responsor
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="p_hostAddress"></param>
-        /// <param name="p_portNumber"></param>
-        /// <param name="p_webFolder"></param>
-        public Worker(string p_hostAddress, int p_portNumber, string p_webFolder)
-            : base(p_hostAddress, p_portNumber)
+        /// <param name="p_host_address"></param>
+        /// <param name="p_port_number"></param>
+        /// <param name="p_web_folder"></param>
+        public Worker(string p_host_address, int p_port_number, string p_web_folder)
+            : base(p_host_address, p_port_number)
         {
-            m_webFolder = p_webFolder;
+            m_web_folder = p_web_folder;
         }
 
         //-------------------------------------------------------------------------------------------------------------------------
         // 
         //-------------------------------------------------------------------------------------------------------------------------
-        private string m_webFolder = null;
+        private string m_web_folder = null;
         public string WebFolder
         {
             get
             {
-                if (m_webFolder == null)
-                    m_webFolder = UAppHelper.WebFolder;
+                if (m_web_folder == null)
+                    m_web_folder = UAppHelper.WebFolder;
 
-                return m_webFolder;
+                return m_web_folder;
             }
             set
             {
-                m_webFolder = value;
+                m_web_folder = value;
             }
         }
 

@@ -41,27 +41,24 @@ namespace OpenETaxBill.Engine.Mailer
             }
         }
 
-        private OpenETaxBill.Engine.Library.USvcHelper m_appHelper = null;
-        public OpenETaxBill.Engine.Library.USvcHelper UAppHelper
+        private OpenETaxBill.Engine.Library.UAppHelper m_appHelper = null;
+        public OpenETaxBill.Engine.Library.UAppHelper UAppHelper
         {
             get
             {
                 if (m_appHelper == null)
-                    m_appHelper = new OpenETaxBill.Engine.Library.USvcHelper(IMailer.Manager);
+                    m_appHelper = new OpenETaxBill.Engine.Library.UAppHelper(IMailer.Manager);
 
                 return m_appHelper;
             }
         }
 
-        private string GetAppValue(string p_appkey)
+        private string GetAppValue(string p_appkey, string p_default = "")
         {
-            return ConfigurationManager.AppSettings[p_appkey];
-        }
+            if (String.IsNullOrEmpty(p_default) == true)
+                p_default = ConfigurationManager.AppSettings[p_appkey];
 
-        private string GetRegValue(string p_regkey, string p_default = "")
-        {
-            var _appValue = GetAppValue(p_regkey) ?? p_default;
-            return RegHelper.SNG.GetServer(IMailer.Manager.CategoryId, IMailer.Manager.ProductId, p_regkey, _appValue);
+            return RegHelper.SNG.GetServer(IMailer.Manager.CategoryId, IMailer.Manager.ProductId, p_appkey, p_default);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------
@@ -77,7 +74,7 @@ namespace OpenETaxBill.Engine.Mailer
             get
             {
                 if (m_remind_history_term == null)
-                    m_remind_history_term = Convert.ToInt32(GetRegValue("RemindHistoryTerm"));
+                    m_remind_history_term = Convert.ToInt32(GetAppValue("RemindHistoryTerm"));
 
                 return m_remind_history_term.Value;
             }
@@ -93,7 +90,7 @@ namespace OpenETaxBill.Engine.Mailer
             get
             {
                 if (m_rangeOfOrderMonth == null)
-                    m_rangeOfOrderMonth = Convert.ToInt32(GetRegValue("RangeOfOrderMonth"));
+                    m_rangeOfOrderMonth = Convert.ToInt32(GetAppValue("RangeOfOrderMonth"));
 
                 return m_rangeOfOrderMonth.Value;
             }

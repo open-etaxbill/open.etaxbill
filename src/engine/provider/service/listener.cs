@@ -36,13 +36,13 @@ namespace OpenETaxBill.Engine.Provider
             }
         }
         
-        private OpenETaxBill.Engine.Library.USvcHelper m_svcHelper = null;
-        public OpenETaxBill.Engine.Library.USvcHelper USvcHelper
+        private OpenETaxBill.Engine.Library.UAppHelper m_svcHelper = null;
+        public OpenETaxBill.Engine.Library.UAppHelper USvcHelper
         {
             get
             {
                 if (m_svcHelper == null)
-                    m_svcHelper = new OpenETaxBill.Engine.Library.USvcHelper(IProvider.Manager);
+                    m_svcHelper = new OpenETaxBill.Engine.Library.UAppHelper(IProvider.Manager);
 
                 return m_svcHelper;
             }
@@ -310,7 +310,7 @@ namespace OpenETaxBill.Engine.Provider
             get
             {
                 if (m_host_name == null)
-                    m_host_name = "localhost";
+                    m_host_name = Dns.GetHostName();
 
                 return m_host_name;
             }

@@ -21,7 +21,7 @@ namespace OpenETaxBill.Engine.Responsor
             get
             {
                 if (m_host_name == null)
-                    m_host_name = "localhost";
+                    m_host_name = Dns.GetHostName();
 
                 return m_host_name;
             }
@@ -128,13 +128,13 @@ namespace OpenETaxBill.Engine.Responsor
             }
         }
 
-        private OpenETaxBill.Engine.Library.USvcHelper m_appHelper = null;
-        protected OpenETaxBill.Engine.Library.USvcHelper UAppHelper
+        private OpenETaxBill.Engine.Library.UAppHelper m_appHelper = null;
+        protected OpenETaxBill.Engine.Library.UAppHelper UAppHelper
         {
             get
             {
                 if (m_appHelper == null)
-                    m_appHelper = new OpenETaxBill.Engine.Library.USvcHelper(IResponsor.Manager);
+                    m_appHelper = new OpenETaxBill.Engine.Library.UAppHelper(IResponsor.Manager);
 
                 return m_appHelper;
             }
@@ -173,16 +173,16 @@ namespace OpenETaxBill.Engine.Responsor
             ResponseStatusInit();
         }
 
-        public WebListener(int p_portNumber)
+        public WebListener(int p_port_number)
             : this()
         {
-            PortNumber = p_portNumber;
+            PortNumber = p_port_number;
         }
         
-        public WebListener(string p_localAddress, int p_portNumber)
-            : this(p_portNumber)
+        public WebListener(string p_local_address, int p_port_number)
+            : this(p_port_number)
         {
-            HostName = p_localAddress;
+            HostName = p_local_address;
         }
 
         public void Listen()

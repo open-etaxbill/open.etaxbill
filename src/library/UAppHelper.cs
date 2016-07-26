@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
-using OpenETaxBill.SDK.Queue;
 using OpenETaxBill.SDK.Configuration;
+using OpenETaxBill.SDK.Queue;
 
 namespace OpenETaxBill.Engine.Library
 {
     /// <summary>
     /// 
     /// </summary>
-    public class USvcHelper : IDisposable
+    public class UAppHelper : IDisposable
     {
         //-------------------------------------------------------------------------------------------------------------------------
         // 
@@ -18,7 +19,7 @@ namespace OpenETaxBill.Engine.Library
         /// 
         /// </summary>
         /// <param name="p_manager"></param>
-        public USvcHelper(QService p_manager)
+        public UAppHelper(QService p_manager)
         {
             m_qmaster = (QService)p_manager.Clone();
         }
@@ -28,7 +29,7 @@ namespace OpenETaxBill.Engine.Library
         /// </summary>
         /// <param name="p_manager"></param>
         /// <param name="p_isService"></param>
-        public USvcHelper(QService p_manager, bool p_isService)
+        public UAppHelper(QService p_manager, bool p_isService)
             : this(p_manager)
         {
             QMaster.IsService = p_isService;
@@ -73,22 +74,15 @@ namespace OpenETaxBill.Engine.Library
         /// 
         /// </summary>
         /// <param name="p_appkey"></param>
-        /// <returns></returns>
-        public string GetAppValue(string p_appkey)
-        {
-            return GetAppValue(p_appkey, "");
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="p_appkey"></param>
         /// <param name="p_default"></param>
         /// <returns></returns>
-        public string GetAppValue(string p_appkey, string p_default)
+        public string GetAppValue(string p_appkey, string p_default = "")
         {
             lock (QMaster)
             {
+                if (String.IsNullOrEmpty(p_default) == true)
+                    p_default = ConfigurationManager.AppSettings[p_appkey];
+
                 return RegHelper.SNG.GetServer(ICollector.Manager.CategoryId, ICollector.Manager.ProductId, p_appkey, p_default);
             }
         }
@@ -107,7 +101,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_isLiveServer) == true)
-                    m_isLiveServer = GetAppValue("LiveServer", "true");
+                    m_isLiveServer = GetAppValue("LiveServer", "false");
 
                 return m_isLiveServer.ToLower() == "true";
             }
@@ -135,7 +129,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_isMailSniffing) == true)
-                    m_isMailSniffing = GetAppValue("MailSniffing", "true");
+                    m_isMailSniffing = GetAppValue("MailSniffing", "false");
 
                 return m_isMailSniffing.ToLower() == "true";
             }
@@ -147,7 +141,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_isSoapFiltering) == true)
-                    m_isSoapFiltering = GetAppValue("SoapFiltering", "true");
+                    m_isSoapFiltering = GetAppValue("SoapFiltering", "false");
 
                 return m_isSoapFiltering.ToLower() == "true";
             }
@@ -162,7 +156,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_connection_string) == true)
-                    m_connection_string = GetAppValue("ConnectionString", "server=etax-db-server;uid=openetaxbill;pwd=p@ssw0rd;database=OPEN-TAX-V46");
+                    m_connection_string = GetAppValue("ConnectionString", "server=etax-db-server;uid=openetax;pwd=p@ssw0rd;database=OPEN-eTAX-V10");
 
                 return m_connection_string;
             }
@@ -249,7 +243,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_dnsServers) == true)
-                    m_dnsServers = GetAppValue("DnsServers", "localhost");
+                    m_dnsServers = GetAppValue("DnsServers", "8.8.8.8;8.8.4.4");
 
                 return m_dnsServers.Split(';');
             }
@@ -261,7 +255,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_hostAddress) == true)
-                    m_hostAddress = GetAppValue("HostAddress", "localhost");
+                    m_hostAddress = GetAppValue("HostAddress", "etax.domain.name");
 
                 return m_hostAddress;
             }
@@ -312,7 +306,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_senderBizNo) == true)
-                    m_senderBizNo = GetAppValue("SenderBizNo", "1388602200");
+                    m_senderBizNo = GetAppValue("SenderBizNo", "1112233333");
 
                 return m_senderBizNo;
             }
@@ -324,7 +318,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_senderBizName) == true)
-                    m_senderBizName = GetAppValue("SenderBizName", "(주)오딘소프트");
+                    m_senderBizName = GetAppValue("SenderBizName", "(주)세금계산서라이브");
 
                 return m_senderBizName;
             }
@@ -376,7 +370,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_registerId) == true)
-                    m_registerId = GetAppValue("RegisterId", "42000238");
+                    m_registerId = GetAppValue("RegisterId", "40000000");
 
                 return m_registerId;
             }
@@ -388,7 +382,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_officeAddress) == true)
-                    m_officeAddress = GetAppValue("OfficeAddress", @"(우)463-400 경기도 성남시 분당구 판교역로 230 삼환하이펙스 B-902 (삼평동) Tel : 031-698-3790");
+                    m_officeAddress = GetAppValue("OfficeAddress", @"(우)463-400 경기도 성남시 분당구 판교역로 230 (삼평동) Tel : 031-698-3790");
 
                 return m_officeAddress;
             }
@@ -397,18 +391,6 @@ namespace OpenETaxBill.Engine.Library
         //-------------------------------------------------------------------------------------------------------------------------
         // for provider service  
         //-------------------------------------------------------------------------------------------------------------------------
-        private static string m_webFolder = "";
-        public string WebFolder
-        {
-            get
-            {
-                if (String.IsNullOrEmpty(m_webFolder) == true)
-                    m_webFolder = GetAppValue("WebFolder", @"D:\github.com\open-etaxbill\etaxbill-engine\src\web-folder");
-
-                return m_webFolder;
-            }
-        }
-
         private static string m_root_folder = "";
         public string RootFolder
         {
@@ -416,13 +398,47 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (String.IsNullOrEmpty(m_root_folder) == true)
                 {
-                    m_root_folder = GetAppValue("RootFolder", @"D:\github.com\open-etaxbill\etaxbill-certifier\src\worker");
+                    m_root_folder = GetAppValue("RootFolder", @"C:\open-etaxbill");
 
                     if (Directory.Exists(m_root_folder) == false)
                         Directory.CreateDirectory(m_root_folder);
                 }
 
                 return m_root_folder;
+            }
+        }
+
+        private static string m_webFolder = "";
+        public string WebFolder
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(m_webFolder) == true)
+                {
+                    m_webFolder = Path.Combine(RootFolder, "web-folder");
+
+                    if (Directory.Exists(m_webFolder) == false)
+                        Directory.CreateDirectory(m_webFolder);
+                }
+
+                return m_webFolder;
+            }
+        }
+
+        private static string m_work_folder = "";
+        public string WorkFolder
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(m_work_folder) == true)
+                {
+                    m_work_folder = Path.Combine(RootFolder, "work-folder");
+
+                    if (Directory.Exists(m_work_folder) == false)
+                        Directory.CreateDirectory(m_work_folder);
+                }
+
+                return m_work_folder;
             }
         }
 
@@ -433,7 +449,7 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (String.IsNullOrEmpty(m_root_in_folder) == true)
                 {
-                    m_root_in_folder = GetAppValue("RootInFolder", Path.Combine(RootFolder, "input"));
+                    m_root_in_folder = Path.Combine(WorkFolder, "input");
 
                     if (Directory.Exists(m_root_in_folder) == false)
                         Directory.CreateDirectory(m_root_in_folder);
@@ -450,7 +466,7 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (String.IsNullOrEmpty(m_eMailFolder) == true)
                 {
-                    m_eMailFolder = GetAppValue("eMailFolder", Path.Combine(RootInFolder, "eMail"));
+                    m_eMailFolder = Path.Combine(RootInFolder, "eMail");
 
                     if (Directory.Exists(m_eMailFolder) == false)
                         Directory.CreateDirectory(m_eMailFolder);
@@ -468,7 +484,7 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (String.IsNullOrEmpty(m_nts_folder) == true)
                 {
-                    m_nts_folder = GetAppValue("NTSFolder", Path.Combine(RootInFolder, "NTS"));
+                    m_nts_folder = Path.Combine(RootInFolder, "NTS");
 
                     if (Directory.Exists(m_nts_folder) == false)
                         Directory.CreateDirectory(m_nts_folder);
@@ -485,7 +501,7 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (String.IsNullOrEmpty(m_rootCertFolder) == true)
                 {
-                    m_rootCertFolder = GetAppValue("RootCertFolder", Path.Combine(RootFolder, "certkey"));
+                    m_rootCertFolder = Path.Combine(WorkFolder, "certkey");
 
                     if (Directory.Exists(m_rootCertFolder) == false)
                         Directory.CreateDirectory(m_rootCertFolder);
@@ -495,15 +511,15 @@ namespace OpenETaxBill.Engine.Library
             }
         }
 
-        private static string m_soapKeySize = "";
-        public int SoapKeySize
+        private static string m_keySize = "";
+        public int KeySize
         {
             get
             {
-                if (String.IsNullOrEmpty(m_soapKeySize) == true)
-                    m_soapKeySize = GetAppValue("SoapKeySize", "2048");
+                if (String.IsNullOrEmpty(m_keySize) == true)
+                    m_keySize = GetAppValue("KeySize", "2048");
 
-                return Convert.ToInt32(m_soapKeySize);
+                return Convert.ToInt32(m_keySize);
             }
         }
 
@@ -514,7 +530,7 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (String.IsNullOrEmpty(m_aspCertFolder) == true)
                 {
-                    m_aspCertFolder = Path.Combine(RootCertFolder, "ASP", SoapKeySize.ToString());
+                    m_aspCertFolder = Path.Combine(RootCertFolder, "ASP", KeySize.ToString());
 
                     if (Directory.Exists(m_aspCertFolder) == false)
                         Directory.CreateDirectory(m_aspCertFolder);
@@ -531,7 +547,7 @@ namespace OpenETaxBill.Engine.Library
             {
                 if (String.IsNullOrEmpty(m_ntsCertFolder) == true)
                 {
-                    m_ntsCertFolder = Path.Combine(RootCertFolder, "NTS", SoapKeySize.ToString());
+                    m_ntsCertFolder = Path.Combine(RootCertFolder, "NTS", KeySize.ToString());
 
                     if (Directory.Exists(m_ntsCertFolder) == false)
                         Directory.CreateDirectory(m_ntsCertFolder);
@@ -545,14 +561,13 @@ namespace OpenETaxBill.Engine.Library
 
         /// <summary>
         /// ASP 또는 ERP 사업자의 인증서 암호 입니다.
-        /// UserCertPassword는 세금계산서를 발행하는 사업자의 인증서 입니다.
         /// </summary>
         public string AspCertPassword
         {
             get
             {
                 if (String.IsNullOrEmpty(m_aspCertPassword) == true)
-                    m_aspCertPassword = GetAppValue("AspCertPassword", "password");
+                    m_aspCertPassword = GetAppValue("AspCertPassword", "p@ssw0rd");
 
                 return m_aspCertPassword;
             }
@@ -682,7 +697,7 @@ namespace OpenETaxBill.Engine.Library
         /// <summary>
         /// 
         /// </summary>
-        ~USvcHelper()
+        ~UAppHelper()
         {
             Dispose(false);
         }

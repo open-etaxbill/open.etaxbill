@@ -26,13 +26,13 @@ namespace OpenETaxBill.Engine.Responsor
             }
         }
         
-        private OpenETaxBill.Engine.Library.USvcHelper m_appHelper = null;
-        public OpenETaxBill.Engine.Library.USvcHelper UAppHelper
+        private OpenETaxBill.Engine.Library.UAppHelper m_appHelper = null;
+        public OpenETaxBill.Engine.Library.UAppHelper UAppHelper
         {
             get
             {
                 if (m_appHelper == null)
-                    m_appHelper = new OpenETaxBill.Engine.Library.USvcHelper(IResponsor.Manager);
+                    m_appHelper = new OpenETaxBill.Engine.Library.UAppHelper(IResponsor.Manager);
 
                 return m_appHelper;
             }
