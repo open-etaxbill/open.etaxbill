@@ -26,8 +26,8 @@ namespace OpenETaxBill.Engine.Library.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=UBSV11;Initial Catalog=ETAX;Persist Security Info=True;User ID=orsoft" +
-            ";Password=tksqhs")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=ODIN-eTAX-V10;Initial Catalog=ETAX;Persist Security Info=True;User ID" +
+            "=odinsoft;Password=p@ssw0rd")]
         public string ETAXConnectionString {
             get {
                 return ((string)(this["ETAXConnectionString"]));
