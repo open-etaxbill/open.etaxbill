@@ -13,7 +13,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 
 using System;
 using System.Data;
-using OpenETaxBill.Channel.Library.Security.Issue;
+using OdinSoft.SDK.eTaxBill.Security.Issue;
 using OdinSoft.SDK.Configuration;
 using OdinSoft.SDK.Data;
 using OdinSoft.SDK.Data.Collection;

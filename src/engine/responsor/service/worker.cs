@@ -18,8 +18,8 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using Microsoft.Win32;
-using OpenETaxBill.Channel.Library.Security.Mime;
-using OpenETaxBill.Channel.Library.Security.Notice;
+using OdinSoft.SDK.eTaxBill.Security.Mime;
+using OdinSoft.SDK.eTaxBill.Security.Notice;
 
 namespace OpenETaxBill.Engine.Responsor
 {

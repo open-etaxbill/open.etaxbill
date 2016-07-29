@@ -19,10 +19,10 @@ using System.Text;
 using System.Xml;
 using System.Xml.XPath;
 using OpenETaxBill.Engine.Library;
-using OpenETaxBill.Channel.Library.Security.Encrypt;
-using OpenETaxBill.Channel.Library.Security.Mime;
-using OpenETaxBill.Channel.Library.Security.Notice;
-using OpenETaxBill.Channel.Library.Security.Signature;
+using OdinSoft.SDK.eTaxBill.Security.Encrypt;
+using OdinSoft.SDK.eTaxBill.Security.Mime;
+using OdinSoft.SDK.eTaxBill.Security.Notice;
+using OdinSoft.SDK.eTaxBill.Security.Signature;
 
 namespace OpenETaxBill.Engine.Reporter
 {

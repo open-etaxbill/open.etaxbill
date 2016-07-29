@@ -15,7 +15,7 @@ using System;
 using System.Data;
 using System.Threading;
 using OpenETaxBill.Engine.Library;
-using OpenETaxBill.Channel.Library.Security.Signature;
+using OdinSoft.SDK.eTaxBill.Security.Signature;
 using OdinSoft.SDK.Configuration;
 using OdinSoft.SDK.Data;
 using OdinSoft.SDK.Data.Collection;

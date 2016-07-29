@@ -16,9 +16,9 @@ using System.Data;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using OpenETaxBill.Channel.Library.Security.Encrypt;
-using OpenETaxBill.Channel.Library.Security.Signature;
-using OpenETaxBill.Channel.Library.Utility;
+using OdinSoft.SDK.eTaxBill.Security.Encrypt;
+using OdinSoft.SDK.eTaxBill.Security.Signature;
+using OdinSoft.SDK.eTaxBill.Utility;
 using OdinSoft.SDK.Data.Collection;
 using OdinSoft.SDK.Queue;
 

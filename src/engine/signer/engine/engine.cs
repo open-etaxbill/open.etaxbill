@@ -14,8 +14,8 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Data;
 using System.Reflection;
-using OpenETaxBill.Channel.Library.Security.Issue;
-using OpenETaxBill.Channel.Library.Security.Signature;
+using OdinSoft.SDK.eTaxBill.Security.Issue;
+using OdinSoft.SDK.eTaxBill.Security.Signature;
 using OdinSoft.SDK.Configuration;
 using OdinSoft.SDK.Data;
 using OdinSoft.SDK.Data.Collection;

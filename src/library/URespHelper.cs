@@ -16,8 +16,8 @@ using System.Data;
 using System.Xml;
 using System.Xml.XPath;
 using OdinSoft.SDK.Queue;
-using OpenETaxBill.Channel.Library.Security.Issue;
-using OpenETaxBill.Channel.Library.Security.Signature;
+using OdinSoft.SDK.eTaxBill.Security.Issue;
+using OdinSoft.SDK.eTaxBill.Security.Signature;
 
 namespace OpenETaxBill.Engine.Library
 {

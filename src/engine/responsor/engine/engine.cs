@@ -15,9 +15,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Xml;
-using OpenETaxBill.Channel.Library.Security.Issue;
-using OpenETaxBill.Channel.Library.Security.Mime;
-using OpenETaxBill.Channel.Library.Security.Notice;
+using OdinSoft.SDK.eTaxBill.Security.Issue;
+using OdinSoft.SDK.eTaxBill.Security.Mime;
+using OdinSoft.SDK.eTaxBill.Security.Notice;
 using OdinSoft.SDK.Configuration;
 
 namespace OpenETaxBill.Engine.Responsor

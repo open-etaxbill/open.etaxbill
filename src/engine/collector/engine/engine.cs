@@ -19,11 +19,11 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 using ICSharpCode.SharpZipLib.Zip;
-using OpenETaxBill.Channel.Library.Security.Encrypt;
-using OpenETaxBill.Channel.Library.Security.Issue;
-using OpenETaxBill.Channel.Library.Security.Mime;
-using OpenETaxBill.Channel.Library.Security.Notice;
-using OpenETaxBill.Channel.Library.Utility;
+using OdinSoft.SDK.eTaxBill.Security.Encrypt;
+using OdinSoft.SDK.eTaxBill.Security.Issue;
+using OdinSoft.SDK.eTaxBill.Security.Mime;
+using OdinSoft.SDK.eTaxBill.Security.Notice;
+using OdinSoft.SDK.eTaxBill.Utility;
 using OpenETaxBill.Engine.Library;
 using OdinSoft.SDK.Configuration;
 using OdinSoft.SDK.Data;
@@ -220,7 +220,7 @@ namespace OpenETaxBill.Engine.Collector
             Body _soapBody = new Body();
             {
                 _soapBody.RequestParty = new Party(UAppHelper.SenderBizNo, UAppHelper.SenderBizName, UAppHelper.RegisterId);
-                _soapBody.FileType = OpenETaxBill.Channel.Library.Security.Notice.Request.FileType_ZIP;
+                _soapBody.FileType = OdinSoft.SDK.eTaxBill.Security.Notice.Request.FileType_ZIP;
             }
 
             //-------------------------------------------------------------------------------------------------------------------//

@@ -17,8 +17,8 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
-using OpenETaxBill.Channel.Library.Net.Mime;
-using OpenETaxBill.Channel.Library.Security.Encrypt;
+using OdinSoft.SDK.eTaxBill.Net.Mime;
+using OdinSoft.SDK.eTaxBill.Security.Encrypt;
 
 namespace OpenETaxBill.Engine.Mailer
 {

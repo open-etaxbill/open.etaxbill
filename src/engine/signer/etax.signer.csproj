@@ -65,12 +65,16 @@
       <HintPath>..\..\..\packages\OdinSoft.SDK.Crypto.1.0.0.2\lib\net45\OdinSoft.SDK.Crypto.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.32827, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.0\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OdinSoft.SDK.Lib, Version=1.0.2016.29019, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\OdinSoft.SDK.Lib.1.0.0.4\lib\net45\OdinSoft.SDK.Lib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, PublicKeyToken=e3057811f9436898, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OpenETaxBill.Channel.1.0.0.0\lib\net45\OpenETaxBill.Channel.dll</HintPath>
+    <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OpenETaxBill.Channel.1.0.0.1\lib\net45\OpenETaxBill.Channel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -146,14 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="LICENSE" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="engine.signer.snk" />
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
