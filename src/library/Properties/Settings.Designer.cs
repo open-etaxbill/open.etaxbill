@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OpenETaxBill.Engine.Library.Properties {
+namespace OpenETaxBill.Engine.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

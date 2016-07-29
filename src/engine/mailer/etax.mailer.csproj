@@ -8,13 +8,14 @@
     <ProjectGuid>{EE7D2DB3-9C95-4B9D-ACA9-37AA9B541F5E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenETaxBill.Engine.Mailer</RootNamespace>
+    <RootNamespace>OpenETaxBill.Engine</RootNamespace>
     <AssemblyName>OpenETaxBill.Engine.Mailer</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>engine.mailer.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <StartupObject>
     </StartupObject>
     <FileUpgradeFlags>
@@ -155,7 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="engine.mailer.snk" />
     <None Include="LICENSE" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

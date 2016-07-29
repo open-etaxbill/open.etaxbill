@@ -8,7 +8,7 @@
     <ProjectGuid>{4EEA384A-CC29-4F33-94EE-0E6D3E27DA58}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenETaxBill.Engine.Library</RootNamespace>
+    <RootNamespace>OpenETaxBill.Engine</RootNamespace>
     <AssemblyName>OpenETaxBill.Engine.Library</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

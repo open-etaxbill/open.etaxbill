@@ -8,15 +8,16 @@
     <ProjectGuid>{2487867F-4D4B-4DB4-9EF6-C1DA46EFC71F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenETaxBill.Engine.Responsor</RootNamespace>
+    <RootNamespace>OpenETaxBill.Engine</RootNamespace>
     <AssemblyName>OpenETaxBill.Engine.Responsor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <StartupObject>
     </StartupObject>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>engine.responsor.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -189,7 +190,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="engine.responsor.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\library\etax.library.csproj">
