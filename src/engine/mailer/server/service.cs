@@ -1,9 +1,22 @@
-﻿using System;
+﻿/*
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Data;
 using System.ServiceModel;
 using OpenETaxBill.Engine.Library;
-using OpenETaxBill.SDK.Data;
-using OpenETaxBill.SDK.Data.Collection;
+using OdinSoft.SDK.Data;
+using OdinSoft.SDK.Data.Collection;
 
 namespace OpenETaxBill.Engine.Mailer
 {
@@ -52,13 +65,13 @@ namespace OpenETaxBill.Engine.Mailer
             }
         }
 
-        private OpenETaxBill.SDK.Data.DataHelper m_dataHelper = null;
-        private OpenETaxBill.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.DataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OpenETaxBill.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
                 return m_dataHelper;
             }
         }

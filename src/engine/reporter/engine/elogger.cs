@@ -1,8 +1,21 @@
-﻿using System;
+﻿/*
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
-using OpenETaxBill.SDK.Configuration;
+using OdinSoft.SDK.Configuration;
 
 namespace OpenETaxBill.Engine.Reporter
 {
@@ -42,25 +55,25 @@ namespace OpenETaxBill.Engine.Reporter
             }
         }
 
-        private OpenETaxBill.SDK.Logging.QFileLog m_qfilelog = null;
-        private OpenETaxBill.SDK.Logging.QFileLog QFileLog
+        private OdinSoft.SDK.Logging.QFileLog m_qfilelog = null;
+        private OdinSoft.SDK.Logging.QFileLog QFileLog
         {
             get
             {
                 if (m_qfilelog == null)
-                    m_qfilelog = new OpenETaxBill.SDK.Logging.QFileLog();
+                    m_qfilelog = new OdinSoft.SDK.Logging.QFileLog();
 
                 return m_qfilelog;
             }
         }
 
-        private OpenETaxBill.SDK.Logging.OEventLog m_oeventLog = null;
-        private OpenETaxBill.SDK.Logging.OEventLog OEventLogger
+        private OdinSoft.SDK.Logging.OEventLog m_oeventLog = null;
+        private OdinSoft.SDK.Logging.OEventLog OEventLogger
         {
             get
             {
                 if (m_oeventLog == null)
-                    m_oeventLog = new OpenETaxBill.SDK.Logging.OEventLog(IReporter.Proxy.EventSource);
+                    m_oeventLog = new OdinSoft.SDK.Logging.OEventLog(IReporter.Proxy.EventSource);
 
                 return m_oeventLog;
             }

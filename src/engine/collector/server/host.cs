@@ -1,8 +1,21 @@
-﻿using System;
+﻿/*
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Messaging;
-using OpenETaxBill.SDK.Data.Collection;
-using OpenETaxBill.SDK.Queue;
-using OpenETaxBill.SDK.Security;
+using OdinSoft.SDK.Crypto.Security;
+using OdinSoft.SDK.Data.Collection;
+using OdinSoft.SDK.Queue;
 
 namespace OpenETaxBill.Engine.Collector
 {
@@ -26,13 +39,13 @@ namespace OpenETaxBill.Engine.Collector
             }
         }
 
-        private OpenETaxBill.SDK.Queue.QWriter p_qwriter = null;
-        private OpenETaxBill.SDK.Queue.QWriter QWriter
+        private OdinSoft.SDK.Queue.QWriter p_qwriter = null;
+        private OdinSoft.SDK.Queue.QWriter QWriter
         {
             get
             {
                 if (p_qwriter == null)
-                    p_qwriter = new OpenETaxBill.SDK.Queue.QWriter();
+                    p_qwriter = new OdinSoft.SDK.Queue.QWriter();
 
                 return p_qwriter;
             }
@@ -41,8 +54,8 @@ namespace OpenETaxBill.Engine.Collector
         //-------------------------------------------------------------------------------------------------------------------------
         // 
         //-------------------------------------------------------------------------------------------------------------------------
-        private OpenETaxBill.SDK.Communication.WcfServer m_wcf_service = null;
-        private OpenETaxBill.SDK.Communication.WcfServer WcfService
+        private OdinSoft.SDK.Communication.WcfServer m_wcf_service = null;
+        private OdinSoft.SDK.Communication.WcfServer WcfService
         {
             get
             {
@@ -50,7 +63,7 @@ namespace OpenETaxBill.Engine.Collector
                 {
                     ICollector.Proxy.SetServerPortSharing();
 
-                    m_wcf_service = new OpenETaxBill.SDK.Communication.WcfServer
+                    m_wcf_service = new OdinSoft.SDK.Communication.WcfServer
                     (
                         typeof(CollectService), typeof(ICollectorService), 
                         ICollector.Proxy.BindingNames,

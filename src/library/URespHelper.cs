@@ -1,11 +1,23 @@
-﻿using System;
+﻿/*
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.If not, see<http://www.gnu.org/licenses/>.
+*/
+
+using System;
 using System.Data;
 using System.Xml;
 using System.Xml.XPath;
+using OdinSoft.SDK.Queue;
 using OpenETaxBill.Channel.Library.Security.Issue;
 using OpenETaxBill.Channel.Library.Security.Signature;
-using OpenETaxBill.SDK.Data;
-using OpenETaxBill.SDK.Queue;
 
 namespace OpenETaxBill.Engine.Library
 {
@@ -69,13 +81,13 @@ namespace OpenETaxBill.Engine.Library
             }
         }
 
-        private OpenETaxBill.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OpenETaxBill.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OpenETaxBill.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
 
                 return m_dltaHelper;
             }
