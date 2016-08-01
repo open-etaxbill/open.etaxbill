@@ -13,7 +13,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 
 using System;
 using System.Messaging;
-using OdinSoft.SDK.Crypto.Security;
+using OdinSoft.SDK.Security;
 using OdinSoft.SDK.Data.Collection;
 using OdinSoft.SDK.Queue;
 

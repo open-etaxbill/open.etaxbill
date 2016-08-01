@@ -45,16 +45,16 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.32827, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.0\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
+    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.24084, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.1\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OdinSoft.SDK.Lib, Version=1.0.2016.29019, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OdinSoft.SDK.Lib.1.0.0.4\lib\net45\OdinSoft.SDK.Lib.dll</HintPath>
+    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.24057, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\OdinSoft.SDK.OdinLib.1.0.0.0\lib\net45\OdinSoft.SDK.OdinLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OpenETaxBill.Channel.1.0.0.1\lib\net45\OpenETaxBill.Channel.dll</HintPath>
+      <HintPath>..\..\packages\OpenETaxBill.Channel.1.0.0.2\lib\net45\OpenETaxBill.Channel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
