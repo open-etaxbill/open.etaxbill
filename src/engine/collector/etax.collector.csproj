@@ -70,8 +70,8 @@
       <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.1\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.24057, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OdinSoft.SDK.OdinLib.1.0.0.0\lib\net45\OdinSoft.SDK.OdinLib.dll</HintPath>
+    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.33566, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OdinSoft.SDK.OdinLib.1.0.0.3\lib\net45\OdinSoft.SDK.OdinLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
