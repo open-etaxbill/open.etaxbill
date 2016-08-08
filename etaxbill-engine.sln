@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "engine", "engine", "{129552
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "etax.signer", "src\engine\signer\etax.signer.csproj", "{407E081E-F81A-48FA-B81E-0B55F4509EF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "odinlib", "..\..\..\odinsoft-git\public\open-sdk\src\odinlib\odinlib.csproj", "{22054587-58BB-4553-A0D8-F852CC1FA8C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{407E081E-F81A-48FA-B81E-0B55F4509EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{407E081E-F81A-48FA-B81E-0B55F4509EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{407E081E-F81A-48FA-B81E-0B55F4509EF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22054587-58BB-4553-A0D8-F852CC1FA8C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22054587-58BB-4553-A0D8-F852CC1FA8C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22054587-58BB-4553-A0D8-F852CC1FA8C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22054587-58BB-4553-A0D8-F852CC1FA8C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,5 +95,6 @@ Global
 		{E9B8C987-29E2-4AD9-85D9-428F1C8FC208} = {F533C126-95E0-458A-916F-BE28FB0ED4D9}
 		{12955274-A6EE-4587-8DCC-971313F2F012} = {F533C126-95E0-458A-916F-BE28FB0ED4D9}
 		{407E081E-F81A-48FA-B81E-0B55F4509EF2} = {12955274-A6EE-4587-8DCC-971313F2F012}
+		{22054587-58BB-4553-A0D8-F852CC1FA8C8} = {E9B8C987-29E2-4AD9-85D9-428F1C8FC208}
 	EndGlobalSection
 EndGlobal

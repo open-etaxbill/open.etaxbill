@@ -14,10 +14,9 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Data;
 using System.Threading;
+using NpgsqlTypes;
 using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
-using System.Collections.Generic;
+using OdinSoft.SDK.Data.POSTGRESQL;
 
 namespace OpenETaxBill.Engine.Reporter
 {
@@ -50,13 +49,13 @@ namespace OpenETaxBill.Engine.Reporter
             }
         }
 
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
 
                 return m_dataHelper;
             }
@@ -134,10 +133,12 @@ namespace OpenETaxBill.Engine.Reporter
 					+ "   AND b.issueDate>=@fromDay AND b.issueDate<@tillDay "
 					+ " GROUP BY b.invoicerId";
 
-				var _dbps = new DatParameters();
-				_dbps.Add("@isNTSReport", SqlDbType.NVarChar, "T");
-				_dbps.Add("@fromDay", SqlDbType.DateTime, _fromDay);
-				_dbps.Add("@tillDay", SqlDbType.DateTime, _tillDay);
+				var _dbps = new PgDatParameters();
+                {
+                    _dbps.Add("@isNTSReport", NpgsqlDbType.Varchar, "T");
+                    _dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, _fromDay);
+                    _dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, _tillDay);
+                }
 
 				var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
 				if (LDataHelper.IsNullOrEmpty(_ds) == false)

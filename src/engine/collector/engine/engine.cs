@@ -19,15 +19,15 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Xml;
 using ICSharpCode.SharpZipLib.Zip;
+using NpgsqlTypes;
+using OdinSoft.SDK.Configuration;
+using OdinSoft.SDK.Data.POSTGRESQL;
 using OdinSoft.SDK.eTaxBill.Security.Encrypt;
 using OdinSoft.SDK.eTaxBill.Security.Issue;
 using OdinSoft.SDK.eTaxBill.Security.Mime;
 using OdinSoft.SDK.eTaxBill.Security.Notice;
 using OdinSoft.SDK.eTaxBill.Utility;
 using OpenETaxBill.Engine.Library;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
 
 namespace OpenETaxBill.Engine.Collector
 {
@@ -39,24 +39,24 @@ namespace OpenETaxBill.Engine.Collector
         //-------------------------------------------------------------------------------------------------------------------------
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -544,9 +544,11 @@ namespace OpenETaxBill.Engine.Collector
                     + "  FROM TB_eTAX_INVOICE "
                     + " WHERE issueId>=@fromId AND issueId<=@tillId";
 
-                var _dbps = new DatParameters();
-                _dbps.Add("@fromId", SqlDbType.NVarChar, _fromId);
-                _dbps.Add("@tillId", SqlDbType.NVarChar, _tillId);
+                var _dbps = new PgDatParameters();
+                {
+                    _dbps.Add("@fromId", NpgsqlDbType.Varchar, _fromId);
+                    _dbps.Add("@tillId", NpgsqlDbType.Varchar, _tillId);
+                }
 
                 var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
                 if (_ds.Tables[0].Rows.Count > 0)
@@ -623,10 +625,10 @@ namespace OpenETaxBill.Engine.Collector
                     + "  FROM TB_eTAX_PROVIDER "
                     + " WHERE registerId=@registerId AND aspEMail=@aspEMail";
 
-                var _dbps = new DatParameters();
+                var _dbps = new PgDatParameters();
                 {
-                    _dbps.Add("@registerId", SqlDbType.NVarChar, _registerid);
-                    _dbps.Add("@aspEMail", SqlDbType.NVarChar, _newEMail);
+                    _dbps.Add("@registerId", NpgsqlDbType.Varchar, _registerid);
+                    _dbps.Add("@aspEMail", NpgsqlDbType.Varchar, _newEMail);
                 }
 
                 var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
@@ -642,15 +644,15 @@ namespace OpenETaxBill.Engine.Collector
                         + " @registerId, @aspEMail, @name, @person, @publicKey, @userName, @expiration, @lastUpdate, @providerId "
                         + ")";
 
-                    _dbps.Add("@registerId", SqlDbType.NVarChar, _registerid);
-                    _dbps.Add("@aspEMail", SqlDbType.NVarChar, _newEMail);
-                    _dbps.Add("@name", SqlDbType.NVarChar, _userName);
-                    _dbps.Add("@person", SqlDbType.NVarChar, "");
-                    _dbps.Add("@publicKey", SqlDbType.NVarChar, _publicStr);
-                    _dbps.Add("@userName", SqlDbType.NVarChar, _userName);
-                    _dbps.Add("@expiration", SqlDbType.DateTime, _expiration);
-                    _dbps.Add("@lastUpdate", SqlDbType.DateTime, DateTime.Now);
-                    _dbps.Add("@providerId", SqlDbType.NVarChar, "");
+                    _dbps.Add("@registerId", NpgsqlDbType.Varchar, _registerid);
+                    _dbps.Add("@aspEMail", NpgsqlDbType.Varchar, _newEMail);
+                    _dbps.Add("@name", NpgsqlDbType.Varchar, _userName);
+                    _dbps.Add("@person", NpgsqlDbType.Varchar, "");
+                    _dbps.Add("@publicKey", NpgsqlDbType.Varchar, _publicStr);
+                    _dbps.Add("@userName", NpgsqlDbType.Varchar, _userName);
+                    _dbps.Add("@expiration", NpgsqlDbType.TimestampTZ, _expiration);
+                    _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTZ, DateTime.Now);
+                    _dbps.Add("@providerId", NpgsqlDbType.Varchar, "");
 
                     if (LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
                     {
@@ -680,10 +682,10 @@ namespace OpenETaxBill.Engine.Collector
                             + "   SET publicKey=@publicKey, userName=@userName, expiration=@expiration, lastUpdate=@lastUpdate "
                             + " WHERE registerId=@registerId AND aspEMail=@aspEMail";
 
-                        _dbps.Add("@publicKey", SqlDbType.NVarChar, _publicStr);
-                        _dbps.Add("@userName", SqlDbType.NVarChar, _userName);
-                        _dbps.Add("@expiration", SqlDbType.DateTime, _expiration);
-                        _dbps.Add("@lastUpdate", SqlDbType.DateTime, DateTime.Now);
+                        _dbps.Add("@publicKey", NpgsqlDbType.Varchar, _publicStr);
+                        _dbps.Add("@userName", NpgsqlDbType.Varchar, _userName);
+                        _dbps.Add("@expiration", NpgsqlDbType.TimestampTZ, _expiration);
+                        _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTZ, DateTime.Now);
 
                         if (LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
                         {

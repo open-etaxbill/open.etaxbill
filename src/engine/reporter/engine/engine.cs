@@ -15,14 +15,14 @@ using System;
 using System.Data;
 using System.Text;
 using System.Xml;
+using NpgsqlTypes;
+using OdinSoft.SDK.Configuration;
+using OdinSoft.SDK.Data.POSTGRESQL;
 using OdinSoft.SDK.eTaxBill.Security.Issue;
 using OdinSoft.SDK.eTaxBill.Security.Mime;
 using OdinSoft.SDK.eTaxBill.Security.Notice;
-using OpenETaxBill.Engine.Library;
 using OpenETaxBill.Channel.Interface;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
+using OpenETaxBill.Engine.Library;
 
 namespace OpenETaxBill.Engine.Reporter
 {
@@ -36,24 +36,24 @@ namespace OpenETaxBill.Engine.Reporter
         //-------------------------------------------------------------------------------------------------------------------------
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
         
-        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -213,10 +213,10 @@ namespace OpenETaxBill.Engine.Reporter
             public int noIssuing;
             public int noReporting;
             public string where;
-            public DatParameters dbps;
+            public PgDatParameters dbps;
         }
 
-        private int CheckReEnter(string p_invoicerId, string p_where, DatParameters p_dbps)
+        private int CheckReEnter(string p_invoicerId, string p_where, PgDatParameters p_dbps)
         {
             int _result = -1;
 
@@ -233,8 +233,8 @@ namespace OpenETaxBill.Engine.Reporter
                 + "       ) "
                 + p_where;
 
-            p_dbps.Add("@isNTSSendingX", SqlDbType.NVarChar, "X");
-            p_dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+            p_dbps.Add("@isNTSSendingX", NpgsqlDbType.Varchar, "X");
+            p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
             var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, p_dbps);
 
@@ -255,9 +255,9 @@ namespace OpenETaxBill.Engine.Reporter
                         + "       ) "
                         + p_where;
 
-                p_dbps.Add("@isNTSSendingX", SqlDbType.NVarChar, "X");
-                p_dbps.Add("@isNTSReport", SqlDbType.NVarChar, "T");
-                p_dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+                p_dbps.Add("@isNTSSendingX", NpgsqlDbType.Varchar, "X");
+                p_dbps.Add("@isNTSReport", NpgsqlDbType.Varchar, "T");
+                p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
                 _result = LDataHelper.ExecuteText(UAppHelper.ConnectionString, _updstr, p_dbps);
             }
@@ -270,7 +270,7 @@ namespace OpenETaxBill.Engine.Reporter
             return _result;
         }
 
-        private int CheckReporting(string p_invoicerId, int p_noIssuing, string p_where, DatParameters p_dbps)
+        private int CheckReporting(string p_invoicerId, int p_noIssuing, string p_where, PgDatParameters p_dbps)
         {
             int _noReporting = 0;
 
@@ -316,7 +316,7 @@ namespace OpenETaxBill.Engine.Reporter
                 string _issueid = "";
 
                 string _sqlstr
-                        = "SELECT TOP " + _toprow + " a.issueId, a.document, a.rvalue "
+                        = "SELECT a.issueId, a.document, a.rvalue "
                         + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
                         + "    ON a.issueId=b.issueId "
                         + " WHERE a.isNTSSending=@isNTSSendingX "
@@ -327,10 +327,11 @@ namespace OpenETaxBill.Engine.Reporter
                         + "       ) "
                         + "   AND a.issueId > @issueId "
                         + _args.where
-                        + " ORDER BY a.issueId";
+                        + " ORDER BY a.issueId"
+                        + " LIMIT " + _toprow;
                 {
-                    _args.dbps.Add("@isNTSSendingX", SqlDbType.NVarChar, "X");
-                    _args.dbps.Add("@invoicerId", SqlDbType.NVarChar, _args.invoicerId);
+                    _args.dbps.Add("@isNTSSendingX", NpgsqlDbType.Varchar, "X");
+                    _args.dbps.Add("@invoicerId", NpgsqlDbType.Varchar, _args.invoicerId);
                 }
 
                 //if (LogCommands == true)
@@ -348,7 +349,7 @@ namespace OpenETaxBill.Engine.Reporter
                     var _doneEvents = new ThreadPoolWait[_chunkCount];
                     for (int i = 0; i < _chunkCount; i++)
                     {
-                        _args.dbps.Add("@issueId", SqlDbType.NVarChar, _issueid);       // 100건 까지를 한 묶음으로 전송하기 위해 기준이 되는 승인번호
+                        _args.dbps.Add("@issueId", NpgsqlDbType.Varchar, _issueid);       // 100건 까지를 한 묶음으로 전송하기 위해 기준이 되는 승인번호
 
                         DataSet _workingSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _args.dbps);
                         if (LDataHelper.IsNullOrEmpty(_workingSet) == true)
@@ -423,9 +424,9 @@ namespace OpenETaxBill.Engine.Reporter
                     + "  FROM TB_eTAX_CUSTOMER "
                     + " WHERE customerId=@customerId";
 
-            var _dbps = new DatParameters();
+            var _dbps = new PgDatParameters();
             {
-                _dbps.Add("@customerId", SqlDbType.NVarChar, p_invoicerId);
+                _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoicerId);
             }
 
             DataSet _customerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
@@ -440,7 +441,7 @@ namespace OpenETaxBill.Engine.Reporter
         //    IReporter.WriteDebug(p_invoicerId);
         //
         //    string _where = "";
-        //    var _dbps = new DatParameters();
+        //    var _dbps = new PgDatParameters();
 
         //    return CheckReporting(p_invoicerId, p_noIssuing, _where, _dbps);
         //}
@@ -469,7 +470,7 @@ namespace OpenETaxBill.Engine.Reporter
             if (String.IsNullOrEmpty(_issueCols) == false)
             {
                 string _where = String.Format(" AND a.issueId IN ({0})", _issueCols);
-                var _dbps = new DatParameters();
+                var _dbps = new PgDatParameters();
 
                 _result = CheckReporting(p_invoicerId, p_issueIds.Length, _where, _dbps);
             }
@@ -491,9 +492,9 @@ namespace OpenETaxBill.Engine.Reporter
 
             string _where = " AND b.issueDate>=@fromDay AND b.issueDate<@tillDay ";
 
-            var _dbps = new DatParameters();
-			_dbps.Add("@fromDay", SqlDbType.DateTime, p_fromDay);
-			_dbps.Add("@tillDay", SqlDbType.DateTime, p_tillDay);
+            var _dbps = new PgDatParameters();
+			_dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, p_fromDay);
+			_dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, p_tillDay);
 
             return CheckReporting(p_invoicerId, p_noInvoicee, _where, _dbps);
         }
@@ -549,12 +550,12 @@ namespace OpenETaxBill.Engine.Reporter
                     + "         (RIGHT(b.typeCode, 2) IN ('03', '05') AND b.brokerId=@invoicerId) "
                     + "       ) ";
 
-            var _dbps = new DatParameters();
+            var _dbps = new PgDatParameters();
             {
-                _dbps.Add("@isNTSSending", SqlDbType.NVarChar, "F");
-                _dbps.Add("@isNTSReport", SqlDbType.NVarChar, "F");
-                _dbps.Add("@isNTSSendingX", SqlDbType.NVarChar, "X");
-                _dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+                _dbps.Add("@isNTSSending", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isNTSReport", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isNTSSendingX", NpgsqlDbType.Varchar, "X");
+                _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
             }
 
             return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
@@ -573,11 +574,11 @@ namespace OpenETaxBill.Engine.Reporter
                     + "   SET isNTSSending=@isNTSSending, isNTSReport=@isNTSReport "
                     + " WHERE isNTSSending=@isNTSSendingX";
 
-            var _dbps = new DatParameters();
+            var _dbps = new PgDatParameters();
             {
-                _dbps.Add("@isNTSSending", SqlDbType.NVarChar, "F");
-                _dbps.Add("@isNTSReport", SqlDbType.NVarChar, "F");
-                _dbps.Add("@isNTSSendingX", SqlDbType.NVarChar, "X");
+                _dbps.Add("@isNTSSending", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isNTSReport", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isNTSSendingX", NpgsqlDbType.Varchar, "X");
             }
 
             return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);

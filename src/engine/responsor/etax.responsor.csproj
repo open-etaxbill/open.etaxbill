@@ -62,12 +62,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.24084, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.1\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
+    <Reference Include="Npgsql, Version=3.1.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Npgsql.3.1.7\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.33566, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OdinSoft.SDK.OdinLib.1.0.0.3\lib\net45\OdinSoft.SDK.OdinLib.dll</HintPath>
+    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.28001, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.2\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
@@ -188,6 +188,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\odinsoft-git\public\open-sdk\src\odinlib\odinlib.csproj">
+      <Project>{22054587-58bb-4553-a0d8-f852cc1fa8c8}</Project>
+      <Name>odinlib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\library\etax.library.csproj">
       <Project>{4eea384a-cc29-4f33-94ee-0e6d3e27da58}</Project>
       <Name>etax.library</Name>

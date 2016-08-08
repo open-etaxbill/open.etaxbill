@@ -12,11 +12,10 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 */
 
 using System;
-using System.Data;
 using System.ServiceModel;
+using NpgsqlTypes;
+using OdinSoft.SDK.Data.POSTGRESQL;
 using OpenETaxBill.Engine.Library;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
 
 namespace OpenETaxBill.Engine.Mailer
 {
@@ -65,13 +64,13 @@ namespace OpenETaxBill.Engine.Mailer
             }
         }
 
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
@@ -127,12 +126,14 @@ namespace OpenETaxBill.Engine.Mailer
                         + "   AND b.issueDate>=@fromDate AND b.issueDate<=@tillDate "
                         + " GROUP BY b.invoicerId";
 
-                    var _dbps = new DatParameters();
-                    _dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
-                    _dbps.Add("@isInvoiceeMail", SqlDbType.NVarChar, "T");
-                    _dbps.Add("@isProviderMail", SqlDbType.NVarChar, "T");
-                    _dbps.Add("@fromDate", SqlDbType.DateTime, p_fromDay);
-                    _dbps.Add("@tillDate", SqlDbType.DateTime, p_tillDay);
+                    var _dbps = new PgDatParameters();
+                    {
+                        _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
+                        _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "T");
+                        _dbps.Add("@isProviderMail", NpgsqlDbType.Varchar, "T");
+                        _dbps.Add("@fromDate", NpgsqlDbType.TimestampTZ, p_fromDay);
+                        _dbps.Add("@tillDate", NpgsqlDbType.TimestampTZ, p_tillDay);
+                    }
 
                     var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
                     if (LDataHelper.IsNullOrEmpty(_ds) == false)

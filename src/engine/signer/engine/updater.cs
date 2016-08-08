@@ -15,11 +15,10 @@ using System;
 using System.Collections.Specialized;
 using System.Data;
 using System.IO;
+using NpgsqlTypes;
+using OdinSoft.SDK.Data.POSTGRESQL;
 using OdinSoft.SDK.eTaxBill.Security.Issue;
 using OdinSoft.SDK.eTaxBill.Security.Signature;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
 
 namespace OpenETaxBill.Engine.Signer
 {
@@ -78,24 +77,24 @@ namespace OpenETaxBill.Engine.Signer
             }
         }
 
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -112,9 +111,9 @@ namespace OpenETaxBill.Engine.Signer
                     = "SELECT * FROM TB_eTAX_BROKER "
                     + " WHERE customerId=@customerId AND brokerId=@brokerId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@customerId", SqlDbType.NVarChar, p_customerId);
-            _dbps.Add("@brokerId", SqlDbType.NVarChar, p_brokerId);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_customerId);
+            _dbps.Add("@brokerId", NpgsqlDbType.Varchar, p_brokerId);
 
             DataSet _brokerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
             if (LDataHelper.IsNullOrEmpty(_brokerSet) == true)
@@ -165,8 +164,10 @@ namespace OpenETaxBill.Engine.Signer
 
             string _sqlstr = "SELECT * FROM TB_eTAX_INVOICE WHERE issueId=@issueId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@issueId", SqlDbType.NVarChar, p_issue_id);
+            var _dbps = new PgDatParameters();
+            {
+                _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
+            }
 
             DataSet _invoiceSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
             if (LDataHelper.IsNullOrEmpty(_invoiceSet) == false)
@@ -300,8 +301,10 @@ namespace OpenETaxBill.Engine.Signer
                     {
                         string _sqlstr = "SELECT * FROM TB_eTAX_RESULT WHERE issueId=@issueId";
 
-                        var _dbps = new DatParameters();
-                        _dbps.Add("@issueId", SqlDbType.NVarChar, _issueid);
+                        var _dbps = new PgDatParameters();
+                        {
+                            _dbps.Add("@issueId", NpgsqlDbType.Varchar, _issueid);
+                        }
 
                         var _resultSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
 

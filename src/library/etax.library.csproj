@@ -45,12 +45,12 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.24084, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.1\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
+    <Reference Include="Npgsql, Version=3.1.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Npgsql.3.1.7\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.33566, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\OdinSoft.SDK.OdinLib.1.0.0.3\lib\net45\OdinSoft.SDK.OdinLib.dll</HintPath>
+    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.28001, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.2\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
@@ -89,6 +89,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\odinsoft-git\public\open-sdk\src\odinlib\odinlib.csproj">
+      <Project>{22054587-58BB-4553-A0D8-F852CC1FA8C8}</Project>
+      <Name>odinlib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

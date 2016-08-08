@@ -13,10 +13,10 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 
 using System;
 using System.Data;
-using OdinSoft.SDK.eTaxBill.Security.Issue;
+using NpgsqlTypes;
 using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
+using OdinSoft.SDK.Data.POSTGRESQL;
+using OdinSoft.SDK.eTaxBill.Security.Issue;
 
 namespace OpenETaxBill.Engine.Mailer
 {
@@ -54,24 +54,24 @@ namespace OpenETaxBill.Engine.Mailer
             }
         }
 
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -144,10 +144,10 @@ namespace OpenETaxBill.Engine.Mailer
             public int noSending;
 
             public string where;
-            public DatParameters dbps;
+            public PgDatParameters dbps;
         }
 
-        private int CheckReEnter(string p_invoicerId, string p_where, DatParameters p_dbps)
+        private int CheckReEnter(string p_invoicerId, string p_where, PgDatParameters p_dbps)
         {
             int _result = -1;
 
@@ -164,8 +164,8 @@ namespace OpenETaxBill.Engine.Mailer
                 + "       ) "
                 + p_where;
 
-            p_dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
-            p_dbps.Add("@isMailSendingX", SqlDbType.NVarChar, "X");
+            p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
+            p_dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
 
             var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, p_dbps);
 
@@ -186,10 +186,10 @@ namespace OpenETaxBill.Engine.Mailer
                         + "       ) "
                         + p_where;
 
-                p_dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
-                p_dbps.Add("@isMailSendingX", SqlDbType.NVarChar, "X");
-                p_dbps.Add("@isInvoiceeMail", SqlDbType.NVarChar, "T");
-                p_dbps.Add("@isProviderMail", SqlDbType.NVarChar, "T");
+                p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
+                p_dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
+                p_dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "T");
+                p_dbps.Add("@isProviderMail", NpgsqlDbType.Varchar, "T");
 
                 _result = LDataHelper.ExecuteText(UAppHelper.ConnectionString, _updstr, p_dbps);
             }
@@ -202,7 +202,7 @@ namespace OpenETaxBill.Engine.Mailer
             return _result;
         }
 
-        private int CheckMailing(string p_invoicerId, int p_noInvoicee, string p_where, DatParameters p_dbps)
+        private int CheckMailing(string p_invoicerId, int p_noInvoicee, string p_where, PgDatParameters p_dbps)
         {
             int _noSending = 0;
 
@@ -244,7 +244,7 @@ namespace OpenETaxBill.Engine.Mailer
                 int _toprow = 800;
 
                 string _sqlstr
-                    = "SELECT TOP " + _toprow + " a.issueId, a.document, a.securityId, b.issueDate, b.typeCode, b.invoiceeKind, "
+                    = "SELECT a.issueId, a.document, a.securityId, b.issueDate, b.typeCode, b.invoiceeKind, "
                     + "               b.chargeTotal, b.taxTotal, b.grandTotal, b.description, a.isMailSending, "
                     + "               b.invoicerId, b.invoicerEMail, b.invoicerName, b.invoicerPerson, b.invoicerPhone, "
                     + "               a.isInvoiceeMail, b.invoiceeId, b.invoiceeEMail1 as invoiceeEMail, b.invoiceeName, "
@@ -259,10 +259,11 @@ namespace OpenETaxBill.Engine.Mailer
                     + "         (RIGHT(b.typeCode, 2) IN ('03', '05') AND b.brokerId=@invoicerId) "
                     + "       ) "
                     + _args.where
-                    + " ORDER BY a.providerEMail";
+                    + " ORDER BY a.providerEMail"
+                    + " LIMIT " + _toprow;
                 {
-                    _args.dbps.Add("@isMailSendingX", SqlDbType.NVarChar, "X");
-                    _args.dbps.Add("@invoicerId", SqlDbType.NVarChar, _args.invoicerId);
+                    _args.dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
+                    _args.dbps.Add("@invoicerId", NpgsqlDbType.Varchar, _args.invoicerId);
                 }
 
                 //if (LogCommands == true)
@@ -356,8 +357,8 @@ namespace OpenETaxBill.Engine.Mailer
                     + "  FROM TB_eTAX_CUSTOMER "
                     + " WHERE customerId=@customerId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@customerId", SqlDbType.NVarChar, p_invoicerId);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoicerId);
 
             DataSet _customerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
             if (LDataHelper.IsNullOrEmpty(_customerSet) == true)
@@ -369,7 +370,7 @@ namespace OpenETaxBill.Engine.Mailer
         //public int DoMailSend(string p_invoicerId, int p_noInvoicee)
         //{
         //    string _where = "";
-        //    var _dbps = new DatParameters();
+        //    var _dbps = new PgDatParameters();
 
         //    return CheckMailing(p_invoicerId, p_noInvoicee, _where, _dbps);
         //}
@@ -398,7 +399,7 @@ namespace OpenETaxBill.Engine.Mailer
             if (String.IsNullOrEmpty(_issueCols) == false)
             {
                 string _where = String.Format(" AND a.issueId IN ({0})", _issueCols);
-                var _dbps = new DatParameters();
+                var _dbps = new PgDatParameters();
 
                 _result = CheckMailing(p_invoicerId, p_issueIds.Length, _where, _dbps);
             }
@@ -432,19 +433,19 @@ namespace OpenETaxBill.Engine.Mailer
                     + "       ) "
                     + "   AND a.issueId=@issueId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@isMailSendingX", SqlDbType.NVarChar, "X");
-            _dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
+            _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
-            _dbps.Add("@isInvoiceeMail", SqlDbType.NVarChar, "X");
-            _dbps.Add("@issueId", SqlDbType.NVarChar, p_issue_id);
+            _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "X");
+            _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
 
             if (LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) > 0)
             {
                 string _where = " AND a.issueId=@issueId ";
 
                 _dbps.Clear();
-                _dbps.Add("@issueId", SqlDbType.NVarChar, p_issue_id);
+                _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
 
                 lock (SyncEngine)
                     _result = CheckReEnter(p_invoicerId, _where, _dbps);
@@ -483,9 +484,9 @@ namespace OpenETaxBill.Engine.Mailer
 
             string _where = " AND b.issueDate>=@fromDate AND b.issueDate<=@tillDate ";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@fromDate", SqlDbType.DateTime, p_fromDay);
-            _dbps.Add("@tillDate", SqlDbType.DateTime, p_tillDay);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@fromDate", NpgsqlDbType.TimestampTZ, p_fromDay);
+            _dbps.Add("@tillDate", NpgsqlDbType.TimestampTZ, p_tillDay);
 
             return CheckMailing(p_invoicerId, p_noInvoicee, _where, _dbps);
         }
@@ -511,12 +512,12 @@ namespace OpenETaxBill.Engine.Mailer
                     + "         (RIGHT(b.typeCode, 2) IN ('03', '05') AND b.brokerId=@invoicerId) "
                     + "       ) ";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@isMailSending", SqlDbType.NVarChar, "F");
-            _dbps.Add("@isInvoiceeMail", SqlDbType.NVarChar, "F");
-            _dbps.Add("@isProviderMail", SqlDbType.NVarChar, "F");
-            _dbps.Add("@isMailSendingX", SqlDbType.NVarChar, "X");
-            _dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@isMailSending", NpgsqlDbType.Varchar, "F");
+            _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "F");
+            _dbps.Add("@isProviderMail", NpgsqlDbType.Varchar, "F");
+            _dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
+            _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
             return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
         }
@@ -534,12 +535,12 @@ namespace OpenETaxBill.Engine.Mailer
                     + "   SET isMailSending=@isMailSending, isInvoiceeMail=@isInvoiceeMail, isProviderMail=@isProviderMail "
                     + " WHERE isMailSending=@isMailSendingX";
 
-            var _dbps = new DatParameters();
+            var _dbps = new PgDatParameters();
             {
-                _dbps.Add("@isMailSending", SqlDbType.NVarChar, "F");
-                _dbps.Add("@isInvoiceeMail", SqlDbType.NVarChar, "F");
-                _dbps.Add("@isProviderMail", SqlDbType.NVarChar, "F");
-                _dbps.Add("@isMailSendingX", SqlDbType.NVarChar, "X");
+                _dbps.Add("@isMailSending", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isProviderMail", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
             }
 
             return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);

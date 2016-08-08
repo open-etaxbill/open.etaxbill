@@ -81,13 +81,13 @@ namespace OpenETaxBill.Engine.Library
             }
         }
 
-        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }

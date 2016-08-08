@@ -20,12 +20,12 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using NpgsqlTypes;
+using OdinSoft.SDK.Configuration;
+using OdinSoft.SDK.Data.POSTGRESQL;
 using OdinSoft.SDK.eTaxBill.Net.Mime.Parser;
 using OdinSoft.SDK.eTaxBill.Security.Encrypt;
 using OdinSoft.SDK.eTaxBill.Security.Issue;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
 
 namespace OpenETaxBill.Engine.Provider
 {
@@ -73,24 +73,24 @@ namespace OpenETaxBill.Engine.Provider
             }
         }
 
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -650,15 +650,15 @@ namespace OpenETaxBill.Engine.Provider
                         + " @fileid, @mailbox, @folder, @data, @size, @sender, @createtime "
                         + ")";
 
-                    var _dbps = new DatParameters();
+                    var _dbps = new PgDatParameters();
                     {
-                        _dbps.Add("@fileid", SqlDbType.NVarChar, _fileid);
-                        _dbps.Add("@mailbox", SqlDbType.NVarChar, _mailbox);
-                        _dbps.Add("@folder", SqlDbType.NVarChar, p_folder);
-                        _dbps.Add("@data", SqlDbType.Image, p_message.ToArray());
-                        _dbps.Add("@size", SqlDbType.Decimal, p_message.Length);
-                        _dbps.Add("@sender", SqlDbType.NVarChar, p_mailfrom);
-                        _dbps.Add("@createtime", SqlDbType.DateTime, _today);
+                        _dbps.Add("@fileid", NpgsqlDbType.Varchar, _fileid);
+                        _dbps.Add("@mailbox", NpgsqlDbType.Varchar, _mailbox);
+                        _dbps.Add("@folder", NpgsqlDbType.Varchar, p_folder);
+                        _dbps.Add("@data", NpgsqlDbType.Bytea, p_message.ToArray());
+                        _dbps.Add("@size", NpgsqlDbType.Numeric, p_message.Length);
+                        _dbps.Add("@sender", NpgsqlDbType.Varchar, p_mailfrom);
+                        _dbps.Add("@createtime", NpgsqlDbType.TimestampTZ, _today);
                     }
 
                     if (LDataHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)
@@ -716,9 +716,9 @@ namespace OpenETaxBill.Engine.Provider
                                 + "   SET filler0=@issueid "
                                 + " WHERE fileid=@fileid";
 
-                            var _dbps = new DatParameters();
-                            _dbps.Add("@fileid", SqlDbType.NVarChar, _fileid);
-                            _dbps.Add("@issueid", SqlDbType.NVarChar, _issueid);
+                            var _dbps = new PgDatParameters();
+                            _dbps.Add("@fileid", NpgsqlDbType.Varchar, _fileid);
+                            _dbps.Add("@issueid", NpgsqlDbType.Varchar, _issueid);
 
                             if (LDataHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)
                             {

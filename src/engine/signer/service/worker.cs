@@ -14,11 +14,11 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Data;
 using System.Threading;
-using OpenETaxBill.Engine.Library;
-using OdinSoft.SDK.eTaxBill.Security.Signature;
+using NpgsqlTypes;
 using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
+using OdinSoft.SDK.Data.POSTGRESQL;
+using OdinSoft.SDK.eTaxBill.Security.Signature;
+using OpenETaxBill.Engine.Library;
 
 namespace OpenETaxBill.Engine.Signer
 {
@@ -63,13 +63,13 @@ namespace OpenETaxBill.Engine.Signer
             }
         }
 
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
@@ -143,10 +143,12 @@ namespace OpenETaxBill.Engine.Signer
                         + "   AND issueDate>=@fromDay AND issueDate<=@tillDay "
                         + " GROUP BY invoicerId";
 
-                var _dbps = new DatParameters();
-                _dbps.Add("@isSuccess", SqlDbType.NVarChar, "T");
-                _dbps.Add("@fromDay", SqlDbType.DateTime, _fromDay);
-                _dbps.Add("@tillDay", SqlDbType.DateTime, _tillDay);
+                var _dbps = new PgDatParameters();
+                {
+                    _dbps.Add("@isSuccess", NpgsqlDbType.Varchar, "T");
+                    _dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, _fromDay);
+                    _dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, _tillDay);
+                }
 
                 var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
                 if (LDataHelper.IsNullOrEmpty(_ds) == false)

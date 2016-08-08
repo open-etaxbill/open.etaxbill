@@ -12,14 +12,17 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 */
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using Npgsql;
+using NpgsqlTypes;
+using OdinSoft.SDK.Data.POSTGRESQL;
 using OdinSoft.SDK.eTaxBill.Security.Encrypt;
 using OdinSoft.SDK.eTaxBill.Security.Signature;
 using OdinSoft.SDK.eTaxBill.Utility;
-using OdinSoft.SDK.Data.Collection;
 using OdinSoft.SDK.Queue;
 
 namespace OpenETaxBill.Engine.Library
@@ -84,13 +87,13 @@ namespace OpenETaxBill.Engine.Library
             }
         }
 
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
 
                 return m_dataHelper;
             }
@@ -112,7 +115,7 @@ namespace OpenETaxBill.Engine.Library
             return _result;
         }
 
-        private X509CertMgr GetCertManager(string p_condition, string p_sqlstr, DatParameters p_dbps)
+        private X509CertMgr GetCertManager(string p_condition, string p_sqlstr, PgDatParameters p_dbps)
         {
             var _ds = LDataHelper.SelectDataSet(USvcHelper.ConnectionString, p_sqlstr, p_dbps);
             if (LDataHelper.IsNullOrEmpty(_ds) == true)
@@ -135,7 +138,7 @@ namespace OpenETaxBill.Engine.Library
             return GetCertManager(p_condition, _publicStr, _privateStr, _passwordStr);
         }
 
-        private X509Certificate2 GetCertificate(string p_condition, string p_sqlstr, DatParameters p_dbps)
+        private X509Certificate2 GetCertificate(string p_condition, string p_sqlstr, PgDatParameters p_dbps)
         {
             var _ds = LDataHelper.SelectDataSet(USvcHelper.ConnectionString, p_sqlstr, p_dbps);
 
@@ -163,8 +166,10 @@ namespace OpenETaxBill.Engine.Library
         {
             string _sqlstr = "SELECT publicKey FROM TB_eTAX_PROVIDER WHERE providerId=@providerId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@providerId", SqlDbType.NVarChar, p_providerId);
+            var _dbps = new PgDatParameters();
+            {
+                _dbps.Add("@providerId", NpgsqlDbType.Varchar, p_providerId);
+            }
 
             return GetCertificate(
                 String.Format("by provider table with providerId: '{0}'", p_providerId),
@@ -184,8 +189,10 @@ namespace OpenETaxBill.Engine.Library
                 + "    ON a.providerId=b.providerId AND NULLIF(b.providerId, '') IS NOT NULL "
                 + " WHERE a.customerId=@customerId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@customerId", SqlDbType.NVarChar, p_invoiceeId);
+            var _dbps = new PgDatParameters();
+            {
+                _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoiceeId);
+            }
 
             return GetCertificate(
                 String.Format("by provider table with customerId: '{0}'", p_invoiceeId),
@@ -209,8 +216,10 @@ namespace OpenETaxBill.Engine.Library
                 + "  FROM TB_eTAX_CUSTOMER "
                 + " WHERE customerId=@customerId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@customerId", SqlDbType.NVarChar, p_customerId);
+            var _dbps = new PgDatParameters();
+            {
+                _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_customerId);
+            }
 
             return GetCertManager(
                 String.Format("by customer table with customerid: '{0}'", p_customerId),

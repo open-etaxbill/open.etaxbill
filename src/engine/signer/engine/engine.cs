@@ -13,12 +13,11 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 
 using System;
 using System.Data;
-using System.Reflection;
+using NpgsqlTypes;
+using OdinSoft.SDK.Configuration;
+using OdinSoft.SDK.Data.POSTGRESQL;
 using OdinSoft.SDK.eTaxBill.Security.Issue;
 using OdinSoft.SDK.eTaxBill.Security.Signature;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data;
-using OdinSoft.SDK.Data.Collection;
 
 namespace OpenETaxBill.Engine.Signer
 {
@@ -32,25 +31,25 @@ namespace OpenETaxBill.Engine.Signer
         //-------------------------------------------------------------------------------------------------------------------------
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        private OdinSoft.SDK.Data.DataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.DataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.DataHelper();
+                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
 
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.DeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.DeltaHelper LDltaHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.DeltaHelper();
+                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -146,10 +145,10 @@ namespace OpenETaxBill.Engine.Signer
             public int noInvoicee;
             public int noIssuing;
             public string where;
-            public DatParameters dbps;
+            public PgDatParameters dbps;
         }
 
-        private int CheckReEnter(string p_invoicerId, string p_where, DatParameters p_dbps)
+        private int CheckReEnter(string p_invoicerId, string p_where, PgDatParameters p_dbps)
         {
             int _result = -1;
 
@@ -164,8 +163,8 @@ namespace OpenETaxBill.Engine.Signer
                     + "       ) "
                     + p_where;
 
-            p_dbps.Add("@isIssuedX", SqlDbType.NVarChar, "X");
-            p_dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+            p_dbps.Add("@isIssuedX", NpgsqlDbType.Varchar, "X");
+            p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
             var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, p_dbps);
 
@@ -184,9 +183,9 @@ namespace OpenETaxBill.Engine.Signer
                         + "       ) "
                         + p_where;
 
-                p_dbps.Add("@isIssuedX", SqlDbType.NVarChar, "X");
-                p_dbps.Add("@isSuccess", SqlDbType.NVarChar, "T");
-                p_dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+                p_dbps.Add("@isIssuedX", NpgsqlDbType.Varchar, "X");
+                p_dbps.Add("@isSuccess", NpgsqlDbType.Varchar, "T");
+                p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
                 _result = LDataHelper.ExecuteText(UAppHelper.ConnectionString, _updstr, p_dbps);
             }
@@ -199,7 +198,7 @@ namespace OpenETaxBill.Engine.Signer
             return _result;
         }
 
-        private int CheckSignature(X509CertMgr p_invoicerCert, string p_invoicerId, int p_noInvoicee, string p_where, DatParameters p_dbps)
+        private int CheckSignature(X509CertMgr p_invoicerCert, string p_invoicerId, int p_noInvoicee, string p_where, PgDatParameters p_dbps)
         {
             int _noIssuing = 0;
 
@@ -240,7 +239,7 @@ namespace OpenETaxBill.Engine.Signer
                 int _toprow = 800;
 
                 string _sqlstr
-                        = "SELECT TOP " + _toprow + " a.issueId, a.typeCode, a.invoicerId, a.invoicerEMail, a.invoiceeId, a.invoiceeEMail1 as invoiceeEMail, "
+                        = "SELECT a.issueId, a.typeCode, a.invoicerId, a.invoicerEMail, a.invoiceeId, a.invoiceeEMail1 as invoiceeEMail, "
                         + "               a.brokerId, a.brokerEMail, b.providerId, c.aspEMail as providerEMail "
                         + "  FROM TB_eTAX_INVOICE a "
                         + "       LEFT JOIN TB_eTAX_CUSTOMER b ON a.invoiceeId=b.customerId "
@@ -252,10 +251,11 @@ namespace OpenETaxBill.Engine.Signer
                         + "         (RIGHT(a.typeCode, 2) IN ('03', '05') AND a.brokerId=@invoicerId) "
                         + "       ) "
                         + _args.where
-                        + " ORDER BY a.issueId";
+                        + " ORDER BY a.issueId"
+                        + " LIMIT " + _toprow;
                 {
-                    _args.dbps.Add("@isIssuedX", SqlDbType.NVarChar, "X");
-                    _args.dbps.Add("@invoicerId", SqlDbType.NVarChar, _args.invoicerId);
+                    _args.dbps.Add("@isIssuedX", NpgsqlDbType.Varchar, "X");
+                    _args.dbps.Add("@invoicerId", NpgsqlDbType.Varchar, _args.invoicerId);
                 }
 
                 //if (LogCommands == true)
@@ -344,8 +344,8 @@ namespace OpenETaxBill.Engine.Signer
                     + "  FROM TB_eTAX_CUSTOMER "
                     + " WHERE customerId=@customerId";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@customerId", SqlDbType.NVarChar, p_invoicerId);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoicerId);
 
             DataSet _customerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
             if (LDataHelper.IsNullOrEmpty(_customerSet) == true)
@@ -364,7 +364,7 @@ namespace OpenETaxBill.Engine.Signer
         //public int DoSignInvoice(X509CertMgr p_invoicerCert, string p_invoicerId, int p_noInvoicee)
         //{
         //    string _where = "";
-        //    var _dbps = new DatParameters();
+        //    var _dbps = new PgDatParameters();
 
         //    return CheckSignature(p_invoicerCert, p_invoicerId, p_noInvoicee, _where, _dbps);
         //}
@@ -393,7 +393,7 @@ namespace OpenETaxBill.Engine.Signer
             if (String.IsNullOrEmpty(_issueCols) == false)
             {
                 string _where = String.Format(" AND a.issueId IN ({0})", _issueCols);
-                var _dbps = new DatParameters();
+                var _dbps = new PgDatParameters();
 
                 _result = CheckSignature(p_invoicerCert, p_invoicerId, p_issueIds.Length, _where, _dbps);
             }
@@ -416,9 +416,9 @@ namespace OpenETaxBill.Engine.Signer
             
             string _where = " AND a.issueDate>=@fromDate AND a.issueDate<=@tillDate ";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@fromDate", SqlDbType.DateTime, p_fromDay);
-            _dbps.Add("@tillDate", SqlDbType.DateTime, p_tillDay);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@fromDate", NpgsqlDbType.TimestampTZ, p_fromDay);
+            _dbps.Add("@tillDate", NpgsqlDbType.TimestampTZ, p_tillDay);
 
             return CheckSignature(p_invoicerCert, p_invoicerId, p_noInvoicee, _where, _dbps);
         }
@@ -442,11 +442,11 @@ namespace OpenETaxBill.Engine.Signer
                     + "         (RIGHT(typeCode, 2) IN ('03', '05') AND brokerId=@invoicerId) "
                     + "       )";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@isIssued", SqlDbType.NVarChar, "F");
-            _dbps.Add("@isSuccess", SqlDbType.NVarChar, "F");
-            _dbps.Add("@isIssuedX", SqlDbType.NVarChar, "X");
-            _dbps.Add("@invoicerId", SqlDbType.NVarChar, p_invoicerId);
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@isIssued", NpgsqlDbType.Varchar, "F");
+            _dbps.Add("@isSuccess", NpgsqlDbType.Varchar, "F");
+            _dbps.Add("@isIssuedX", NpgsqlDbType.Varchar, "X");
+            _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
             return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
         }
@@ -464,10 +464,10 @@ namespace OpenETaxBill.Engine.Signer
                     + "   SET isIssued=@isIssued, isSuccess=@isSuccess "
                     + " WHERE isIssued=@isIssuedX";
 
-            var _dbps = new DatParameters();
-            _dbps.Add("@isIssued", SqlDbType.NVarChar, "F");
-            _dbps.Add("@isSuccess", SqlDbType.NVarChar, "F");
-            _dbps.Add("@isIssuedX", SqlDbType.NVarChar, "X");
+            var _dbps = new PgDatParameters();
+            _dbps.Add("@isIssued", NpgsqlDbType.Varchar, "F");
+            _dbps.Add("@isSuccess", NpgsqlDbType.Varchar, "F");
+            _dbps.Add("@isIssuedX", NpgsqlDbType.Varchar, "X");
 
             return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
         }
