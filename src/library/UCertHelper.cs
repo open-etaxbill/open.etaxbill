@@ -164,7 +164,7 @@ namespace OpenETaxBill.Engine.Library
         /// <returns></returns>
         public X509Certificate2 GetProviderCertByProvider(string p_providerId)
         {
-            string _sqlstr = "SELECT publicKey FROM TB_eTAX_PROVIDER WHERE providerId=@providerId";
+            var _sqlstr = "SELECT publicKey FROM TB_eTAX_PROVIDER WHERE providerId=@providerId";
 
             var _dbps = new PgDatParameters();
             {
@@ -184,7 +184,7 @@ namespace OpenETaxBill.Engine.Library
         /// <returns></returns>
         public X509Certificate2 GetProviderCertByCustomer(string p_invoiceeId)
         {
-            string _sqlstr
+            var _sqlstr
                 = "SELECT b.publicKey FROM TB_eTAX_CUSTOMER a INNER JOIN TB_eTAX_PROVIDER b "
                 + "    ON a.providerId=b.providerId AND NULLIF(b.providerId, '') IS NOT NULL "
                 + " WHERE a.customerId=@customerId";
@@ -211,7 +211,7 @@ namespace OpenETaxBill.Engine.Library
         /// <returns></returns>
         public X509CertMgr GetCustomerCertMgr(string p_customerId)
         {
-            string _sqlstr
+            var _sqlstr
                 = "SELECT privateKey, publicKey, password "
                 + "  FROM TB_eTAX_CUSTOMER "
                 + " WHERE customerId=@customerId";

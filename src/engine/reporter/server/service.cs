@@ -107,7 +107,7 @@ namespace OpenETaxBill.Engine.Reporter
             {
                 if (IReporter.CheckValidApplication(p_certapp) == true)
                 {
-                    string _sqlstr
+                    var _sqlstr
                             = "SELECT b.invoicerId, COUNT(b.invoicerId) as norec "
                             + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
                             + "    ON a.issueId=b.issueId "

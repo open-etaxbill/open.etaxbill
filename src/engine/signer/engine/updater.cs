@@ -107,15 +107,17 @@ namespace OpenETaxBill.Engine.Signer
         {
             var _result = true;
 
-            string _sqlstr
+            var _sqlstr
                     = "SELECT * FROM TB_eTAX_BROKER "
                     + " WHERE customerId=@customerId AND brokerId=@brokerId";
 
             var _dbps = new PgDatParameters();
-            _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_customerId);
-            _dbps.Add("@brokerId", NpgsqlDbType.Varchar, p_brokerId);
+            {
+                _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_customerId);
+                _dbps.Add("@brokerId", NpgsqlDbType.Varchar, p_brokerId);
+            }
 
-            DataSet _brokerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            var _brokerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
             if (LDataHelper.IsNullOrEmpty(_brokerSet) == true)
             {
                 const string _resultStatus = "INV900";
@@ -162,18 +164,18 @@ namespace OpenETaxBill.Engine.Signer
         {
             var _result = "";
 
-            string _sqlstr = "SELECT * FROM TB_eTAX_INVOICE WHERE issueId=@issueId";
+            var _sqlstr = "SELECT * FROM TB_eTAX_INVOICE WHERE issueId=@issueId";
 
             var _dbps = new PgDatParameters();
             {
                 _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
             }
 
-            DataSet _invoiceSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            var _invoiceSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
             if (LDataHelper.IsNullOrEmpty(_invoiceSet) == false)
             {
                 _sqlstr = "SELECT * FROM TB_eTAX_LINEITEM WHERE issueId=@issueId";
-                DataSet _lineitemSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+                var _lineitemSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
 
                 _invoiceSet.Merge(_lineitemSet);
 
@@ -299,7 +301,7 @@ namespace OpenETaxBill.Engine.Signer
                 {
                     string _signedXml = "";
                     {
-                        string _sqlstr = "SELECT * FROM TB_eTAX_RESULT WHERE issueId=@issueId";
+                        var _sqlstr = "SELECT * FROM TB_eTAX_RESULT WHERE issueId=@issueId";
 
                         var _dbps = new PgDatParameters();
                         {

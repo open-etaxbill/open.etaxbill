@@ -136,7 +136,7 @@ namespace OpenETaxBill.Engine.Signer
                 UTextHelper.SNG.GetSigningRange(ref _fromDay, ref _tillDay);
 
                 // check table for auto-signing
-                string _sqlstr
+                var _sqlstr
                         = "SELECT invoicerId, COUNT(invoicerId) as norec, @fromDay as fromDay, @tillDay as tillDay "
                         + "  FROM TB_eTAX_INVOICE "
                         + " WHERE isSuccess != @isSuccess "                              // for resignning, do check 'isSuccess' here 
@@ -200,8 +200,8 @@ namespace OpenETaxBill.Engine.Signer
                 DateTime _fromDay = Convert.ToDateTime(_invoicerRow["fromDay"]);
                 DateTime _tillDay = Convert.ToDateTime(_invoicerRow["tillDay"]);
 
-                DataSet _customerSet = ESigner.GetCustomerSet(_invoicerId);
-                DataRow _customerRow = _customerSet.Tables[0].Rows[0];
+                DataSet _customer_set = ESigner.GetCustomerSet(_invoicerId);
+                DataRow _customerRow = _customer_set.Tables[0].Rows[0];
 
                 decimal _fromSigningDay = Convert.ToDecimal(_customerRow["signFromDay"]);
                 decimal _tillSigningDay = Convert.ToDecimal(_customerRow["signTillDay"]);

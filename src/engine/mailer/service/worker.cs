@@ -124,7 +124,7 @@ namespace OpenETaxBill.Engine.Mailer
                 UTextHelper.SNG.GetSendingRange(ref _fromDay, ref _tillDay);
 
                 // check table for auto-mailing
-                string _sqlstr
+                var _sqlstr
                     = "SELECT b.invoicerId, COUNT(b.invoicerId) as norec, @fromDay as fromDay, @tillDay as tillDay "
                     + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
                     + "    ON a.issueId=b.issueId "
@@ -190,8 +190,8 @@ namespace OpenETaxBill.Engine.Mailer
                 DateTime _fromDay = Convert.ToDateTime(_invoicerRow["fromDay"]);
                 DateTime _tillDay = Convert.ToDateTime(_invoicerRow["tillDay"]);
 
-                DataSet _customerSet = EMailer.GetCustomerSet(_invoicerId);
-                DataRow _customerRow = _customerSet.Tables[0].Rows[0];
+                DataSet _customer_set = EMailer.GetCustomerSet(_invoicerId);
+                DataRow _customerRow = _customer_set.Tables[0].Rows[0];
 
                 decimal _fromSendingDay = Convert.ToDecimal(_customerRow["sendFromDay"]);
                 decimal _tillSendingDay = Convert.ToDecimal(_customerRow["sendTillDay"]);

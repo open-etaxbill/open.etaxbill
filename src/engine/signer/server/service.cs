@@ -124,7 +124,7 @@ namespace OpenETaxBill.Engine.Signer
                 {
                     UTextHelper.SNG.GetSigningRange(ref p_fromDay, ref p_tillDay);
 
-                    string _sqlstr
+                    var _sqlstr
                             = "SELECT invoicerId, COUNT(invoicerId) as norec "
                             + "  FROM TB_eTAX_INVOICE "
                             + " WHERE isSuccess != @isSuccess "       // for resignning, do check 'isSuccess' here 

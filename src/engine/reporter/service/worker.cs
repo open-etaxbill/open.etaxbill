@@ -125,7 +125,7 @@ namespace OpenETaxBill.Engine.Reporter
 				DateTime _tillDay = new DateTime(_nday.Year, _nday.Month, _nday.Day);
 
 				// check table for auto-reporting
-				string _sqlstr
+				var _sqlstr
 					= "SELECT b.invoicerId, COUNT(b.invoicerId) as norec, @fromDay as fromDay, @tillDay as tillDay "
 					+ "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
 					+ "    ON a.issueId=b.issueId "

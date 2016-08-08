@@ -539,8 +539,8 @@ namespace OpenETaxBill.Engine.Collector
                 string _fromId = String.Format("{0}{1}{2:D8}", _issueDay, UAppHelper.RegisterId, 0);
                 string _tillId = String.Format("{0}{1}{2:D8}", _issueDay, UAppHelper.RegisterId, 99999999);
 
-                string _sqlstr
-                    = "SELECT ISNULL(MAX(CONVERT(decimal(8), RIGHT(issueId, 8))), 0) as maxSeqNo "
+                var _sqlstr
+                    = "SELECT coalesce(MAX(to_number(RIGHT(issueId, 8), '99999999')), 0) as maxSeqNo "
                     + "  FROM TB_eTAX_INVOICE "
                     + " WHERE issueId>=@fromId AND issueId<=@tillId";
 
@@ -620,7 +620,7 @@ namespace OpenETaxBill.Engine.Collector
 
                 string _userName = _publicCert2.GetNameInfo(X509NameType.SimpleName, false);
 
-                string _sqlstr
+                var _sqlstr
                     = "SELECT publicKey, aspEMail "
                     + "  FROM TB_eTAX_PROVIDER "
                     + " WHERE registerId=@registerId AND aspEMail=@aspEMail";

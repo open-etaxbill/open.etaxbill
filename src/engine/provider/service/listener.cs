@@ -640,7 +640,7 @@ namespace OpenETaxBill.Engine.Provider
                     if (p_mailto.IndexOf("@") != -1)
                         _mailbox = p_mailto.Substring(0, p_mailto.IndexOf("@"));
 
-                    string _sqlstr
+                    var _sqlstr
                         = "INSERT INTO TB_eTAX_MAILBOX "
                         + "( "
                         + " fileid, mailbox, folder, data, size, sender, createtime "
@@ -711,14 +711,16 @@ namespace OpenETaxBill.Engine.Provider
                         // update [issueid] for compare with purchase-table.
                         string _issueid = Path.GetFileNameWithoutExtension(_attachment.FileName);
                         {
-                            string _sqlstr
+                            var _sqlstr
                                 = "UPDATE TB_eTAX_MAILBOX "
                                 + "   SET filler0=@issueid "
                                 + " WHERE fileid=@fileid";
 
                             var _dbps = new PgDatParameters();
-                            _dbps.Add("@fileid", NpgsqlDbType.Varchar, _fileid);
-                            _dbps.Add("@issueid", NpgsqlDbType.Varchar, _issueid);
+                            {
+                                _dbps.Add("@fileid", NpgsqlDbType.Varchar, _fileid);
+                                _dbps.Add("@issueid", NpgsqlDbType.Varchar, _issueid);
+                            }
 
                             if (LDataHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)
                             {

@@ -152,7 +152,7 @@ namespace OpenETaxBill.Engine.Mailer
             int _result = -1;
 
             // 동일한 조건으로 실행 중인 record가 1개 이상 있는지 확인 한다.
-            string _sqlstr
+            var _sqlstr
                 = "SELECT COUNT(a.isMailSending) as norec "
                 + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
                 + "    ON a.issueId=b.issueId "
@@ -243,7 +243,7 @@ namespace OpenETaxBill.Engine.Mailer
             {
                 int _toprow = 800;
 
-                string _sqlstr
+                var _sqlstr
                     = "SELECT a.issueId, a.document, a.securityId, b.issueDate, b.typeCode, b.invoiceeKind, "
                     + "               b.chargeTotal, b.taxTotal, b.grandTotal, b.description, a.isMailSending, "
                     + "               b.invoicerId, b.invoicerEMail, b.invoicerName, b.invoicerPerson, b.invoicerPhone, "
@@ -278,7 +278,7 @@ namespace OpenETaxBill.Engine.Mailer
                     IssuingTbl.Clear();
                     ResultTbl.Clear();
 
-                    DataSet _workingSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _args.dbps);
+                    var _workingSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _args.dbps);
                     if (LDataHelper.IsNullOrEmpty(_workingSet) == true)
                         break;
 
@@ -352,19 +352,21 @@ namespace OpenETaxBill.Engine.Mailer
         {
             IMailer.WriteDebug(p_invoicerId);
 
-            string _sqlstr
+            var _sqlstr
                     = "SELECT sendingType, sendFromDay, sendTillDay "
                     + "  FROM TB_eTAX_CUSTOMER "
                     + " WHERE customerId=@customerId";
 
             var _dbps = new PgDatParameters();
-            _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoicerId);
+            {
+                _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoicerId);
+            }
 
-            DataSet _customerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-            if (LDataHelper.IsNullOrEmpty(_customerSet) == true)
+            var _customer_set = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            if (LDataHelper.IsNullOrEmpty(_customer_set) == true)
                 throw new MailerException(String.Format("not exist customer: invoicerId->'{0}'", p_invoicerId));
 
-            return _customerSet;
+            return _customer_set;
         }
 
         //public int DoMailSend(string p_invoicerId, int p_noInvoicee)
@@ -420,7 +422,7 @@ namespace OpenETaxBill.Engine.Mailer
 
             int _result = -1;
 
-            string _sqlstr
+            var _sqlstr
                     = "UPDATE TB_eTAX_ISSUING "
                     + "   SET isInvoiceeMail=@isInvoiceeMail "
                     + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
@@ -434,18 +436,22 @@ namespace OpenETaxBill.Engine.Mailer
                     + "   AND a.issueId=@issueId";
 
             var _dbps = new PgDatParameters();
-            _dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
-            _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
+            {
+                _dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
+                _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
-            _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "X");
-            _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
+                _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "X");
+                _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
+            }
 
             if (LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) > 0)
             {
-                string _where = " AND a.issueId=@issueId ";
+                var _where = " AND a.issueId=@issueId ";
 
                 _dbps.Clear();
-                _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
+                {
+                    _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
+                }
 
                 lock (SyncEngine)
                     _result = CheckReEnter(p_invoicerId, _where, _dbps);
@@ -482,11 +488,13 @@ namespace OpenETaxBill.Engine.Mailer
         {
             IMailer.WriteDebug(p_invoicerId);
 
-            string _where = " AND b.issueDate>=@fromDate AND b.issueDate<=@tillDate ";
+            var _where = " AND b.issueDate>=@fromDate AND b.issueDate<=@tillDate ";
 
             var _dbps = new PgDatParameters();
-            _dbps.Add("@fromDate", NpgsqlDbType.TimestampTZ, p_fromDay);
-            _dbps.Add("@tillDate", NpgsqlDbType.TimestampTZ, p_tillDay);
+            {
+                _dbps.Add("@fromDate", NpgsqlDbType.TimestampTZ, p_fromDay);
+                _dbps.Add("@tillDate", NpgsqlDbType.TimestampTZ, p_tillDay);
+            }
 
             return CheckMailing(p_invoicerId, p_noInvoicee, _where, _dbps);
         }
@@ -500,7 +508,7 @@ namespace OpenETaxBill.Engine.Mailer
         {
             IMailer.WriteDebug(p_invoicerId);
 
-            string _sqlstr
+            var _sqlstr
                     = "UPDATE TB_eTAX_ISSUING "
                     + "   SET isMailSending=@isMailSending, isInvoiceeMail=@isInvoiceeMail, isProviderMail=@isProviderMail "
                     + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
@@ -513,11 +521,13 @@ namespace OpenETaxBill.Engine.Mailer
                     + "       ) ";
 
             var _dbps = new PgDatParameters();
-            _dbps.Add("@isMailSending", NpgsqlDbType.Varchar, "F");
-            _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "F");
-            _dbps.Add("@isProviderMail", NpgsqlDbType.Varchar, "F");
-            _dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
-            _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
+            {
+                _dbps.Add("@isMailSending", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isProviderMail", NpgsqlDbType.Varchar, "F");
+                _dbps.Add("@isMailSendingX", NpgsqlDbType.Varchar, "X");
+                _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
+            }
 
             return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
         }
@@ -530,7 +540,7 @@ namespace OpenETaxBill.Engine.Mailer
         {
             IMailer.WriteDebug("*");
 
-            string _sqlstr
+            var _sqlstr
                     = "UPDATE TB_eTAX_ISSUING "
                     + "   SET isMailSending=@isMailSending, isInvoiceeMail=@isInvoiceeMail, isProviderMail=@isProviderMail "
                     + " WHERE isMailSending=@isMailSendingX";

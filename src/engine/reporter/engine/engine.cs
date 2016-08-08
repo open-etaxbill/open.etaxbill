@@ -221,7 +221,7 @@ namespace OpenETaxBill.Engine.Reporter
             int _result = -1;
 
             // 동일한 조건으로 실행 중인 record가 1개 이상 있는지 확인 한다.
-            string _sqlstr
+            var _sqlstr
                 = "SELECT COUNT(a.isNTSSending) as norec "
                 + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
                 + "    ON a.issueId=b.issueId "
@@ -315,7 +315,7 @@ namespace OpenETaxBill.Engine.Reporter
 
                 string _issueid = "";
 
-                string _sqlstr
+                var _sqlstr
                         = "SELECT a.issueId, a.document, a.rvalue "
                         + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
                         + "    ON a.issueId=b.issueId "
@@ -351,7 +351,7 @@ namespace OpenETaxBill.Engine.Reporter
                     {
                         _args.dbps.Add("@issueId", NpgsqlDbType.Varchar, _issueid);       // 100건 까지를 한 묶음으로 전송하기 위해 기준이 되는 승인번호
 
-                        DataSet _workingSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _args.dbps);
+                        var _workingSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _args.dbps);
                         if (LDataHelper.IsNullOrEmpty(_workingSet) == true)
                             break;
 
@@ -419,7 +419,7 @@ namespace OpenETaxBill.Engine.Reporter
         {
             IReporter.WriteDebug(p_invoicerId);
 
-            string _sqlstr
+            var _sqlstr
                     = "SELECT reportingType, reportFromDay, reportTillDay "
                     + "  FROM TB_eTAX_CUSTOMER "
                     + " WHERE customerId=@customerId";
@@ -429,11 +429,11 @@ namespace OpenETaxBill.Engine.Reporter
                 _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoicerId);
             }
 
-            DataSet _customerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-            if (LDataHelper.IsNullOrEmpty(_customerSet) == true)
+            var _customer_set = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            if (LDataHelper.IsNullOrEmpty(_customer_set) == true)
                 throw new ReporterException(String.Format("not exist customer: invoicerId->'{0}'", p_invoicerId));
 
-            return _customerSet;
+            return _customer_set;
         }
 
         //public int DoReportInvoicer(string p_invoicerId, int p_noIssuing)
@@ -490,11 +490,13 @@ namespace OpenETaxBill.Engine.Reporter
         {
             IReporter.WriteDebug(p_invoicerId);
 
-            string _where = " AND b.issueDate>=@fromDay AND b.issueDate<@tillDay ";
+            var _where = " AND b.issueDate>=@fromDay AND b.issueDate<@tillDay ";
 
             var _dbps = new PgDatParameters();
-			_dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, p_fromDay);
-			_dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, p_tillDay);
+            {
+                _dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, p_fromDay);
+                _dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, p_tillDay);
+            }
 
             return CheckReporting(p_invoicerId, p_noInvoicee, _where, _dbps);
         }
@@ -538,7 +540,7 @@ namespace OpenETaxBill.Engine.Reporter
         {
             IReporter.WriteDebug(p_invoicerId);
 
-            string _sqlstr
+            var _sqlstr
                     = "UPDATE TB_eTAX_ISSUING "
                     + "   SET isNTSSending=@isNTSSending, isNTSReport=@isNTSReport "
                     + "  FROM TB_eTAX_ISSUING a INNER JOIN TB_eTAX_INVOICE b "
@@ -569,7 +571,7 @@ namespace OpenETaxBill.Engine.Reporter
         {
             IReporter.WriteDebug("*");
 
-            string _sqlstr
+            var _sqlstr
                     = "UPDATE TB_eTAX_ISSUING "
                     + "   SET isNTSSending=@isNTSSending, isNTSReport=@isNTSReport "
                     + " WHERE isNTSSending=@isNTSSendingX";
