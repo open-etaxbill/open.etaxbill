@@ -40,7 +40,7 @@ namespace OpenETaxBill.Engine.Collector
         //
         //-------------------------------------------------------------------------------------------------------------------------
         private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
@@ -540,7 +540,7 @@ namespace OpenETaxBill.Engine.Collector
                 string _tillId = String.Format("{0}{1}{2:D8}", _issueDay, UAppHelper.RegisterId, 99999999);
 
                 var _sqlstr
-                    = "SELECT coalesce(MAX(to_number(RIGHT(issueId, 8), '99999999')), 0) as maxSeqNo "
+                    = "SELECT COALESCE(MAX(TO_NUMBER(RIGHT(issueId, 8), '99999999')), 0) as maxSeqNo "
                     + "  FROM TB_eTAX_INVOICE "
                     + " WHERE issueId>=@fromId AND issueId<=@tillId";
 
@@ -550,7 +550,7 @@ namespace OpenETaxBill.Engine.Collector
                     _dbps.Add("@tillId", NpgsqlDbType.Varchar, _tillId);
                 }
 
-                var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+                var _ds = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
                 if (_ds.Tables[0].Rows.Count > 0)
                     _maxIssueId = Convert.ToInt32(_ds.Tables[0].Rows[0]["maxSeqNo"]) + 1;
 
@@ -631,8 +631,8 @@ namespace OpenETaxBill.Engine.Collector
                     _dbps.Add("@aspEMail", NpgsqlDbType.Varchar, _newEMail);
                 }
 
-                var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-                if (LDataHelper.IsNullOrEmpty(_ds) == true)
+                var _ds = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+                if (LSQLHelper.IsNullOrEmpty(_ds) == true)
                 {
                     _sqlstr
                         = "INSERT TB_eTAX_PROVIDER "
@@ -654,7 +654,7 @@ namespace OpenETaxBill.Engine.Collector
                     _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTZ, DateTime.Now);
                     _dbps.Add("@providerId", NpgsqlDbType.Varchar, "");
 
-                    if (LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
+                    if (LSQLHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
                     {
                         if (LogCommands == true)
                             ELogger.SNG.WriteLog(String.Format("INSERT FAILURE: {0}, {1}, {2}, {3}", _userName, _registerid, _newEMail, _expiration));
@@ -687,7 +687,7 @@ namespace OpenETaxBill.Engine.Collector
                         _dbps.Add("@expiration", NpgsqlDbType.TimestampTZ, _expiration);
                         _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTZ, DateTime.Now);
 
-                        if (LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
+                        if (LSQLHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
                         {
                             if (LogCommands == true)
                                 ELogger.SNG.WriteLog(String.Format("UPDATE FAILURE: {0}, {1}, {2}, {3}", _userName, _registerid, _newEMail, _expiration));

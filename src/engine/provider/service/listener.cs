@@ -74,7 +74,7 @@ namespace OpenETaxBill.Engine.Provider
         }
 
         private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
@@ -661,7 +661,7 @@ namespace OpenETaxBill.Engine.Provider
                         _dbps.Add("@createtime", NpgsqlDbType.TimestampTZ, _today);
                     }
 
-                    if (LDataHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)
+                    if (LSQLHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)
                     {
                         if (LogCommands == true)
                             ELogger.SNG.WriteLog(String.Format("mail insert failure: fileid: {0}, mailbox: {1}, folder: {2}, sender: {3}", _fileid, _mailbox, p_folder, p_mailfrom));
@@ -722,7 +722,7 @@ namespace OpenETaxBill.Engine.Provider
                                 _dbps.Add("@issueid", NpgsqlDbType.Varchar, _issueid);
                             }
 
-                            if (LDataHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)
+                            if (LSQLHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)
                             {
                                 if (LogCommands == true)
                                     ELogger.SNG.WriteLog(String.Format("mail update failure: fileid: {0}, issueid: {1}, sender: {2}", _fileid, _issueid, p_mailfrom));

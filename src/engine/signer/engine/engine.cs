@@ -32,7 +32,7 @@ namespace OpenETaxBill.Engine.Signer
         //
         //-------------------------------------------------------------------------------------------------------------------------
         private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
@@ -166,7 +166,7 @@ namespace OpenETaxBill.Engine.Signer
             p_dbps.Add("@isIssuedX", NpgsqlDbType.Varchar, "X");
             p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
-            var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, p_dbps);
+            var _ds = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, p_dbps);
 
             int _norec = Convert.ToInt32(_ds.Tables[0].Rows[0]["norec"]);
             if (_norec < 1)
@@ -187,7 +187,7 @@ namespace OpenETaxBill.Engine.Signer
                 p_dbps.Add("@isSuccess", NpgsqlDbType.Varchar, "T");
                 p_dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
 
-                _result = LDataHelper.ExecuteText(UAppHelper.ConnectionString, _updstr, p_dbps);
+                _result = LSQLHelper.ExecuteText(UAppHelper.ConnectionString, _updstr, p_dbps);
             }
             else
             {
@@ -268,8 +268,8 @@ namespace OpenETaxBill.Engine.Signer
                     InvoiceTbl.Clear();
                     IssuingTbl.Clear();
 
-                    var _workingSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _args.dbps);
-                    if (LDataHelper.IsNullOrEmpty(_workingSet) == true)
+                    var _workingSet = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _args.dbps);
+                    if (LSQLHelper.IsNullOrEmpty(_workingSet) == true)
                         break;
 
                     var _rows = _workingSet.Tables[0].Rows;
@@ -349,8 +349,8 @@ namespace OpenETaxBill.Engine.Signer
                 _dbps.Add("@customerId", NpgsqlDbType.Varchar, p_invoicerId);
             }
 
-            var _customer_set = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-            if (LDataHelper.IsNullOrEmpty(_customer_set) == true)
+            var _customer_set = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            if (LSQLHelper.IsNullOrEmpty(_customer_set) == true)
                 throw new SignerException(String.Format("not exist customer: invoicerId->'{0}'", p_invoicerId));
 
             return _customer_set;
@@ -454,7 +454,7 @@ namespace OpenETaxBill.Engine.Signer
                 _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
             }
 
-            return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            return LSQLHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
         }
 
         /// <summary>
@@ -477,7 +477,7 @@ namespace OpenETaxBill.Engine.Signer
                 _dbps.Add("@isIssuedX", NpgsqlDbType.Varchar, "X");
             }
 
-            return LDataHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            return LSQLHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps);
         }
 
         //-------------------------------------------------------------------------------------------------------------------------

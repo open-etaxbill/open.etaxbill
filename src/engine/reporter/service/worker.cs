@@ -50,7 +50,7 @@ namespace OpenETaxBill.Engine.Reporter
         }
 
         private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
@@ -140,8 +140,8 @@ namespace OpenETaxBill.Engine.Reporter
                     _dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, _tillDay);
                 }
 
-				var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-				if (LDataHelper.IsNullOrEmpty(_ds) == false)
+				var _ds = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+				if (LSQLHelper.IsNullOrEmpty(_ds) == false)
 				{
 					var _rows = _ds.Tables[0].Rows;
 					ELogger.SNG.WriteLog(String.Format("selected invoicer(s): {0} ", _rows.Count));

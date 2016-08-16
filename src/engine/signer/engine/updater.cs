@@ -78,7 +78,7 @@ namespace OpenETaxBill.Engine.Signer
         }
 
         private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
@@ -117,8 +117,8 @@ namespace OpenETaxBill.Engine.Signer
                 _dbps.Add("@brokerId", NpgsqlDbType.Varchar, p_brokerId);
             }
 
-            var _brokerSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-            if (LDataHelper.IsNullOrEmpty(_brokerSet) == true)
+            var _brokerSet = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            if (LSQLHelper.IsNullOrEmpty(_brokerSet) == true)
             {
                 const string _resultStatus = "INV900";
                 string _message = String.Format("broker({0}) is undefined by invoicer({1})", p_brokerId, p_customerId);
@@ -171,11 +171,11 @@ namespace OpenETaxBill.Engine.Signer
                 _dbps.Add("@issueId", NpgsqlDbType.Varchar, p_issue_id);
             }
 
-            var _invoiceSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-            if (LDataHelper.IsNullOrEmpty(_invoiceSet) == false)
+            var _invoiceSet = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+            if (LSQLHelper.IsNullOrEmpty(_invoiceSet) == false)
             {
                 _sqlstr = "SELECT * FROM TB_eTAX_LINEITEM WHERE issueId=@issueId";
-                var _lineitemSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+                var _lineitemSet = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
 
                 _invoiceSet.Merge(_lineitemSet);
 
@@ -308,7 +308,7 @@ namespace OpenETaxBill.Engine.Signer
                             _dbps.Add("@issueId", NpgsqlDbType.Varchar, _issueid);
                         }
 
-                        var _resultSet = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+                        var _resultSet = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
 
                         var _resultTbl = _resultSet.Tables[0];
                         foreach (DataRow _dr in _resultTbl.Rows)

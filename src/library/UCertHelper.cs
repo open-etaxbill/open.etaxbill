@@ -88,7 +88,7 @@ namespace OpenETaxBill.Engine.Library
         }
 
         private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
@@ -117,8 +117,8 @@ namespace OpenETaxBill.Engine.Library
 
         private X509CertMgr GetCertManager(string p_condition, string p_sqlstr, PgDatParameters p_dbps)
         {
-            var _ds = LDataHelper.SelectDataSet(USvcHelper.ConnectionString, p_sqlstr, p_dbps);
-            if (LDataHelper.IsNullOrEmpty(_ds) == true)
+            var _ds = LSQLHelper.SelectDataSet(USvcHelper.ConnectionString, p_sqlstr, p_dbps);
+            if (LSQLHelper.IsNullOrEmpty(_ds) == true)
                 throw new ProxyException(String.Format("not exist cert-record: '{0}'", p_condition));
 
             DataRow _cr = _ds.Tables[0].Rows[0];
@@ -140,9 +140,9 @@ namespace OpenETaxBill.Engine.Library
 
         private X509Certificate2 GetCertificate(string p_condition, string p_sqlstr, PgDatParameters p_dbps)
         {
-            var _ds = LDataHelper.SelectDataSet(USvcHelper.ConnectionString, p_sqlstr, p_dbps);
+            var _ds = LSQLHelper.SelectDataSet(USvcHelper.ConnectionString, p_sqlstr, p_dbps);
 
-            if (LDataHelper.IsNullOrEmpty(_ds) == true)
+            if (LSQLHelper.IsNullOrEmpty(_ds) == true)
                 throw new ProxyException(String.Format("not exist cert-record: '{0}'", p_condition));
 
             string _publicStr = Convert.ToString(_ds.Tables[0].Rows[0]["publicKey"]);

@@ -156,10 +156,10 @@ namespace OpenETaxBill.Engine.Library
         /// 국세청으로 부터 전달 된 메시지를 기반으로 ISSUING, RESPONSE, RESULT 테이블을 Update 합니다.
         /// </summary>
         /// <param name="p_xmldoc"></param>
-        /// <param name="p_requestDate"></param>
+        /// <param name="p_request_date"></param>
         /// <param name="o_error"></param>
         /// <returns></returns>
-        public bool DoSaveRequestAck(XmlDocument p_xmldoc, DateTime p_requestDate, out string o_error)
+        public bool DoSaveRequestAck(XmlDocument p_xmldoc, DateTime p_request_date, out string o_error)
         {
             var _result = false;
 
@@ -178,9 +178,11 @@ namespace OpenETaxBill.Engine.Library
                 _xexpr.SetContext(_nsmgr);
 
                 DataRow _responseRow = ResponseTbl.NewRow();
-                _responseRow["totalCount"] = 0;
-                _responseRow["successCount"] = 0;
-                _responseRow["failCount"] = 0;
+                {
+                    _responseRow["totalCount"] = 0;
+                    _responseRow["successCount"] = 0;
+                    _responseRow["failCount"] = 0;
+                }
 
                 XPathNavigator _nav = p_xmldoc.CreateNavigator().SelectSingleNode(_xexpr);
                 if (_nav.MoveToChild(XPathNodeType.Element) == true)
@@ -214,7 +216,7 @@ namespace OpenETaxBill.Engine.Library
                                 }
 
                                 _resultRow["isDone"] = "F";
-                                _resultRow["created"] = p_requestDate;
+                                _resultRow["created"] = p_request_date;
 
                                 ResultTbl.Rows.Add(_resultRow);
                             }
@@ -240,7 +242,7 @@ namespace OpenETaxBill.Engine.Library
                                     _resultRow["isDone"] = "T";
                                 }
 
-                                _issuingRow["ntsConfirmDate"] = p_requestDate;
+                                _issuingRow["ntsConfirmDate"] = p_request_date;
                             }
                         }
                         else

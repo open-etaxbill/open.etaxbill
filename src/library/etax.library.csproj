@@ -45,6 +45,14 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Mono.Security.3.2.3.0\lib\net45\Mono.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Npgsql, Version=3.1.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Npgsql.3.1.7\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
@@ -52,6 +60,9 @@
     <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.28001, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.2\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="OdinSoft.SDK.OdinLib">
+      <HintPath>..\..\..\..\..\odinsoft-git\public\open-sdk\output\v1.0.2016.07\Debug\OdinSoft.SDK.OdinLib.dll</HintPath>
     </Reference>
     <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\OpenETaxBill.Channel.1.0.0.2\lib\net45\OpenETaxBill.Channel.dll</HintPath>
@@ -89,12 +100,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\odinsoft-git\public\open-sdk\src\odinlib\odinlib.csproj">
-      <Project>{22054587-58BB-4553-A0D8-F852CC1FA8C8}</Project>
-      <Name>odinlib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

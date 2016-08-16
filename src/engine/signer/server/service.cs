@@ -63,7 +63,7 @@ namespace OpenETaxBill.Engine.Signer
         }
 
         private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LDataHelper
+        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
@@ -144,8 +144,8 @@ namespace OpenETaxBill.Engine.Signer
                         _dbps.Add("@tillDate", NpgsqlDbType.TimestampTZ, p_tillDay);
                     }
 
-                    var _ds = LDataHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
-                    if (LDataHelper.IsNullOrEmpty(_ds) == false)
+                    var _ds = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);
+                    if (LSQLHelper.IsNullOrEmpty(_ds) == false)
                     {
                         X509CertMgr _invoicerCert = UCertHelper.GetCustomerCertMgr(p_invoicerId, p_certifier[0], p_certifier[1], p_certifier[2]);
 

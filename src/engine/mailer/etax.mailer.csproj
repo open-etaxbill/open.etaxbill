@@ -62,8 +62,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\..\..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Mono.Security.3.2.3.0\lib\net45\Mono.Security.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Npgsql, Version=3.1.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
@@ -73,6 +81,10 @@
     <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.28001, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.2\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.35041, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\odinsoft-git\public\open-sdk\output\v1.0.2016.07\Debug\OdinSoft.SDK.OdinLib.dll</HintPath>
     </Reference>
     <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\OpenETaxBill.Channel.1.0.0.2\lib\net45\OpenETaxBill.Channel.dll</HintPath>
@@ -224,10 +236,6 @@
     <Content Include="engine\contents\notice.htm" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\odinsoft-git\public\open-sdk\src\odinlib\odinlib.csproj">
-      <Project>{22054587-58bb-4553-a0d8-f852cc1fa8c8}</Project>
-      <Name>odinlib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\library\etax.library.csproj">
       <Project>{4eea384a-cc29-4f33-94ee-0e6d3e27da58}</Project>
       <Name>etax.library</Name>

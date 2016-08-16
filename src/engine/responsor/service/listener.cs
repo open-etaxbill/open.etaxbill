@@ -14,9 +14,12 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
+using System.Xml;
 using OdinSoft.SDK.Configuration;
 
 namespace OpenETaxBill.Engine.Responsor
@@ -242,7 +245,7 @@ namespace OpenETaxBill.Engine.Responsor
             }
             catch (ThreadAbortException ex)
             {
-                ELogger.SNG.WriteLog(ex);
+                //ELogger.SNG.WriteLog(ex);
             }
             catch (SocketException ex)
             {
@@ -269,11 +272,23 @@ namespace OpenETaxBill.Engine.Responsor
                 Name = "HTTP Listener"
             };
             ListenThread.Start();
+
+            //var _engine = new ResponseEngine();
+            //{
+            //    var _xmltxt = File.ReadAllText(@"D:\temp\open-etaxbill\work-folder\input\NTS\201608\response_20160816165305.xml", Encoding.UTF8);
+
+            //    var _xmldoc = new XmlDocument();
+            //    _xmldoc.LoadXml(_xmltxt);
+
+            //    _engine.ResultDataProcess(_xmldoc, DateTime.Now);
+            //}
         }
 
         public void Stop()
         {
-            tcpListener.Stop();
+            if (tcpListener != null)
+                tcpListener.Stop();
+
             ListenThread.Abort();
         }
 
