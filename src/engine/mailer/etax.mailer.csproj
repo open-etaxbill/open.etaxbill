@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenETaxBill.Engine</RootNamespace>
     <AssemblyName>OpenETaxBill.Engine.Mailer</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <SignAssembly>false</SignAssembly>
@@ -78,16 +78,16 @@
       <HintPath>..\..\..\packages\Npgsql.3.1.7\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.28001, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.2\lib\net45\OdinSoft.SDK.eTaxBill.dll</HintPath>
+    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.27539, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.4\lib\net46\OdinSoft.SDK.eTaxBill.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.35041, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\odinsoft-git\public\open-sdk\output\v1.0.2016.07\Debug\OdinSoft.SDK.OdinLib.dll</HintPath>
+    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.27539, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\OdinSoft.SDK.OdinLib.1.0.0.6\lib\net46\OdinSoft.SDK.OdinLib.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OpenETaxBill.Channel.1.0.0.2\lib\net45\OpenETaxBill.Channel.dll</HintPath>
+      <HintPath>..\..\..\packages\OpenETaxBill.Channel.1.0.0.4\lib\net46\OpenETaxBill.Channel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

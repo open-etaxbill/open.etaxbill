@@ -243,7 +243,7 @@ namespace OpenETaxBill.Engine.Responsor
                 ELogger.SNG.WriteLog(ex);
                 Thread.CurrentThread.Abort();
             }
-            catch (ThreadAbortException ex)
+            catch (ThreadAbortException)
             {
                 //ELogger.SNG.WriteLog(ex);
             }
