@@ -20,13 +20,13 @@ using System.Text;
 using System.Xml;
 using ICSharpCode.SharpZipLib.Zip;
 using NpgsqlTypes;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data.POSTGRESQL;
-using OdinSoft.SDK.eTaxBill.Security.Encrypt;
-using OdinSoft.SDK.eTaxBill.Security.Issue;
-using OdinSoft.SDK.eTaxBill.Security.Mime;
-using OdinSoft.SDK.eTaxBill.Security.Notice;
-using OdinSoft.SDK.eTaxBill.Utility;
+using OdinSdk.OdinLib.Configuration;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
+using OdinSdk.eTaxBill.Security.Encrypt;
+using OdinSdk.eTaxBill.Security.Issue;
+using OdinSdk.eTaxBill.Security.Mime;
+using OdinSdk.eTaxBill.Security.Notice;
+using OdinSdk.eTaxBill.Utility;
 using OpenETaxBill.Engine.Library;
 
 namespace OpenETaxBill.Engine.Collector
@@ -39,24 +39,24 @@ namespace OpenETaxBill.Engine.Collector
         //-------------------------------------------------------------------------------------------------------------------------
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
+                    m_dataHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
+                    m_dltaHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -220,7 +220,7 @@ namespace OpenETaxBill.Engine.Collector
             Body _soapBody = new Body();
             {
                 _soapBody.RequestParty = new Party(UAppHelper.SenderBizNo, UAppHelper.SenderBizName, UAppHelper.RegisterId);
-                _soapBody.FileType = OdinSoft.SDK.eTaxBill.Security.Notice.Request.FileType_ZIP;
+                _soapBody.FileType = OdinSdk.eTaxBill.Security.Notice.Request.FileType_ZIP;
             }
 
             //-------------------------------------------------------------------------------------------------------------------//
@@ -650,8 +650,8 @@ namespace OpenETaxBill.Engine.Collector
                     _dbps.Add("@person", NpgsqlDbType.Varchar, "");
                     _dbps.Add("@publicKey", NpgsqlDbType.Varchar, _publicStr);
                     _dbps.Add("@userName", NpgsqlDbType.Varchar, _userName);
-                    _dbps.Add("@expiration", NpgsqlDbType.TimestampTZ, _expiration);
-                    _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTZ, DateTime.Now);
+                    _dbps.Add("@expiration", NpgsqlDbType.TimestampTz, _expiration);
+                    _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTz, DateTime.Now);
                     _dbps.Add("@providerId", NpgsqlDbType.Varchar, "");
 
                     if (LSQLHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
@@ -684,8 +684,8 @@ namespace OpenETaxBill.Engine.Collector
 
                         _dbps.Add("@publicKey", NpgsqlDbType.Varchar, _publicStr);
                         _dbps.Add("@userName", NpgsqlDbType.Varchar, _userName);
-                        _dbps.Add("@expiration", NpgsqlDbType.TimestampTZ, _expiration);
-                        _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTZ, DateTime.Now);
+                        _dbps.Add("@expiration", NpgsqlDbType.TimestampTz, _expiration);
+                        _dbps.Add("@lastUpdate", NpgsqlDbType.TimestampTz, DateTime.Now);
 
                         if (LSQLHelper.ExecuteText(UAppHelper.ConnectionString, _sqlstr, _dbps) < 1)
                         {

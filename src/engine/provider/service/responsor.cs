@@ -17,9 +17,9 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using OdinSoft.SDK.eTaxBill.Net;
-using OdinSoft.SDK.eTaxBill.Net.Core;
-using OdinSoft.SDK.eTaxBill.Net.Smtp;
+using OdinSdk.eTaxBill.Net;
+using OdinSdk.eTaxBill.Net.Core;
+using OdinSdk.eTaxBill.Net.Smtp;
 
 namespace OpenETaxBill.Engine.Provider
 {

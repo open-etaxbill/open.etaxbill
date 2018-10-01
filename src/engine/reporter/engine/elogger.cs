@@ -15,7 +15,7 @@ using System;
 using System.Configuration;
 using System.Diagnostics;
 using System.Reflection;
-using OdinSoft.SDK.Configuration;
+using OdinSdk.OdinLib.Configuration;
 
 namespace OpenETaxBill.Engine.Reporter
 {
@@ -55,25 +55,25 @@ namespace OpenETaxBill.Engine.Reporter
             }
         }
 
-        private OdinSoft.SDK.Logging.QFileLog m_qfilelog = null;
-        private OdinSoft.SDK.Logging.QFileLog QFileLog
+        private OdinSdk.OdinLib.Logging.QFileLog m_qfilelog = null;
+        private OdinSdk.OdinLib.Logging.QFileLog QFileLog
         {
             get
             {
                 if (m_qfilelog == null)
-                    m_qfilelog = new OdinSoft.SDK.Logging.QFileLog();
+                    m_qfilelog = new OdinSdk.OdinLib.Logging.QFileLog();
 
                 return m_qfilelog;
             }
         }
 
-        private OdinSoft.SDK.Logging.OEventLog m_oeventLog = null;
-        private OdinSoft.SDK.Logging.OEventLog OEventLogger
+        private OdinSdk.OdinLib.Logging.OEventLog m_oeventLog = null;
+        private OdinSdk.OdinLib.Logging.OEventLog OEventLogger
         {
             get
             {
                 if (m_oeventLog == null)
-                    m_oeventLog = new OdinSoft.SDK.Logging.OEventLog(IReporter.Proxy.EventSource);
+                    m_oeventLog = new OdinSdk.OdinLib.Logging.OEventLog(IReporter.Proxy.EventSource);
 
                 return m_oeventLog;
             }

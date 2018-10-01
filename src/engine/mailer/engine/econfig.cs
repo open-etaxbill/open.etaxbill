@@ -13,7 +13,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 
 using System;
 using System.Configuration;
-using OdinSoft.SDK.Configuration;
+using OdinSdk.OdinLib.Configuration;
 
 namespace OpenETaxBill.Engine.Mailer
 {

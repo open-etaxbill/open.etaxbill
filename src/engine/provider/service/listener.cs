@@ -21,11 +21,11 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 using NpgsqlTypes;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data.POSTGRESQL;
-using OdinSoft.SDK.eTaxBill.Net.Mime.Parser;
-using OdinSoft.SDK.eTaxBill.Security.Encrypt;
-using OdinSoft.SDK.eTaxBill.Security.Issue;
+using OdinSdk.OdinLib.Configuration;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
+using OdinSdk.eTaxBill.Net.Mime.Parser;
+using OdinSdk.eTaxBill.Security.Encrypt;
+using OdinSdk.eTaxBill.Security.Issue;
 
 namespace OpenETaxBill.Engine.Provider
 {
@@ -73,36 +73,36 @@ namespace OpenETaxBill.Engine.Provider
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
+                    m_dataHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
+                    m_dltaHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
         }
 
-        private OdinSoft.SDK.Logging.QFileWriter m_qfwriter = null;
-        private OdinSoft.SDK.Logging.QFileWriter QFWriter
+        private OdinSdk.OdinLib.Logging.QFileWriter m_qfwriter = null;
+        private OdinSdk.OdinLib.Logging.QFileWriter QFWriter
         {
             get
             {
                 if (m_qfwriter == null)
-                    m_qfwriter = new OdinSoft.SDK.Logging.QFileWriter();
+                    m_qfwriter = new OdinSdk.OdinLib.Logging.QFileWriter();
 
                 return m_qfwriter;
             }
@@ -658,7 +658,7 @@ namespace OpenETaxBill.Engine.Provider
                         _dbps.Add("@data", NpgsqlDbType.Bytea, p_message.ToArray());
                         _dbps.Add("@size", NpgsqlDbType.Numeric, p_message.Length);
                         _dbps.Add("@sender", NpgsqlDbType.Varchar, p_mailfrom);
-                        _dbps.Add("@createtime", NpgsqlDbType.TimestampTZ, _today);
+                        _dbps.Add("@createtime", NpgsqlDbType.TimestampTz, _today);
                     }
 
                     if (LSQLHelper.ExecuteText(ConnectionString, _sqlstr, _dbps) < 1)

@@ -15,10 +15,10 @@ using System;
 using System.IO;
 using System.Text;
 using System.Xml;
-using OdinSoft.SDK.eTaxBill.Security.Issue;
-using OdinSoft.SDK.eTaxBill.Security.Mime;
-using OdinSoft.SDK.eTaxBill.Security.Notice;
-using OdinSoft.SDK.Configuration;
+using OdinSdk.eTaxBill.Security.Issue;
+using OdinSdk.eTaxBill.Security.Mime;
+using OdinSdk.eTaxBill.Security.Notice;
+using OdinSdk.OdinLib.Configuration;
 
 namespace OpenETaxBill.Engine.Responsor
 {

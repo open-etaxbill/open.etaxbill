@@ -14,10 +14,10 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Data;
 using NpgsqlTypes;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data.POSTGRESQL;
-using OdinSoft.SDK.eTaxBill.Security.Issue;
-using OdinSoft.SDK.eTaxBill.Security.Signature;
+using OdinSdk.OdinLib.Configuration;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
+using OdinSdk.eTaxBill.Security.Issue;
+using OdinSdk.eTaxBill.Security.Signature;
 
 namespace OpenETaxBill.Engine.Signer
 {
@@ -31,25 +31,25 @@ namespace OpenETaxBill.Engine.Signer
         //-------------------------------------------------------------------------------------------------------------------------
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
+                    m_dataHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper();
 
                 return m_dataHelper;
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
+                    m_dltaHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -420,8 +420,8 @@ namespace OpenETaxBill.Engine.Signer
 
             var _dbps = new PgDatParameters();
             {
-                _dbps.Add("@fromDate", NpgsqlDbType.TimestampTZ, p_fromDay);
-                _dbps.Add("@tillDate", NpgsqlDbType.TimestampTZ, p_tillDay);
+                _dbps.Add("@fromDate", NpgsqlDbType.TimestampTz, p_fromDay);
+                _dbps.Add("@tillDate", NpgsqlDbType.TimestampTz, p_tillDay);
             }
 
             return CheckSignature(p_invoicerCert, p_invoicerId, p_noInvoicee, _where, _dbps);

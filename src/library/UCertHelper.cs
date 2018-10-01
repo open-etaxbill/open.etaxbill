@@ -11,19 +11,17 @@ You should have received a copy of the GNU General Public License
 along with this program.If not, see<http://www.gnu.org/licenses/>.
 */
 
+using NpgsqlTypes;
+using OdinSdk.eTaxBill.Security.Encrypt;
+using OdinSdk.eTaxBill.Security.Signature;
+using OdinSdk.eTaxBill.Utility;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
+using OdinSdk.OdinLib.Queue;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using Npgsql;
-using NpgsqlTypes;
-using OdinSoft.SDK.Data.POSTGRESQL;
-using OdinSoft.SDK.eTaxBill.Security.Encrypt;
-using OdinSoft.SDK.eTaxBill.Security.Signature;
-using OdinSoft.SDK.eTaxBill.Utility;
-using OdinSoft.SDK.Queue;
 
 namespace OpenETaxBill.Engine.Library
 {
@@ -87,13 +85,13 @@ namespace OpenETaxBill.Engine.Library
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
+                    m_dataHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper();
 
                 return m_dataHelper;
             }

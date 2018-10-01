@@ -15,8 +15,8 @@ using System;
 using System.Data;
 using System.Threading;
 using NpgsqlTypes;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data.POSTGRESQL;
+using OdinSdk.OdinLib.Configuration;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
 using OpenETaxBill.Engine.Library;
 
 namespace OpenETaxBill.Engine.Mailer
@@ -62,13 +62,13 @@ namespace OpenETaxBill.Engine.Mailer
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
+                    m_dataHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
@@ -136,8 +136,8 @@ namespace OpenETaxBill.Engine.Mailer
                 {
                     _dbps.Add("@isInvoiceeMail", NpgsqlDbType.Varchar, "T");
                     _dbps.Add("@isProviderMail", NpgsqlDbType.Varchar, "T");
-                    _dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, _fromDay);
-                    _dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, _tillDay);
+                    _dbps.Add("@fromDay", NpgsqlDbType.TimestampTz, _fromDay);
+                    _dbps.Add("@tillDay", NpgsqlDbType.TimestampTz, _tillDay);
                 }
 
                 var _ds = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);

@@ -16,11 +16,11 @@ using System.Data;
 using System.Text;
 using System.Xml;
 using NpgsqlTypes;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Data.POSTGRESQL;
-using OdinSoft.SDK.eTaxBill.Security.Issue;
-using OdinSoft.SDK.eTaxBill.Security.Mime;
-using OdinSoft.SDK.eTaxBill.Security.Notice;
+using OdinSdk.OdinLib.Configuration;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
+using OdinSdk.eTaxBill.Security.Issue;
+using OdinSdk.eTaxBill.Security.Mime;
+using OdinSdk.eTaxBill.Security.Notice;
 using OpenETaxBill.Channel.Interface;
 using OpenETaxBill.Engine.Library;
 
@@ -36,24 +36,24 @@ namespace OpenETaxBill.Engine.Reporter
         //-------------------------------------------------------------------------------------------------------------------------
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
+                    m_dataHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
         
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
+                    m_dltaHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }
@@ -494,8 +494,8 @@ namespace OpenETaxBill.Engine.Reporter
 
             var _dbps = new PgDatParameters();
             {
-                _dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, p_fromDay);
-                _dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, p_tillDay);
+                _dbps.Add("@fromDay", NpgsqlDbType.TimestampTz, p_fromDay);
+                _dbps.Add("@tillDay", NpgsqlDbType.TimestampTz, p_tillDay);
             }
 
             return CheckReporting(p_invoicerId, p_noInvoicee, _where, _dbps);

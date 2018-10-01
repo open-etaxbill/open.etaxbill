@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OpenETaxBill.Engine</RootNamespace>
     <AssemblyName>OpenETaxBill.Engine.Responsor</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <StartupObject>
@@ -41,6 +41,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,30 +64,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <HintPath>..\..\..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Mono.Security.3.2.3.0\lib\net45\Mono.Security.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Npgsql, Version=3.1.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Npgsql.3.1.7\lib\net45\Npgsql.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OdinSoft.SDK.eTaxBill, Version=1.0.2016.27539, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OdinSoft.SDK.eTaxBill.1.0.0.4\lib\net46\OdinSoft.SDK.eTaxBill.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OdinSoft.SDK.OdinLib, Version=1.0.2016.27539, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OdinSoft.SDK.OdinLib.1.0.0.6\lib\net46\OdinSoft.SDK.OdinLib.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="OpenETaxBill.Channel, Version=1.0.2016.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\OpenETaxBill.Channel.1.0.0.4\lib\net46\OpenETaxBill.Channel.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -193,17 +171,43 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\etaxbill-channel\src\etax.channel.csproj">
+      <Project>{ab03197a-e0ac-41a9-b018-533fe6e5ca9f}</Project>
+      <Name>etax.channel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\library\etax.library.csproj">
       <Project>{4eea384a-cc29-4f33-94ee-0e6d3e27da58}</Project>
       <Name>etax.library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle">
+      <Version>1.8.3</Version>
+    </PackageReference>
+    <PackageReference Include="Mono.Security">
+      <Version>5.4.0.201</Version>
+    </PackageReference>
+    <PackageReference Include="Npgsql">
+      <Version>4.0.3</Version>
+    </PackageReference>
+    <PackageReference Include="OdinSdk.eTaxBill">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="OdinSdk.OdinLib">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe">
+      <Version>4.5.1</Version>
+    </PackageReference>
+    <PackageReference Include="System.Threading.Tasks.Extensions">
+      <Version>4.5.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
@@ -251,6 +255,9 @@ if [ $filescount -gt 0 ]; then
   cp -u $(TargetDir)/*.dll $(SolutionDir)/output/$(ConfigurationName)
 fi
 </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent />
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

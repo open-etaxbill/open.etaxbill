@@ -14,7 +14,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.ServiceModel;
 using NpgsqlTypes;
-using OdinSoft.SDK.Data.POSTGRESQL;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
 
 namespace OpenETaxBill.Engine.Reporter
 {
@@ -48,13 +48,13 @@ namespace OpenETaxBill.Engine.Reporter
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper LSQLHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper m_dataHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper LSQLHelper
         {
             get
             {
                 if (m_dataHelper == null)
-                    m_dataHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDataHelper();
+                    m_dataHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDataHelper();
                 return m_dataHelper;
             }
         }
@@ -124,8 +124,8 @@ namespace OpenETaxBill.Engine.Reporter
                     {
                         _dbps.Add("@isNTSReport", NpgsqlDbType.Varchar, "T");
                         _dbps.Add("@invoicerId", NpgsqlDbType.Varchar, p_invoicerId);
-                        _dbps.Add("@fromDay", NpgsqlDbType.TimestampTZ, p_fromDay);
-                        _dbps.Add("@tillDay", NpgsqlDbType.TimestampTZ, p_tillDay);
+                        _dbps.Add("@fromDay", NpgsqlDbType.TimestampTz, p_fromDay);
+                        _dbps.Add("@tillDay", NpgsqlDbType.TimestampTz, p_tillDay);
                     }
 
                     var _ds = LSQLHelper.SelectDataSet(UAppHelper.ConnectionString, _sqlstr, _dbps);

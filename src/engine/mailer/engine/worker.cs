@@ -17,8 +17,8 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip;
-using OdinSoft.SDK.eTaxBill.Net.Mime;
-using OdinSoft.SDK.eTaxBill.Security.Encrypt;
+using OdinSdk.eTaxBill.Net.Mime;
+using OdinSdk.eTaxBill.Security.Encrypt;
 
 namespace OpenETaxBill.Engine.Mailer
 {
@@ -81,13 +81,13 @@ namespace OpenETaxBill.Engine.Mailer
             }
         }
 
-        private OdinSoft.SDK.Logging.QFileWriter m_qfwriter = null;
-        private OdinSoft.SDK.Logging.QFileWriter QFWriter
+        private OdinSdk.OdinLib.Logging.QFileWriter m_qfwriter = null;
+        private OdinSdk.OdinLib.Logging.QFileWriter QFWriter
         {
             get
             {
                 if (m_qfwriter == null)
-                    m_qfwriter = new OdinSoft.SDK.Logging.QFileWriter();
+                    m_qfwriter = new OdinSdk.OdinLib.Logging.QFileWriter();
 
                 return m_qfwriter;
             }

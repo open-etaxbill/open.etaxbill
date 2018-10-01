@@ -14,7 +14,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Threading;
 using OpenETaxBill.Engine.Library;
-using OdinSoft.SDK.Configuration;
+using OdinSdk.OdinLib.Configuration;
 
 namespace OpenETaxBill.Engine.Collector
 {

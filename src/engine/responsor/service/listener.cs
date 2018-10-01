@@ -20,7 +20,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Xml;
-using OdinSoft.SDK.Configuration;
+using OdinSdk.OdinLib.Configuration;
 
 namespace OpenETaxBill.Engine.Responsor
 {

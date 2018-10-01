@@ -15,9 +15,9 @@ using System;
 using System.Data;
 using System.Xml;
 using System.Xml.XPath;
-using OdinSoft.SDK.Queue;
-using OdinSoft.SDK.eTaxBill.Security.Issue;
-using OdinSoft.SDK.eTaxBill.Security.Signature;
+using OdinSdk.OdinLib.Queue;
+using OdinSdk.eTaxBill.Security.Issue;
+using OdinSdk.eTaxBill.Security.Signature;
 
 namespace OpenETaxBill.Engine.Library
 {
@@ -81,13 +81,13 @@ namespace OpenETaxBill.Engine.Library
             }
         }
 
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
-        private OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper m_dltaHelper = null;
+        private OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper LDltaHelper
         {
             get
             {
                 if (m_dltaHelper == null)
-                    m_dltaHelper = new OdinSoft.SDK.Data.POSTGRESQL.PgDeltaHelper();
+                    m_dltaHelper = new OdinSdk.OdinLib.Data.POSTGRESQL.PgDeltaHelper();
 
                 return m_dltaHelper;
             }

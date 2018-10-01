@@ -14,8 +14,8 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 using System;
 using System.Configuration;
 using System.IO;
-using OdinSoft.SDK.Configuration;
-using OdinSoft.SDK.Queue;
+using OdinSdk.OdinLib.Configuration;
+using OdinSdk.OdinLib.Queue;
 
 namespace OpenETaxBill.Engine.Library
 {

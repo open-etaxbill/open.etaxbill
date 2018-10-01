@@ -13,7 +13,7 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 
 using System;
 using System.Diagnostics;
-using OdinSoft.SDK.Configuration;
+using OdinSdk.OdinLib.Configuration;
 
 namespace OpenETaxBill.Engine.Responsor
 {
@@ -53,25 +53,25 @@ namespace OpenETaxBill.Engine.Responsor
             }
         }
 
-        private OdinSoft.SDK.Logging.QFileLog m_qfilelog = null;
-        private OdinSoft.SDK.Logging.QFileLog QFileLog
+        private OdinSdk.OdinLib.Logging.QFileLog m_qfilelog = null;
+        private OdinSdk.OdinLib.Logging.QFileLog QFileLog
         {
             get
             {
                 if (m_qfilelog == null)
-                    m_qfilelog = new OdinSoft.SDK.Logging.QFileLog();
+                    m_qfilelog = new OdinSdk.OdinLib.Logging.QFileLog();
 
                 return m_qfilelog;
             }
         }
 
-        private OdinSoft.SDK.Logging.OEventLog m_oeventLog = null;
-        private OdinSoft.SDK.Logging.OEventLog OEventLogger
+        private OdinSdk.OdinLib.Logging.OEventLog m_oeventLog = null;
+        private OdinSdk.OdinLib.Logging.OEventLog OEventLogger
         {
             get
             {
                 if (m_oeventLog == null)
-                    m_oeventLog = new OdinSoft.SDK.Logging.OEventLog(IResponsor.Proxy.EventSource);
+                    m_oeventLog = new OdinSdk.OdinLib.Logging.OEventLog(IResponsor.Proxy.EventSource);
 
                 return m_oeventLog;
             }

@@ -13,9 +13,9 @@ along with this program.If not, see<http://www.gnu.org/licenses/>.
 
 using System;
 using System.Messaging;
-using OdinSoft.SDK.Data.POSTGRESQL;
-using OdinSoft.SDK.Queue;
-using OdinSoft.SDK.Security;
+using OdinSdk.OdinLib.Data.POSTGRESQL;
+using OdinSdk.OdinLib.Queue;
+using OdinSdk.OdinLib.Security;
 
 namespace OpenETaxBill.Engine.Mailer
 {
@@ -51,13 +51,13 @@ namespace OpenETaxBill.Engine.Mailer
             }
         }
 
-        private OdinSoft.SDK.Queue.QWriter p_qwriter = null;
-        private OdinSoft.SDK.Queue.QWriter QWriter
+        private OdinSdk.OdinLib.Queue.QWriter p_qwriter = null;
+        private OdinSdk.OdinLib.Queue.QWriter QWriter
         {
             get
             {
                 if (p_qwriter == null)
-                    p_qwriter = new OdinSoft.SDK.Queue.QWriter();
+                    p_qwriter = new OdinSdk.OdinLib.Queue.QWriter();
 
                 return p_qwriter;
             }
@@ -66,8 +66,8 @@ namespace OpenETaxBill.Engine.Mailer
         //-------------------------------------------------------------------------------------------------------------------------
         // 
         //-------------------------------------------------------------------------------------------------------------------------
-        private OdinSoft.SDK.Communication.WcfServer m_wcf_service = null;
-        private OdinSoft.SDK.Communication.WcfServer WcfService
+        private OdinSdk.OdinLib.Communication.WcfServer m_wcf_service = null;
+        private OdinSdk.OdinLib.Communication.WcfServer WcfService
         {
             get
             {
@@ -75,7 +75,7 @@ namespace OpenETaxBill.Engine.Mailer
                 {
                     IMailer.Proxy.SetServerPortSharing();
 
-                    m_wcf_service = new OdinSoft.SDK.Communication.WcfServer
+                    m_wcf_service = new OdinSdk.OdinLib.Communication.WcfServer
                     (
                         typeof(MailerService), typeof(IMailerService), 
                         IMailer.Proxy.BindingNames,
