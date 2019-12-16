@@ -395,7 +395,7 @@ namespace OpenETaxBill.Engine.Library
             get
             {
                 if (String.IsNullOrEmpty(m_officeAddress) == true)
-                    m_officeAddress = GetAppValue("OfficeAddress", @"(우)463-400 경기도 성남시 분당구 판교역로 230 (삼평동) Tel : 031-698-3790");
+                    m_officeAddress = GetAppValue("OfficeAddress", @"(우)05855 서울시 송파구 법원로8길 13, 문정헤리움써밋타워 1317호 Tel : 02-6959-3790");
 
                 return m_officeAddress;
             }
