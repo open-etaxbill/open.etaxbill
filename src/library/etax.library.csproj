@@ -97,7 +97,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\etaxbill-channel\src\etax.channel.csproj">
+    <ProjectReference Include="..\..\..\etaxbill.channel\src\etax.channel.csproj">
       <Project>{ab03197a-e0ac-41a9-b018-533fe6e5ca9f}</Project>
       <Name>etax.channel</Name>
     </ProjectReference>

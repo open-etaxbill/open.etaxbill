@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2016
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29521.150
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "etax.collector", "src\engine\collector\etax.collector.csproj", "{A93A842A-D003-48C0-8722-682CE46B0275}"
 EndProject
@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "etax.signer", "src\engine\s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "interface", "interface", "{6856751E-62E2-45F2-A063-D72F6F9BF16C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "etax.channel", "..\etaxbill-channel\src\etax.channel.csproj", "{AB03197A-E0AC-41A9-B018-533FE6E5CA9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "etax.channel", "..\etaxbill.channel\src\etax.channel.csproj", "{AB03197A-E0AC-41A9-B018-533FE6E5CA9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
