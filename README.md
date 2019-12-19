@@ -1,4 +1,4 @@
-# open eTaxBill
+# Open eTaxBill
 
 ## Engine: 국세청 전자세금계산서 연동 서비스 엔진 
 
