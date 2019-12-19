@@ -175,16 +175,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\etaxbill.channel\src\etax.channel.csproj">
-      <Project>{ab03197a-e0ac-41a9-b018-533fe6e5ca9f}</Project>
-      <Name>etax.channel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\library\etax.library.csproj">
-      <Project>{4eea384a-cc29-4f33-94ee-0e6d3e27da58}</Project>
-      <Name>etax.library</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="BouncyCastle">
       <Version>1.8.5</Version>
     </PackageReference>
@@ -209,6 +199,16 @@
     <PackageReference Include="System.Threading.Tasks.Extensions">
       <Version>4.5.3</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\channel\etax.channel.csproj">
+      <Project>{ab03197a-e0ac-41a9-b018-533fe6e5ca9f}</Project>
+      <Name>etax.channel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\library\etax.library.csproj">
+      <Project>{4eea384a-cc29-4f33-94ee-0e6d3e27da58}</Project>
+      <Name>etax.library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition=" '$(OS)' != 'Unix' ">

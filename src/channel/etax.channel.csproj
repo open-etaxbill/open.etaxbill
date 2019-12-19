@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AB03197A-E0AC-41A9-B018-533FE6E5CA9F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenETaxBill</RootNamespace>
+    <AssemblyName>OpenETaxBill.Channel</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="interface\icollector.cs" />
+    <Compile Include="interface\imailer.cs" />
+    <Compile Include="interface\iprovider.cs" />
+    <Compile Include="interface\ireporter.cs" />
+    <Compile Include="interface\iresponsor.cs" />
+    <Compile Include="interface\isigner.cs" />
+    <Compile Include="proxy\csigner.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="proxy\creporter.cs" />
+    <Compile Include="proxy\cresponsor.cs" />
+    <Compile Include="proxy\cmailer.cs" />
+    <Compile Include="proxy\ccollector.cs" />
+    <Compile Include="proxy\cprovider.cs" />
+    <Compile Include="Service References\WcfCollector\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WcfMailer\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WcfProvider\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WcfReporter\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WcfResponsor\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WcfSigner\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\WcfResponsor\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WcfResponsor\configuration.svcinfo" />
+    <None Include="Service References\WcfResponsor\configuration91.svcinfo" />
+    <None Include="Service References\WcfReporter\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WcfReporter\configuration.svcinfo" />
+    <None Include="Service References\WcfReporter\configuration91.svcinfo" />
+    <None Include="Service References\WcfProvider\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WcfProvider\configuration.svcinfo" />
+    <None Include="Service References\WcfProvider\configuration91.svcinfo" />
+    <None Include="Service References\WcfMailer\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WcfMailer\configuration.svcinfo" />
+    <None Include="Service References\WcfMailer\configuration91.svcinfo" />
+    <None Include="Service References\WcfMailer\MailerService.wsdl" />
+    <None Include="Service References\WcfMailer\OpenTAX_Mailer_V10.wsdl" />
+    <None Include="Service References\WcfMailer\OpenTAX_Mailer_V10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfMailer\OpenTAX_Mailer_V101.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfMailer\OpenTAX_Mailer_V102.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfProvider\OpenTAX_Provider_V10.wsdl" />
+    <None Include="Service References\WcfProvider\OpenTAX_Provider_V10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfProvider\OpenTAX_Provider_V101.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfProvider\ProviderService.wsdl" />
+    <None Include="Service References\WcfReporter\OpenTAX_Reporter_V10.wsdl" />
+    <None Include="Service References\WcfReporter\OpenTAX_Reporter_V10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfReporter\OpenTAX_Reporter_V101.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfReporter\OpenTAX_Reporter_V102.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfReporter\ReportService.wsdl" />
+    <None Include="Service References\WcfResponsor\OpenTAX_Responsor_V10.wsdl" />
+    <None Include="Service References\WcfResponsor\OpenTAX_Responsor_V10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfResponsor\OpenTAX_Responsor_V101.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfResponsor\ResponseService.wsdl" />
+    <None Include="Service References\WcfSigner\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WcfSigner\configuration.svcinfo" />
+    <None Include="Service References\WcfSigner\configuration91.svcinfo" />
+    <None Include="Service References\WcfCollector\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WcfCollector\configuration.svcinfo" />
+    <None Include="Service References\WcfCollector\configuration91.svcinfo" />
+    <None Include="App.config" />
+    <None Include="Service References\WcfCollector\CollectService.wsdl" />
+    <None Include="Service References\WcfCollector\OpenTAX_Collector_V10.wsdl" />
+    <None Include="Service References\WcfCollector\OpenTAX_Collector_V10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfCollector\OpenTAX_Collector_V101.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfCollector\OpenTAX_Collector_V102.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfSigner\OpenTAX_Signer_V10.wsdl" />
+    <None Include="Service References\WcfSigner\OpenTAX_Signer_V10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfSigner\OpenTAX_Signer_V101.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfSigner\OpenTAX_Signer_V102.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\WcfSigner\SignService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\WcfCollector\" />
+    <WCFMetadataStorage Include="Service References\WcfMailer\" />
+    <WCFMetadataStorage Include="Service References\WcfProvider\" />
+    <WCFMetadataStorage Include="Service References\WcfReporter\" />
+    <WCFMetadataStorage Include="Service References\WcfResponsor\" />
+    <WCFMetadataStorage Include="Service References\WcfSigner\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OdinSdk.eTaxBill">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="OdinSdk.OdinLib">
+      <Version>1.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent Condition=" '$(OS)' != 'Unix' ">:begin
+
+SET framebiz_path=$(SolutionDir)\output\v4.5.2016.02\$(ConfigurationName)
+if not exist %25framebiz_path%25 mkdir %25framebiz_path%25
+goto :target_copy
+
+:target_copy
+copy /Y $(TargetPath) %25framebiz_path%25
+if exist $(TargetPath).config copy /Y $(TargetPath).config %25framebiz_path%25
+if exist $(TargetName).xml copy /Y $(TargetName).xml %25framebiz_path%25
+goto :refence_copy
+
+:refence_copy
+@rem if not $(TargetExt)==.exe goto end
+if not exist *.dll goto end
+copy /Y $(TargetDir)\*.dll %25framebiz_path%25
+goto end
+
+:end</PostBuildEvent>
+    <PostBuildEvent Condition=" '$(OS)' == 'Unix' ">
+if [ ! -d $(SolutionDir)/output ]; then
+  mkdir $(SolutionDir)/output
+fi
+if [ ! -d $(SolutionDir)/output/$(ConfigurationName) ]; then
+  mkdir $(SolutionDir)/output/$(ConfigurationName)
+fi
+cp -u $(TargetPath) $(SolutionDir)/output/$(ConfigurationName)
+if [ -f $(TargetPath).config ]; then
+  cp -u $(TargetPath).config $(SolutionDir)/output/$(ConfigurationName)
+fi
+if [ -f $(TargetName).XML ]; then
+  cp -u $(TargetName).XML $(SolutionDir)/output/$(ConfigurationName)
+fi
+filescount=`ls $(TargetDir)/*.dll | awk 'END { print NR }'`  
+if [ $filescount -gt 0 ]; then  
+  cp -u $(TargetDir)/*.dll $(SolutionDir)/output/$(ConfigurationName)
+fi
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

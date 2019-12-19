@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TaxInvoice xmlns="urn:kr:or:kec:standard:Tax:ReusableAggregateBusinessInformationEntitySchemaModule:1:0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:kr:or:kec:standard:Tax:ReusableAggregateBusinessInformationEntitySchemaModule:1:0 http://www.kec.or.kr/standard/Tax/TaxInvoiceSchemaModule_1.0.xsd">
+	<ExchangedDocument>
+		<ID>201607254200023800000001</ID>
+		<IssueDateTime>20160725090000</IssueDateTime>
+	</ExchangedDocument>
+	<TaxInvoiceDocument>
+		<IssueID>201607254200023800000001</IssueID>
+		<TypeCode>0301</TypeCode>
+		<IssueDateTime>20160725</IssueDateTime>
+		<PurposeCode>02</PurposeCode>
+	</TaxInvoiceDocument>
+	<TaxInvoiceTradeSettlement>
+		<InvoicerParty>
+			<ID>1388602200</ID>
+			<TypeCode>서비스</TypeCode>
+			<NameText>(주)오딘소프트</NameText>
+			<ClassificationCode>S/W개발공급</ClassificationCode>
+			<SpecifiedPerson>
+				<NameText>이성안</NameText>
+			</SpecifiedPerson>
+			<DefinedContact>
+				<DepartmentNameText>경영지원실 관리팀</DepartmentNameText>
+				<PersonNameText>이상익</PersonNameText>
+				<TelephoneCommunication>031-698-3790</TelephoneCommunication>
+				<URICommunication>lsi@odinsoftware.co.kr</URICommunication>
+			</DefinedContact>
+			<SpecifiedAddress>
+				<LineOneText>경기 성남시 분당구 삼평동 삼환하이펙스 B동 B101-3호</LineOneText>
+			</SpecifiedAddress>
+		</InvoicerParty>
+		<InvoiceeParty>
+			<ID>1388504400</ID>
+			<TypeCode>서비스</TypeCode>
+			<NameText>(주)오딘서비스</NameText>
+			<ClassificationCode>S/W개발공급자문</ClassificationCode>
+			<SpecifiedOrganization>
+				<BusinessTypeCode>01</BusinessTypeCode>
+			</SpecifiedOrganization>
+			<SpecifiedPerson>
+				<NameText>홍길동</NameText>
+			</SpecifiedPerson>
+			<PrimaryDefinedContact>
+				<PersonNameText>홍길미 과장</PersonNameText>
+				<URICommunication>honggilme@odinservice.com</URICommunication>
+			</PrimaryDefinedContact>
+			<SpecifiedAddress>
+				<LineOneText>경기도 성남시 분당구 삼평동 삼환하이펙스 B102</LineOneText>
+			</SpecifiedAddress>
+		</InvoiceeParty>
+		<SpecifiedPaymentMeans>
+			<TypeCode>10</TypeCode>
+			<PaidAmount>0</PaidAmount>
+		</SpecifiedPaymentMeans>
+		<SpecifiedPaymentMeans>
+			<TypeCode>20</TypeCode>
+			<PaidAmount>0</PaidAmount>
+		</SpecifiedPaymentMeans>
+		<SpecifiedPaymentMeans>
+			<TypeCode>30</TypeCode>
+			<PaidAmount>0</PaidAmount>
+		</SpecifiedPaymentMeans>
+		<SpecifiedPaymentMeans>
+			<TypeCode>40</TypeCode>
+			<PaidAmount>220000</PaidAmount>
+		</SpecifiedPaymentMeans>
+		<SpecifiedMonetarySummation>
+			<ChargeTotalAmount>220000</ChargeTotalAmount>
+			<TaxTotalAmount>0</TaxTotalAmount>
+			<GrandTotalAmount>220000</GrandTotalAmount>
+		</SpecifiedMonetarySummation>
+	</TaxInvoiceTradeSettlement>
+	<TaxInvoiceTradeLineItem>
+		<SequenceNumeric>1</SequenceNumeric>
+		<InvoiceAmount>220000</InvoiceAmount>
+		<ChargeableUnitQuantity>1</ChargeableUnitQuantity>
+		<NameText>통합전산시스템 유지보수료</NameText>
+		<PurchaseExpiryDateTime>20160725</PurchaseExpiryDateTime>
+		<TotalTax>
+			<CalculatedAmount>0</CalculatedAmount>
+		</TotalTax>
+		<UnitPrice>
+			<UnitAmount>220000</UnitAmount>
+		</UnitPrice>
+	</TaxInvoiceTradeLineItem>
+</TaxInvoice>

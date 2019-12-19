@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="32e05199-a723-4537-ab82-44527a749aa7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8462/OpenTAX_Collector_V10" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OpenTAX_Collector_V10.wsdl" MetadataType="Wsdl" ID="c6f5c41c-d549-4d36-b34b-151e8135e8bd" SourceId="1" SourceUrl="http://192.168.219.154:8462/OpenTAX_Collector_V10?wsdl=wsdl0" />
+    <MetadataFile FileName="OpenTAX_Collector_V10.xsd" MetadataType="Schema" ID="c7338425-6940-410a-96cd-500fad24d296" SourceId="1" SourceUrl="http://192.168.219.154:8462/OpenTAX_Collector_V10?xsd=xsd2" />
+    <MetadataFile FileName="CollectService.wsdl" MetadataType="Wsdl" ID="cd6776f4-401c-4d83-bae6-2bd5f4555dc9" SourceId="1" SourceUrl="http://localhost:8462/OpenTAX_Collector_V10" />
+    <MetadataFile FileName="OpenTAX_Collector_V101.xsd" MetadataType="Schema" ID="cf837a20-f327-4abc-8d39-0636501a7cff" SourceId="1" SourceUrl="http://192.168.219.154:8462/OpenTAX_Collector_V10?xsd=xsd1" />
+    <MetadataFile FileName="OpenTAX_Collector_V102.xsd" MetadataType="Schema" ID="72d3f4c8-a422-4049-8588-c2aa20d8f554" SourceId="1" SourceUrl="http://192.168.219.154:8462/OpenTAX_Collector_V10?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

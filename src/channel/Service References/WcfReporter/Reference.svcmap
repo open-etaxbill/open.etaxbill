@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a0fd1a9e-7e7c-448f-b4a8-b092595bd291" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8473/OpenTAX_Reporter_V10" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OpenTAX_Reporter_V10.xsd" MetadataType="Schema" ID="b44d2bf3-b457-442f-a214-6e7e3506033e" SourceId="1" SourceUrl="http://192.168.219.154:8473/OpenTAX_Reporter_V10?xsd=xsd1" />
+    <MetadataFile FileName="OpenTAX_Reporter_V101.xsd" MetadataType="Schema" ID="c364d056-e5c2-434b-a483-b14b541d9e6a" SourceId="1" SourceUrl="http://192.168.219.154:8473/OpenTAX_Reporter_V10?xsd=xsd0" />
+    <MetadataFile FileName="ReportService.wsdl" MetadataType="Wsdl" ID="e9a5fe6c-0d64-4948-bf6a-10a058f8f357" SourceId="1" SourceUrl="http://localhost:8473/OpenTAX_Reporter_V10" />
+    <MetadataFile FileName="OpenTAX_Reporter_V102.xsd" MetadataType="Schema" ID="8776c2ff-31e1-4060-9c81-2a33f8407161" SourceId="1" SourceUrl="http://192.168.219.154:8473/OpenTAX_Reporter_V10?xsd=xsd2" />
+    <MetadataFile FileName="OpenTAX_Reporter_V10.wsdl" MetadataType="Wsdl" ID="e1ccf01e-adcc-43d5-954d-9d0476ae99ff" SourceId="1" SourceUrl="http://192.168.219.154:8473/OpenTAX_Reporter_V10?wsdl=wsdl0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

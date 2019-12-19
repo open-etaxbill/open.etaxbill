@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/Imports">
+      <xsd:import schemaLocation="http://192.168.219.154:8481/OpenTAX_Signer_V10?xsd=xsd0" namespace="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07" />
+      <xsd:import schemaLocation="http://192.168.219.154:8481/OpenTAX_Signer_V10?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://192.168.219.154:8481/OpenTAX_Signer_V10?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ISignerService_WriteLog_InputMessage">
+    <wsdl:part name="parameters" element="tns:WriteLog" />
+  </wsdl:message>
+  <wsdl:message name="ISignerService_WriteLog_OutputMessage">
+    <wsdl:part name="parameters" element="tns:WriteLogResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISignerService_SignatureWithDateRange_InputMessage">
+    <wsdl:part name="parameters" element="tns:SignatureWithDateRange" />
+  </wsdl:message>
+  <wsdl:message name="ISignerService_SignatureWithDateRange_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SignatureWithDateRangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISignerService_SignatureWithIDs_InputMessage">
+    <wsdl:part name="parameters" element="tns:SignatureWithIDs" />
+  </wsdl:message>
+  <wsdl:message name="ISignerService_SignatureWithIDs_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SignatureWithIDsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISignerService_ClearXFlag_InputMessage">
+    <wsdl:part name="parameters" element="tns:ClearXFlag" />
+  </wsdl:message>
+  <wsdl:message name="ISignerService_ClearXFlag_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ClearXFlagResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ISignerService">
+    <wsdl:operation name="WriteLog">
+      <wsdl:input wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/WriteLog" message="tns:ISignerService_WriteLog_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/WriteLogResponse" message="tns:ISignerService_WriteLog_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SignatureWithDateRange">
+      <wsdl:input wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/SignatureWithDateRange" message="tns:ISignerService_SignatureWithDateRange_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/SignatureWithDateRangeResponse" message="tns:ISignerService_SignatureWithDateRange_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SignatureWithIDs">
+      <wsdl:input wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/SignatureWithIDs" message="tns:ISignerService_SignatureWithIDs_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/SignatureWithIDsResponse" message="tns:ISignerService_SignatureWithIDs_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ClearXFlag">
+      <wsdl:input wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/ClearXFlag" message="tns:ISignerService_ClearXFlag_InputMessage" />
+      <wsdl:output wsaw:Action="http://www.odinsoftware.co.kr/open/etaxbill/signer/2016/07/ISignerService/ClearXFlagResponse" message="tns:ISignerService_ClearXFlag_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

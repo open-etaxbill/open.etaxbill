@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:i0="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CollectService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_ICollectorService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:import namespace="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07" location="http://192.168.219.154:8462/OpenTAX_Collector_V10?wsdl=wsdl0" />
+  <wsdl:types />
+  <wsdl:binding name="NetTcpBinding_ICollectorService" type="i0:ICollectorService">
+    <wsp:PolicyReference URI="#NetTcpBinding_ICollectorService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="WriteLog">
+      <soap12:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/WriteLog" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoExcelUpload">
+      <soap12:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/DoExcelUpload" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetIssueId">
+      <soap12:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/GetIssueId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCfgValue">
+      <soap12:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/GetCfgValue" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_ICollectorService" type="i0:ICollectorService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="WriteLog">
+      <soap:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/WriteLog" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DoExcelUpload">
+      <soap:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/DoExcelUpload" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetIssueId">
+      <soap:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/GetIssueId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCfgValue">
+      <soap:operation soapAction="http://www.odinsoftware.co.kr/open/etaxbill/collector/2016/07/ICollectorService/GetCfgValue" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CollectService">
+    <wsdl:port name="NetTcpBinding_ICollectorService" binding="tns:NetTcpBinding_ICollectorService">
+      <soap12:address location="net.tcp://192.168.219.154:8453/OpenTAX_Collector_V10" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://192.168.219.154:8453/OpenTAX_Collector_V10</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_ICollectorService" binding="tns:BasicHttpBinding_ICollectorService">
+      <soap:address location="http://192.168.219.154:8461/OpenTAX_Collector_V10" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

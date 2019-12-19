@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c6ad92fe-a2dd-46e8-8fde-dfaafb1d5a29" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:8466/OpenTAX_Mailer_V10" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OpenTAX_Mailer_V10.wsdl" MetadataType="Wsdl" ID="575b1837-dcc5-45c3-a8ff-4d1b287d9fb2" SourceId="1" SourceUrl="http://192.168.219.154:8466/OpenTAX_Mailer_V10?wsdl=wsdl0" />
+    <MetadataFile FileName="OpenTAX_Mailer_V10.xsd" MetadataType="Schema" ID="c066201f-37dd-429d-9fdd-2f721b67e51e" SourceId="1" SourceUrl="http://192.168.219.154:8466/OpenTAX_Mailer_V10?xsd=xsd0" />
+    <MetadataFile FileName="MailerService.wsdl" MetadataType="Wsdl" ID="56ccecd3-aef6-438b-8b73-6f759b655fc4" SourceId="1" SourceUrl="http://localhost:8466/OpenTAX_Mailer_V10" />
+    <MetadataFile FileName="OpenTAX_Mailer_V101.xsd" MetadataType="Schema" ID="325feb8f-13e8-4af5-8ac9-a235b7711812" SourceId="1" SourceUrl="http://192.168.219.154:8466/OpenTAX_Mailer_V10?xsd=xsd2" />
+    <MetadataFile FileName="OpenTAX_Mailer_V102.xsd" MetadataType="Schema" ID="b7a822bf-85fe-46a1-9bd2-2a7b0af4f869" SourceId="1" SourceUrl="http://192.168.219.154:8466/OpenTAX_Mailer_V10?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
